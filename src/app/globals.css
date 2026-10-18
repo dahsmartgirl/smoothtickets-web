@@ -1,26 +1,167 @@
 @import "tailwindcss";
 
+@custom-variant dark (&:where(.dark, .dark *));
+
+/* Theme tokens: light by default, `.dark` on <html> switches them. */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --bg: #ffffff;
+  --surface: #ffffff;
+  --surface-2: #e9f1fc;
+  --fg: #0a1230;
+  --muted: #5a6784;
+  --line: rgb(10 18 48 / 0.09);
+  color-scheme: light;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+.dark {
+  --bg: #050b1f;
+  --surface: #0b1534;
+  --surface-2: #14204a;
+  --fg: #ffffff;
+  --muted: rgb(255 255 255 / 0.62);
+  --line: rgb(255 255 255 / 0.09);
+  color-scheme: dark;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+@theme {
+  /* Brand constants (same in both themes) */
+  --color-brand: #007aff;
+  --color-brand-deep: #0654b0;
+  --color-brand-soft: #5aa9ff;
+  --color-night: #050b1f;
+  --color-night-2: #0b1534;
+  --color-night-3: #14204a;
+  --color-paper: #f5f9ff;
+  --color-flame: #ff9f0a;
+  --color-lime: #c8f53c;
+  --color-pink: #ff5fa2;
+  --color-success: #0fbf6b;
+
+  --animate-marquee: marquee 40s linear infinite;
+  --animate-scan: scan 2.4s ease-in-out infinite;
+  --animate-float: float 6s ease-in-out infinite;
+  --animate-progress: progress 4.5s linear forwards;
+
+  @keyframes progress {
+    from {
+      transform: scaleX(0);
+    }
+    to {
+      transform: scaleX(1);
+    }
+  }
+
+  @keyframes marquee {
+    to {
+      transform: translateX(-50%);
+    }
+  }
+  @keyframes scan {
+    0%,
+    100% {
+      top: 8%;
+    }
+    50% {
+      top: 86%;
+    }
+  }
+  @keyframes float {
+    0%,
+    100% {
+      transform: translateY(0) rotate(var(--r, 0deg));
+    }
+    50% {
+      transform: translateY(-10px) rotate(var(--r, 0deg));
+    }
   }
 }
 
+@theme inline {
+  --color-bg: var(--bg);
+  --color-surface: var(--surface);
+  --color-surface-2: var(--surface-2);
+  --color-fg: var(--fg);
+  --color-muted: var(--muted);
+  --color-line: var(--line);
+
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  --font-display: var(--font-unbounded), ui-sans-serif, system-ui, sans-serif;
+  --font-serif: var(--font-instrument), ui-serif, Georgia, serif;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--bg);
+  color: var(--fg);
+  font-family: var(--font-sans);
+  transition: background-color 0.2s;
+}
+
+@layer components {
+  /* Ticket silhouette: side notches cut out with a mask so it works on any background. */
+  .ticket {
+    --notch: 14px;
+    --notch-y: 50%;
+    mask:
+      radial-gradient(circle var(--notch) at 0 var(--notch-y), #0000 98%, #000) left / 51% 100% no-repeat,
+      radial-gradient(circle var(--notch) at 100% var(--notch-y), #0000 98%, #000) right / 51% 100% no-repeat;
+  }
+
+  /* Horizontal ticket (notches top and bottom), used for stubs stacked side by side. */
+  .ticket-x {
+    --notch: 14px;
+    --notch-x: 50%;
+    mask:
+      radial-gradient(circle var(--notch) at var(--notch-x) 0, #0000 98%, #000) top / 100% 51% no-repeat,
+      radial-gradient(circle var(--notch) at var(--notch-x) 100%, #0000 98%, #000) bottom / 100% 51% no-repeat;
+  }
+
+  /* Torn-ticket bottom edge: a row of semicircle bites along the bottom. */
+  .torn-bottom {
+    mask: radial-gradient(circle 9px at 50% 100%, #0000 97%, #000) 0 0 / 24px 100% repeat-x;
+  }
+}
+
+.perf-x {
+  background-image: linear-gradient(to right, currentColor 50%, transparent 0);
+  background-size: 10px 2px;
+  background-repeat: repeat-x;
+  height: 2px;
+}
+
+.perf-y {
+  background-image: linear-gradient(to bottom, currentColor 50%, transparent 0);
+  background-size: 2px 10px;
+  background-repeat: repeat-y;
+  width: 2px;
+}
+
+.grain::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.08;
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+.no-scrollbar {
+  scrollbar-width: none;
+}
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+  }
 }
