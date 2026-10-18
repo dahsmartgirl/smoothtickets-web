@@ -1,7 +1,9 @@
-import type { Metadata } from "next";
-import { Instrument_Serif, Unbounded } from "next/font/google";
+import type { Metadata, Viewport } from "next";
+import { Unbounded } from "next/font/google";
 import localFont from "next/font/local";
+import { EdgeColors } from "@/components/EdgeColors";
 import { APP_URL } from "@/lib/events";
+import { pageMetadata } from "@/lib/seo";
 import "./globals.css";
 
 // Official unhinted Inter, so it renders the same on every OS.
@@ -18,12 +20,6 @@ const unbounded = Unbounded({
   weight: ["500", "700", "800", "900"],
 });
 
-const instrument = Instrument_Serif({
-  variable: "--font-instrument",
-  subsets: ["latin"],
-  weight: "400",
-  style: ["normal", "italic"],
-});
 
 const title = "Smooth Tickets | Create Events & Sell Tickets Online in Nigeria";
 const description =
@@ -31,20 +27,17 @@ const description =
 
 export const metadata: Metadata = {
   metadataBase: new URL(APP_URL),
+  ...pageMetadata({ title, description, path: "/" }),
   title: { default: title, template: "%s | Smooth Tickets" },
-  description,
   applicationName: "Smooth Tickets",
-  alternates: { canonical: "/" },
-  openGraph: {
-    type: "website",
-    siteName: "Smooth Tickets",
-    title,
-    description,
-    url: "/",
-    locale: "en_NG",
-  },
-  twitter: { card: "summary_large_image", title, description },
-  icons: { icon: "/logo.svg" },
+  // Icons come from app/icon.svg and app/apple-icon.tsx.
+};
+
+// Content runs under the notch and home indicator; components pad themselves with env(safe-area-inset-*).
+// theme-color starts as the hero's night blue and EdgeColors keeps it in sync after that.
+export const viewport: Viewport = {
+  viewportFit: "cover",
+  themeColor: "#050b1f",
 };
 
 // Runs before paint so a saved dark preference never flashes light.
@@ -60,13 +53,15 @@ export default function RootLayout({
     <html
       lang="en"
       suppressHydrationWarning
-      className={`${inter.variable} ${unbounded.variable} ${instrument.variable}`}
+      className={`${inter.variable} ${unbounded.variable}`}
     >
       <head>
         <script dangerouslySetInnerHTML={{ __html: themeScript }} />
       </head>
       <body className="antialiased">
-        {children}
+        <div id="page">{children}</div>
+        {/* Outside #page so no transformed ancestor can break position: fixed. */}
+        <EdgeColors />
       </body>
     </html>
   );

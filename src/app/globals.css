@@ -38,9 +38,53 @@
   --color-success: #0fbf6b;
 
   --animate-marquee: marquee 40s linear infinite;
-  --animate-scan: scan 2.4s ease-in-out infinite;
   --animate-float: float 6s ease-in-out infinite;
   --animate-progress: progress 4.5s linear forwards;
+
+  --animate-accordion-down: accordion-down 0.2s ease-out;
+  --animate-accordion-up: accordion-up 0.2s ease-out;
+  --animate-fade-in: fade-in 0.2s ease-out;
+  --animate-fade-out: fade-out 0.15s ease-in;
+  --animate-sheet-down: sheet-down 0.25s ease-out;
+  --animate-sheet-up: sheet-up 0.2s ease-in;
+
+  /* shadcn Accordion / Sheet */
+  @keyframes accordion-down {
+    from {
+      height: 0;
+    }
+    to {
+      height: var(--radix-accordion-content-height);
+    }
+  }
+  @keyframes accordion-up {
+    from {
+      height: var(--radix-accordion-content-height);
+    }
+    to {
+      height: 0;
+    }
+  }
+  @keyframes fade-in {
+    from {
+      opacity: 0;
+    }
+  }
+  @keyframes fade-out {
+    to {
+      opacity: 0;
+    }
+  }
+  @keyframes sheet-down {
+    from {
+      transform: translateY(-100%);
+    }
+  }
+  @keyframes sheet-up {
+    to {
+      transform: translateY(-100%);
+    }
+  }
 
   @keyframes progress {
     from {
@@ -54,15 +98,6 @@
   @keyframes marquee {
     to {
       transform: translateX(-50%);
-    }
-  }
-  @keyframes scan {
-    0%,
-    100% {
-      top: 8%;
-    }
-    50% {
-      top: 86%;
     }
   }
   @keyframes float {
@@ -86,18 +121,115 @@
 
   --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
   --font-display: var(--font-unbounded), ui-sans-serif, system-ui, sans-serif;
-  --font-serif: var(--font-instrument), ui-serif, Georgia, serif;
 }
 
 html {
   scroll-behavior: smooth;
 }
 
+/*
+ * Edge colors for mobile Safari's status bar and toolbar. EdgeColors.tsx writes one pair of values
+ * that the document backgrounds, the edge strips and theme-color all share. The page's own
+ * background lives on #page, so changing these never shows through transparent sections.
+ */
+html {
+  background: var(--edge-top-background, var(--bg));
+}
+
 body {
-  background: var(--bg);
+  background: var(--edge-bottom-background, var(--bg));
   color: var(--fg);
   font-family: var(--font-sans);
+}
+
+#page {
+  background: var(--bg);
   transition: background-color 0.2s;
+}
+
+.edge-top,
+.edge-bottom {
+  position: fixed;
+  inset-inline: 0;
+  z-index: 60;
+  pointer-events: none;
+}
+.edge-top {
+  top: 0;
+  height: max(12px, env(safe-area-inset-top));
+}
+.edge-bottom {
+  bottom: 0;
+  height: max(12px, env(safe-area-inset-bottom));
+}
+.edge-top::after,
+.edge-bottom::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+}
+.edge-top::after {
+  background: var(--edge-top-background, transparent);
+}
+.edge-bottom::after {
+  background: var(--edge-bottom-background, transparent);
+}
+/* Only touch browsers have toolbars to tint; on desktop the strips would just cover content. */
+@media (hover: hover) and (pointer: fine) {
+  .edge-top,
+  .edge-bottom {
+    display: none;
+  }
+}
+
+/* Looping decoration: hold still off-screen (usePauseOffscreen) and for reduced-motion users. */
+[data-offscreen],
+[data-offscreen] * {
+  animation-play-state: paused !important;
+}
+@media (prefers-reduced-motion: reduce) {
+  .animate-marquee,
+  .animate-float,
+  .animate-progress,
+  .animate-accordion-down,
+  .animate-accordion-up,
+  .animate-sheet-down,
+  .animate-sheet-up {
+    animation: none;
+  }
+}
+
+/* Headings balance their lines; body copy avoids orphans. */
+@layer base {
+  h1,
+  h2,
+  h3 {
+    text-wrap: balance;
+  }
+  p,
+  li,
+  dd {
+    text-wrap: pretty;
+  }
+}
+
+/* Supporting copy: one size site-wide (15px on phones, 16px from sm). */
+@utility text-lead {
+  font-size: 0.9375rem;
+  line-height: 1.65;
+  @variant sm {
+    font-size: 1rem;
+  }
+}
+
+/* Side padding that also clears the notch in landscape (viewport-fit=cover). */
+@utility px-page {
+  padding-left: max(1rem, env(safe-area-inset-left));
+  padding-right: max(1rem, env(safe-area-inset-right));
+  @variant sm {
+    padding-left: max(1.5rem, env(safe-area-inset-left));
+    padding-right: max(1.5rem, env(safe-area-inset-right));
+  }
 }
 
 @layer components {

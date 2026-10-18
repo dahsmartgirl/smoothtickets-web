@@ -1,10 +1,16 @@
+"use client";
+
+import { useRef } from "react";
 import { Phone } from "./Devices";
-import { QrCode } from "./ui";
+import { QrCode } from "./brand";
+import { usePauseOffscreen } from "./usePauseOffscreen";
 
 /** Real organiser dashboard on a phone, with the QR ticket a buyer receives beside it. */
 export function HeroPhone() {
+  const ref = useRef<HTMLDivElement>(null);
+  usePauseOffscreen(ref);
   return (
-    <div className="relative mx-auto w-[250px] sm:w-[290px]">
+    <div ref={ref} className="relative mx-auto w-[250px] sm:w-[290px]">
       <div className="absolute -inset-16 -z-10 rounded-full bg-brand/40 blur-[90px]" />
       <Phone
         src="/screens/app/dashboard.jpg"

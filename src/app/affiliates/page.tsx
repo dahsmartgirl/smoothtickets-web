@@ -1,19 +1,23 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Phone } from "@/components/Devices";
 import { Footer } from "@/components/FinalCta";
 import { Nav } from "@/components/Nav";
-import { Arrow, Button, Eyebrow } from "@/components/ui";
+import { Arrow } from "@/components/brand";
+import { Button } from "@/components/ui/button";
 import { APP_URL } from "@/lib/events";
+import { pageMetadata } from "@/lib/seo";
 
 const description =
   "Smooth Affiliates lets organisers turn their network into event promoters. Affiliates share event links and earn commission on every ticket they sell.";
 
-export const metadata: Metadata = {
+// Opens on the white page background, not the dark hero.
+export const viewport: Viewport = { themeColor: "#ffffff" };
+
+export const metadata: Metadata = pageMetadata({
   title: "Affiliates: Promote Events and Earn Commission",
   description,
-  alternates: { canonical: "/affiliates" },
-  openGraph: { title: "Smooth Affiliates", description, url: "/affiliates" },
-};
+  path: "/affiliates",
+});
 
 // Answers stick to what the product shows today. Payout timing is not stated until ops confirms it.
 const answers = [
@@ -44,26 +48,29 @@ export default function AffiliatesPage() {
   return (
     <>
       <Nav overHero={false} />
-      <main className="overflow-x-clip pt-32 sm:pt-40">
-        <section className="mx-auto grid max-w-6xl items-center gap-14 px-4 sm:px-6 lg:grid-cols-[1.1fr_1fr]">
+      <main className="overflow-x-clip pt-[calc(8rem+env(safe-area-inset-top))] sm:pt-[calc(10rem+env(safe-area-inset-top))]">
+        <section className="mx-auto grid max-w-6xl items-center gap-14 px-page lg:grid-cols-[1.1fr_1fr]">
           <div>
-            <Eyebrow>Smooth Affiliates</Eyebrow>
-            <h1 className="mt-4 font-display text-[clamp(2.2rem,5.5vw,4.2rem)] leading-[0.95] font-black tracking-[-0.03em] uppercase">
+            <h1 className="font-display text-[clamp(2.2rem,5.5vw,4.2rem)] leading-[0.95] font-black tracking-[-0.03em] uppercase">
               Let more people <span className="text-brand">sell your</span>{" "}
-              <span className="font-serif font-normal tracking-normal normal-case italic">tickets.</span>
+              tickets.
             </h1>
-            <p className="mt-6 max-w-lg text-lg leading-relaxed text-muted">{description}</p>
+            <p className="mt-6 max-w-lg text-lead text-muted">{description}</p>
             <div className="mt-9 flex flex-wrap gap-3">
-              <Button href={`${APP_URL}/auth/signup`}>
-                Create an Event <Arrow />
+              <Button asChild>
+                <a href={`${APP_URL}/auth/signup`}>
+                  Create an Event <Arrow />
+                </a>
               </Button>
-              <Button href={`${APP_URL}/affiliate/auth/signup`} variant="outline">
-                Become an affiliate
+              <Button asChild variant="outline">
+                <a href={`${APP_URL}/affiliate/auth/signup`}>
+                  Become an affiliate
+                </a>
               </Button>
             </div>
             <p className="mt-5 text-sm text-muted">
               Already promoting?{" "}
-              <a href={`${APP_URL}/affiliate/auth/login`} className="font-semibold text-brand hover:underline dark:text-brand-soft">
+              <a href={`${APP_URL}/affiliate/auth/login`} className="font-semibold text-brand-deep hover:underline dark:text-brand-soft">
                 Affiliate login
               </a>
             </p>
@@ -75,25 +82,29 @@ export default function AffiliatesPage() {
           </div>
         </section>
 
-        <section aria-label="Questions about Smooth Affiliates" className="mx-auto mt-28 max-w-6xl px-4 sm:px-6">
+        <section aria-label="Questions about Smooth Affiliates" className="mx-auto mt-28 max-w-6xl px-page">
           <div className="grid gap-5 md:grid-cols-2">
             {answers.map(({ q, a }) => (
               <article key={q} className="rounded-3xl bg-surface p-7 ring-1 ring-line">
                 <h2 className="font-display text-lg font-bold">{q}</h2>
-                <p className="mt-3 leading-relaxed text-muted">{a}</p>
+                <p className="mt-3 text-lead text-muted">{a}</p>
               </article>
             ))}
           </div>
         </section>
 
-        <section className="mx-auto max-w-6xl px-4 py-24 text-center sm:px-6">
+        <section className="mx-auto max-w-6xl px-page py-24 text-center">
           <h2 className="font-display text-2xl font-black tracking-tight uppercase sm:text-4xl">Ready to grow your sales?</h2>
           <div className="mt-8 flex flex-wrap justify-center gap-3">
-            <Button href={`${APP_URL}/auth/signup`}>
-              Create Your Event <Arrow />
+            <Button asChild>
+              <a href={`${APP_URL}/auth/signup`}>
+                Create Your Event <Arrow />
+              </a>
             </Button>
-            <Button href={`${APP_URL}/discovery`} variant="outline">
-              Explore Events
+            <Button asChild variant="outline">
+              <a href={`${APP_URL}/discovery`}>
+                Explore Events
+              </a>
             </Button>
           </div>
         </section>

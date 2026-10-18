@@ -1,41 +1,21 @@
 import Image from "next/image";
 import Link from "next/link";
-import type { ComponentProps } from "react";
 
 export function Logo({ className = "", onDark = false }: { className?: string; onDark?: boolean }) {
   return (
     <Link href="/" className={`flex items-center gap-2 ${className}`} aria-label="Smooth Tickets home">
       <Image src="/logo.svg" alt="" width={26} height={26} priority />
-      <span className="font-display text-[13px] font-bold tracking-tight sm:text-[15px]">
-        smooth<span className={onDark ? "text-brand-soft" : "text-brand dark:text-brand-soft"}>tickets</span>
+      {/* One colour: black on light backgrounds, white on dark ones. */}
+      <span className={`font-display text-[13px] font-bold tracking-tight sm:text-[15px] ${onDark ? "text-white" : "text-fg"}`}>
+        smoothtickets
       </span>
     </Link>
   );
 }
 
-type ButtonProps = ComponentProps<"a"> & { variant?: "primary" | "light" | "glass" | "outline" };
-
-export function Button({ variant = "primary", className = "", children, ...props }: ButtonProps) {
-  const styles = {
-    primary: "bg-brand text-white hover:bg-[#0068d9] shadow-[0_8px_30px_-8px_rgba(0,122,255,.8)]",
-    light: "bg-white text-night hover:bg-paper",
-    // for use on photos / always-dark sections
-    glass: "bg-white/10 text-white ring-1 ring-white/25 backdrop-blur-md hover:bg-white/20",
-    outline: "bg-surface text-fg ring-1 ring-line hover:bg-surface-2",
-  }[variant];
-  return (
-    <a
-      className={`inline-flex items-center justify-center gap-2 rounded-full px-6 py-3.5 text-sm font-semibold transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-soft ${styles} ${className}`}
-      {...props}
-    >
-      {children}
-    </a>
-  );
-}
-
 export function Eyebrow({ children, className = "" }: { children: React.ReactNode; className?: string }) {
   return (
-    <p className={`font-display text-[11px] font-bold uppercase tracking-[0.25em] text-brand dark:text-brand-soft ${className}`}>
+    <p className={`font-display text-[11px] font-bold uppercase tracking-[0.25em] text-brand-deep dark:text-brand-soft ${className}`}>
       {children}
     </p>
   );

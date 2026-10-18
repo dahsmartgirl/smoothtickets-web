@@ -1,11 +1,9 @@
-"use client";
-
-import { AppPhone } from "./Devices";
-import { Arrow } from "./ui";
+import Image from "next/image";
+import { Arrow } from "./brand";
+import { Button } from "./ui/button";
 import { Reveal } from "./Reveal";
-import { useCycle } from "./useCycle";
 
-const steps = [
+const points = [
   {
     title: "Set commissions",
     body: "Choose what affiliates earn on each ticket type.",
@@ -26,75 +24,52 @@ const steps = [
   },
 ];
 
+/** Organiser-facing affiliate spotlight: three static cards, each with the real screen behind it. */
 export function Affiliates() {
-  const { active, playing, select } = useCycle(steps.length);
-
   return (
-    <section id="affiliates" aria-labelledby="affiliates-title" className="grain relative scroll-mt-24 overflow-hidden bg-night py-28 text-white">
+    <section id="affiliates" aria-labelledby="affiliates-title" className="grain relative scroll-mt-24 overflow-hidden bg-night py-24 text-white sm:py-28">
       <div className="absolute -top-40 -left-40 size-[520px] rounded-full bg-brand/30 blur-[120px]" />
-      <div className="relative mx-auto grid max-w-6xl items-center gap-14 px-4 sm:px-6 lg:grid-cols-[1fr_1fr]">
-        <div>
-          <Reveal>
-            <p className="inline-flex items-center gap-2 rounded-full bg-lime px-3 py-1 font-display text-[11px] font-bold tracking-[0.2em] text-night uppercase">
+      <div className="relative mx-auto max-w-6xl px-page">
+        <Reveal className="grid items-end gap-6 lg:grid-cols-[1.2fr_1fr] lg:gap-16">
+          <div>
+            <p className="inline-flex items-center rounded-full bg-lime px-3 py-1 font-display text-[11px] font-bold tracking-[0.2em] text-night uppercase">
               Smooth Affiliates
             </p>
             <h2 id="affiliates-title" className="mt-5 font-display text-3xl leading-[0.95] font-black tracking-tight uppercase sm:text-5xl">
-              Let more people <span className="text-lime">sell your</span>{" "}
-              <span className="font-serif font-normal normal-case italic">tickets.</span>
+              Let more people <span className="text-lime">sell your tickets.</span>
             </h2>
-            <p className="mt-6 max-w-md leading-relaxed text-white/70">
+          </div>
+          <div>
+            <p className="text-lead text-white/70">
               Turn your network into event promoters. Set commissions, choose who can promote your event, and let Smooth Tickets
               handle affiliate payouts automatically.
             </p>
-          </Reveal>
-
-          <ol className="mt-8 space-y-1" role="tablist" aria-label="How affiliates work">
-            {steps.map((s, i) => {
-              const on = i === active;
-              return (
-                <li key={s.title}>
-                  <button
-                    type="button"
-                    role="tab"
-                    aria-selected={on}
-                    onClick={() => select(i)}
-                    className={`relative flex w-full gap-4 overflow-hidden rounded-2xl px-4 py-4 text-left transition-colors ${
-                      on ? "bg-white/10" : "hover:bg-white/5"
-                    }`}
-                  >
-                    <span
-                      className={`grid size-9 shrink-0 place-items-center rounded-full font-display text-sm font-bold transition-colors ${
-                        on ? "bg-lime text-night" : "bg-white/10 text-white/60"
-                      }`}
-                    >
-                      {i + 1}
-                    </span>
-                    <span>
-                      <span className={`block font-display text-sm font-bold ${on ? "" : "text-white/70"}`}>{s.title}</span>
-                      <span className={`mt-1 block text-sm ${on ? "text-white/75" : "text-white/45"}`}>{s.body}</span>
-                    </span>
-                    {on && playing && <span key={active} className="absolute inset-x-0 bottom-0 h-0.5 origin-left animate-progress bg-lime/60" />}
-                  </button>
-                </li>
-              );
-            })}
-          </ol>
-
-          <a
-            href="/affiliates"
-            className="mt-8 inline-flex items-center gap-2 rounded-full bg-lime px-6 py-3.5 text-sm font-semibold text-night transition-colors hover:bg-[#d6ff5c]"
-          >
-            Explore Affiliates <Arrow />
-          </a>
-        </div>
-
-        <Reveal delay={0.1}>
-          <div className="relative h-[520px] overflow-hidden rounded-[36px] bg-white/5 ring-1 ring-white/10 sm:h-[600px]">
-            <div className="absolute top-1/4 left-1/2 size-80 -translate-x-1/2 rounded-full bg-lime/20 blur-[90px]" />
-            <AppPhone screens={steps} active={active} className="absolute top-12 left-1/2 w-[280px] -translate-x-1/2 sm:w-[310px]" />
-            <div className="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-night to-transparent" />
+            <Button asChild variant="lime" className="mt-6">
+              <a href="/affiliates">
+                Explore Affiliates <Arrow />
+              </a>
+            </Button>
           </div>
         </Reveal>
+
+        <ol className="mt-12 grid gap-4 sm:mt-14 md:grid-cols-3 md:gap-5">
+          {points.map((p, i) => (
+            <li key={p.title}>
+              <Reveal delay={i * 0.08} className="flex h-full flex-col overflow-hidden rounded-[28px] bg-white/[0.05]">
+                <div className="p-6 sm:p-7">
+                  <span className="font-display text-sm font-black text-lime tabular-nums">0{i + 1}</span>
+                  <h3 className="mt-3 font-display text-lg font-bold">{p.title}</h3>
+                  <p className="mt-2 text-sm leading-relaxed text-white/65">{p.body}</p>
+                </div>
+                {/* Real screen rising from the card's bottom edge. */}
+                <div className="relative mx-6 mt-auto h-52 overflow-hidden rounded-t-[22px] bg-white ring-1 ring-white/20 sm:mx-7 sm:h-60">
+                  <Image src={p.src} alt={p.alt} fill sizes="(min-width: 768px) 320px, 90vw" className="object-cover object-top" />
+                  <div className="absolute inset-x-0 bottom-0 h-16 bg-gradient-to-t from-night/60 to-transparent" />
+                </div>
+              </Reveal>
+            </li>
+          ))}
+        </ol>
       </div>
     </section>
   );

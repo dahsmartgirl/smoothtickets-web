@@ -1,10 +1,11 @@
 import { APP_URL } from "@/lib/events";
-import { Arrow, Logo, QrCode } from "./ui";
+import { Arrow, Logo, QrCode } from "./brand";
+import { Button } from "./ui/button";
 import { Reveal } from "./Reveal";
 
 export function FinalCta() {
   return (
-    <section aria-labelledby="cta-title" className="px-4 pt-28 pb-24 sm:px-6">
+    <section aria-labelledby="cta-title" className="px-page pt-28 pb-24">
       <Reveal className="mx-auto max-w-6xl">
         <div
           className="ticket grain relative grid overflow-hidden rounded-[36px] bg-brand text-white md:grid-cols-[1fr_auto]"
@@ -14,16 +15,15 @@ export function FinalCta() {
             <h2 id="cta-title" className="font-display text-[clamp(2.2rem,6vw,4.5rem)] leading-[0.92] font-black tracking-[-0.03em] uppercase">
               Your next event
               <br />
-              starts with <span className="font-serif font-normal tracking-normal normal-case italic text-night">Smooth.</span>
+              starts with <span className="text-night">Smooth.</span>
             </h2>
-            <p className="mt-5 max-w-md text-white/80">Everything you need to get started is right here.</p>
+            <p className="mt-5 max-w-md text-lead text-white/80">Everything you need to get started is right here.</p>
             <div className="mt-10 flex flex-wrap gap-3">
-              <a
-                href={`${APP_URL}/auth/signup`}
-                className="inline-flex items-center gap-2 rounded-full bg-night px-7 py-4 text-sm font-semibold text-white transition-colors hover:bg-night-3"
-              >
-                Create Your Event <Arrow />
-              </a>
+              <Button asChild variant="dark">
+                <a href={`${APP_URL}/auth/signup`}>
+                  Create Your Event <Arrow />
+                </a>
+              </Button>
             </div>
           </div>
           {/* stub */}
@@ -61,7 +61,7 @@ const legal = [
 
 export function Footer() {
   return (
-    <footer className="border-t border-line px-4 py-12 sm:px-6">
+    <footer className="border-t border-line px-page pt-12 pb-[calc(3rem+env(safe-area-inset-bottom))]">
       <div className="mx-auto flex max-w-6xl flex-col justify-between gap-8 md:flex-row md:items-center">
         <Logo />
         <nav aria-label="Footer">

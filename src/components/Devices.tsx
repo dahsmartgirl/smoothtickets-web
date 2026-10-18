@@ -96,7 +96,7 @@ export function AppPhone({
             <Image
               key={s.src}
               src={s.src}
-              alt={s.alt}
+              alt={i === active ? s.alt : ""}
               fill
               sizes="320px"
               className={`object-cover object-top transition-opacity duration-500 ${i === active ? "opacity-100" : "opacity-0"}`}

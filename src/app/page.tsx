@@ -23,7 +23,7 @@ const organization = {
 };
 
 export default async function Home() {
-  const events = await getUpcomingEvents(6);
+  const events = await getUpcomingEvents(6, { withLocation: true });
 
   return (
     <>

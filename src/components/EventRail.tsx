@@ -1,10 +1,14 @@
 import Image from "next/image";
 import { APP_URL, formatEventDate, formatNaira, type EventSummary } from "@/lib/events";
-import { Arrow, Eyebrow } from "./ui";
+import { Arrow } from "./brand";
+import { Button } from "./ui/button";
 import { Rail } from "./Rail";
+import { TicketOutline } from "./TicketOutline";
 import { Reveal } from "./Reveal";
 
 const stickers = ["bg-flame", "bg-lime", "bg-pink", "bg-brand-soft"];
+// Hand-placed look: each date sticker sits at a slight angle.
+const tilts = ["-rotate-6", "rotate-3", "-rotate-3", "rotate-6"];
 
 function EventCard({ event, i }: { event: EventSummary; i: number }) {
   const d = formatEventDate(event.startDate);
@@ -24,25 +28,34 @@ function EventCard({ event, i }: { event: EventSummary; i: number }) {
           />
         )}
         <div
-          className={`absolute top-4 left-4 rounded-xl ${stickers[i % stickers.length]} px-3 py-1.5 text-center text-night shadow-lg`}
+          className={`absolute top-4 left-4 rounded-xl ${stickers[i % stickers.length]} ${tilts[i % tilts.length]} px-3 py-1.5 text-center text-night shadow-lg`}
         >
-          <p className="font-display text-xl leading-none font-black">{d.day}</p>
+          <p className="font-display text-xl leading-none font-black tabular-nums">{d.day}</p>
           <p className="text-[10px] font-bold tracking-widest">{d.month}</p>
         </div>
       </div>
-      {/* stub */}
-      <div className="ticket rounded-b-3xl bg-surface px-5 pt-4 pb-5 text-fg shadow-[0_20px_40px_-25px_rgba(10,18,48,.35)]" style={{ ["--notch-y" as string]: "0px" }}>
+      {/* Content stub: the dotted ticket outline is its border. */}
+      <div className="relative px-6 pt-5 pb-6 text-fg">
+        <TicketOutline />
         <h3 className="line-clamp-1 font-display text-sm font-bold">{event.name}</h3>
-        <p className="mt-1 text-xs text-muted">
+        <p className="mt-1.5 text-xs text-muted tabular-nums">
           <time dateTime={event.startDate}>
             {d.weekday} {d.day} {d.month} · {d.time}
           </time>
         </p>
-        <div className="perf-x my-3 text-fg/15" />
+        {event.location && (
+          <p className="mt-1 flex items-center gap-1 text-xs text-muted">
+            <svg viewBox="0 0 16 16" className="size-3 shrink-0" fill="currentColor" aria-hidden>
+              <path d="M8 1a5 5 0 0 0-5 5c0 3.6 4.3 8.2 4.5 8.4a.7.7 0 0 0 1 0C8.7 14.2 13 9.6 13 6a5 5 0 0 0-5-5Zm0 7a2 2 0 1 1 0-4 2 2 0 0 1 0 4Z" />
+            </svg>
+            <span className="truncate">{event.location}</span>
+          </p>
+        )}
+        <div data-perf className="my-4 h-px" />
         <div className="flex items-center justify-between">
           <div>
             <p className="text-[10px] font-semibold tracking-wider text-muted uppercase">From</p>
-            <p className="font-display text-base font-extrabold">
+            <p className="font-display text-base font-extrabold tabular-nums">
               {event.fromPrice === null ? "—" : formatNaira(event.fromPrice)}
             </p>
           </div>
@@ -59,20 +72,19 @@ export function EventRail({ events }: { events: EventSummary[] }) {
   if (!events.length) return null;
   return (
     <section id="events" aria-labelledby="events-title" className="relative scroll-mt-24 py-20">
-      <div className="mx-auto max-w-6xl px-4 sm:px-6">
+      <div className="mx-auto max-w-6xl px-4">
         <div className="flex items-end justify-between gap-6">
           <Reveal>
-            <Eyebrow>Discover events</Eyebrow>
-            <h2 id="events-title" className="mt-3 font-display text-3xl font-black tracking-tight uppercase sm:text-5xl">
-              Find your next <span className="font-serif font-normal normal-case italic text-brand">experience.</span>
+            <h2 id="events-title" className="font-display text-3xl font-black tracking-tight uppercase sm:text-5xl">
+              Find your next <span className="text-brand">experience.</span>
             </h2>
-            <p className="mt-4 text-muted">Discover events worth showing up for.</p>
+            <p className="mt-3 text-lead text-muted">Discover events worth showing up for.</p>
           </Reveal>
           <a
             href={`${APP_URL}/discovery`}
             className="hidden shrink-0 items-center gap-2 text-sm font-semibold text-muted hover:text-fg sm:flex"
           >
-            View all events <Arrow />
+            View All Events <Arrow />
           </a>
         </div>
       </div>
@@ -83,13 +95,12 @@ export function EventRail({ events }: { events: EventSummary[] }) {
           ))}
         </Rail>
       </div>
-      <div className="mx-auto max-w-6xl px-4 sm:px-6">
-        <a
-          href={`${APP_URL}/discovery`}
-          className="mt-2 flex items-center justify-center gap-2 rounded-full py-3 text-sm font-semibold text-fg ring-1 ring-line sm:hidden"
-        >
-          View all events <Arrow />
-        </a>
+      <div className="mx-auto max-w-6xl px-4">
+        <Button asChild variant="outline" className="mt-2 w-full sm:hidden">
+          <a href={`${APP_URL}/discovery`}>
+            View All Events <Arrow />
+          </a>
+        </Button>
       </div>
     </section>
   );

@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { APP_URL, formatNaira } from "@/lib/events";
-import { Eyebrow } from "./ui";
+import { Eyebrow } from "./brand";
 
 // Illustrative rate only — real fees depend on the organizer's plan.
 const RATE = 0.05;

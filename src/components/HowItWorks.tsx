@@ -1,7 +1,7 @@
 "use client";
 
+import { useRef } from "react";
 import { AppPhone } from "./Devices";
-import { Eyebrow } from "./ui";
 import { Reveal } from "./Reveal";
 import { useCycle } from "./useCycle";
 
@@ -33,28 +33,27 @@ const steps = [
 ];
 
 export function HowItWorks() {
-  const { active, playing, select } = useCycle(steps.length);
+  const ref = useRef<HTMLElement>(null);
+  const { active, playing, select } = useCycle(steps.length, ref);
 
   return (
-    <section id="how" aria-labelledby="how-title" className="relative scroll-mt-24 py-28">
-      <div className="mx-auto grid max-w-6xl items-center gap-14 px-4 sm:px-6 lg:grid-cols-[1fr_1fr]">
+    <section ref={ref} id="how" aria-labelledby="how-title" className="relative scroll-mt-24 py-28">
+      <div className="mx-auto grid max-w-6xl items-center gap-14 px-page lg:grid-cols-[1fr_1fr]">
         <div>
           <Reveal>
-            <Eyebrow>How Smooth works</Eyebrow>
-            <h2 id="how-title" className="mt-3 font-display text-3xl leading-[0.95] font-black tracking-tight uppercase sm:text-5xl">
+            <h2 id="how-title" className="font-display text-3xl leading-[0.95] font-black tracking-tight uppercase sm:text-5xl">
               Everything you need. <span className="text-brand">Nothing complicated.</span>
             </h2>
           </Reveal>
 
-          <ol className="mt-10 space-y-2" role="tablist" aria-label="How it works">
+          <ol className="mt-10 space-y-2" aria-label="How it works">
             {steps.map((s, i) => {
               const on = i === active;
               return (
                 <li key={s.title}>
                   <button
                     type="button"
-                    role="tab"
-                    aria-selected={on}
+                    aria-pressed={on}
                     onClick={() => select(i)}
                     className={`relative flex w-full gap-5 overflow-hidden rounded-2xl px-6 py-5 text-left transition-colors ${
                       on ? "bg-brand text-white" : "text-fg hover:bg-surface"

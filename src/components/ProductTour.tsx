@@ -3,7 +3,7 @@
 import { AnimatePresence, motion } from "motion/react";
 import { useState } from "react";
 import { Browser } from "./Devices";
-import { Eyebrow } from "./ui";
+import { Eyebrow } from "./brand";
 
 const tabs = [
   {

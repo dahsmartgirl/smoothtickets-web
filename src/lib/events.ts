@@ -17,11 +17,30 @@ export type EventSummary = {
   url: string;
   startDate: string;
   image: string | null;
+  /** "Venue, City". Only fetched when asked for (one request per event). */
+  location: string | null;
   fromPrice: number | null;
   tiers: { name: string; price: number }[];
 };
 
-export async function getUpcomingEvents(limit = 10): Promise<EventSummary[]> {
+/**
+ * Venue and city from the public event endpoint the event pages use.
+ * That response also carries the scanner key and organiser email, so only `location` is read.
+ */
+async function getLocation(slug: string): Promise<string | null> {
+  try {
+    const res = await fetch(`${API_URL}/ticket/whitelist?slug=${encodeURIComponent(slug)}`, { next: { revalidate: 300 } });
+    if (!res.ok) return null;
+    const json = (await res.json()) as { data?: { event?: { location?: { venue?: string; city?: string } | null } } };
+    const loc = json.data?.event?.location;
+    const parts = [loc?.venue?.trim(), loc?.city?.trim()].filter(Boolean);
+    return parts.length ? parts.join(", ") : null;
+  } catch {
+    return null;
+  }
+}
+
+export async function getUpcomingEvents(limit = 10, { withLocation = false } = {}): Promise<EventSummary[]> {
   try {
     const res = await fetch(`${API_URL}/ticket/whitelist/discovery`, {
       next: { revalidate: 300 },
@@ -30,7 +49,7 @@ export async function getUpcomingEvents(limit = 10): Promise<EventSummary[]> {
     const json = (await res.json()) as { data?: { events?: ApiEvent[] } };
     const now = Date.now();
 
-    return (json.data?.events ?? [])
+    const events = (json.data?.events ?? [])
       .filter((e) => new Date(e.end_date ?? e.start_date).getTime() >= now)
       .filter((e) => !/\btest\b/i.test(e.name))
       // Upcoming events first (soonest first); long-running ones that already started go last.
@@ -53,10 +72,17 @@ export async function getUpcomingEvents(limit = 10): Promise<EventSummary[]> {
           url: `${APP_URL}/${e.slug}`,
           startDate: e.start_date,
           image: e.image?.link ?? null,
+          location: null as string | null,
           fromPrice: tiers.length ? tiers[0].price : null,
           tiers,
         };
       });
+
+    if (withLocation) {
+      const locations = await Promise.all(events.map((e) => getLocation(e.slug)));
+      events.forEach((e, i) => (e.location = locations[i]));
+    }
+    return events;
   } catch {
     return [];
   }
