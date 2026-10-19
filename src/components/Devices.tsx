@@ -13,7 +13,7 @@ export function Phone({
   priority?: boolean;
 }) {
   return (
-    <div className={`relative rounded-[44px] bg-[#0d0f17] p-2.5 shadow-2xl ring-1 ring-white/15 ${className}`}>
+    <div className={`relative rounded-[44px] bg-[#0d0f17] p-2.5 ring-1 ring-white/15 ${className}`}>
       <div className="absolute top-4 left-1/2 z-10 h-6 w-24 -translate-x-1/2 rounded-full bg-black" />
       <div className="relative aspect-[9/19] overflow-hidden rounded-[36px] bg-white">
         <Image src={src} alt={alt} fill sizes="320px" className="object-cover object-top" priority={priority} />
@@ -35,7 +35,7 @@ export function Browser({
   className?: string;
 }) {
   return (
-    <div className={`overflow-hidden rounded-2xl bg-surface shadow-[0_30px_80px_-30px_rgba(10,18,48,.35)] ring-1 ring-line sm:rounded-3xl ${className}`}>
+    <div className={`overflow-hidden rounded-2xl bg-surface ring-1 ring-line sm:rounded-3xl ${className}`}>
       <div className="flex items-center gap-3 border-b border-line px-4 py-3">
         <div className="flex gap-1.5">
           <span className="size-2.5 rounded-full bg-[#ff5f57]" />
@@ -71,7 +71,7 @@ export function AppPhone({
   className?: string;
 }) {
   return (
-    <div className={`rounded-[46px] bg-[#0d0f17] p-2.5 shadow-2xl ring-1 ring-white/15 ${className}`}>
+    <div className={`rounded-[46px] bg-[#0d0f17] p-2.5 ring-1 ring-white/15 ${className}`}>
       <div className="overflow-hidden rounded-[38px] bg-white">
         {/* status bar */}
         <div className="relative flex h-10 items-center justify-between px-7 text-[13px] font-semibold text-night">

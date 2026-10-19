@@ -18,7 +18,7 @@ function SheetContent({ className, children, ...props }: ComponentProps<typeof S
       <SheetPrimitive.Content
         data-slot="sheet-content"
         className={cn(
-          "fixed inset-x-0 top-0 z-50 bg-surface text-fg shadow-2xl outline-none data-[state=closed]:animate-sheet-up data-[state=open]:animate-sheet-down",
+          "fixed inset-x-0 top-0 z-50 bg-surface text-fg outline-none data-[state=closed]:animate-sheet-up data-[state=open]:animate-sheet-down",
           className,
         )}
         {...props}

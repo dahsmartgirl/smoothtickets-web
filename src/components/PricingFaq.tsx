@@ -114,7 +114,7 @@ export function PricingFaq() {
           </div>
           <p className="mt-6 text-sm text-muted">
             Still stuck?{" "}
-            <a href={`${APP_URL}/#faq`} className="font-semibold text-brand underline-offset-4 hover:underline dark:text-brand-soft">
+            <a href={`${APP_URL}/#faq`} className="font-semibold text-brand underline-offset-4 hover:underline">
               Talk to support
             </a>
             . We&apos;re here 24/7.

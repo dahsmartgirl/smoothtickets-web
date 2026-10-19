@@ -1,3 +1,5 @@
+import { Location01Icon } from "@hugeicons/core-free-icons";
+import { HugeiconsIcon } from "@hugeicons/react";
 import Image from "next/image";
 import { APP_URL, formatEventDate, formatNaira, type EventSummary } from "@/lib/events";
 import { Arrow } from "./brand";
@@ -28,7 +30,7 @@ function EventCard({ event, i }: { event: EventSummary; i: number }) {
           />
         )}
         <div
-          className={`absolute top-4 left-4 rounded-xl ${stickers[i % stickers.length]} ${tilts[i % tilts.length]} px-3 py-1.5 text-center text-night shadow-lg`}
+          className={`absolute top-4 left-4 rounded-xl ${stickers[i % stickers.length]} ${tilts[i % tilts.length]} px-3 py-1.5 text-center text-night`}
         >
           <p className="font-display text-xl leading-none font-black tabular-nums">{d.day}</p>
           <p className="text-[10px] font-bold tracking-widest">{d.month}</p>
@@ -45,9 +47,7 @@ function EventCard({ event, i }: { event: EventSummary; i: number }) {
         </p>
         {event.location && (
           <p className="mt-1 flex items-center gap-1 text-xs text-muted">
-            <svg viewBox="0 0 16 16" className="size-3 shrink-0" fill="currentColor" aria-hidden>
-              <path d="M8 1a5 5 0 0 0-5 5c0 3.6 4.3 8.2 4.5 8.4a.7.7 0 0 0 1 0C8.7 14.2 13 9.6 13 6a5 5 0 0 0-5-5Zm0 7a2 2 0 1 1 0-4 2 2 0 0 1 0 4Z" />
-            </svg>
+            <HugeiconsIcon icon={Location01Icon} size={12} strokeWidth={2} className="shrink-0" aria-hidden />
             <span className="truncate">{event.location}</span>
           </p>
         )}

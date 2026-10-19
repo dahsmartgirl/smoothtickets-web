@@ -1,13 +1,10 @@
-import type { Metadata, Viewport } from "next";
+import type { Metadata } from "next";
 import Link from "next/link";
 import { Footer } from "@/components/FinalCta";
 import { Nav } from "@/components/Nav";
 import { Arrow } from "@/components/brand";
 import { Button } from "@/components/ui/button";
 import { APP_URL } from "@/lib/events";
-
-// Opens on the white page background, not the dark hero.
-export const viewport: Viewport = { themeColor: "#ffffff" };
 
 export const metadata: Metadata = {
   title: "Page not found",
@@ -21,7 +18,7 @@ export default function NotFound() {
   return (
     <>
       <Nav overHero={false} />
-      <main className="mx-auto max-w-2xl px-page pt-[calc(10rem+env(safe-area-inset-top))] pb-28 text-center sm:pt-[calc(12rem+env(safe-area-inset-top))]">
+      <main className="mx-auto max-w-2xl px-page pt-40 pb-28 text-center sm:pt-48">
         <h1 className="font-display text-[clamp(2.2rem,5.5vw,3.6rem)] leading-[0.95] font-black tracking-[-0.03em] uppercase">
           This page <span className="text-brand">isn&apos;t here.</span>
         </h1>

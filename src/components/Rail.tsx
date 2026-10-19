@@ -26,7 +26,7 @@ export function Rail({ children, label }: { children: React.ReactNode; label: st
   }, []);
 
   const scroll = (dir: 1 | -1) => ref.current?.scrollBy({ left: dir * ref.current.clientWidth * 0.8, behavior: "smooth" });
-  const btn = "pointer-events-auto shadow-lg transition-opacity disabled:opacity-0";
+  const btn = "pointer-events-auto transition-opacity disabled:opacity-0";
 
   return (
     <div className="relative">

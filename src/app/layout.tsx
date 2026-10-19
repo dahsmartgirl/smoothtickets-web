@@ -1,7 +1,6 @@
-import type { Metadata, Viewport } from "next";
+import type { Metadata } from "next";
 import { Unbounded } from "next/font/google";
 import localFont from "next/font/local";
-import { EdgeColors } from "@/components/EdgeColors";
 import { APP_URL } from "@/lib/events";
 import { pageMetadata } from "@/lib/seo";
 import "./globals.css";
@@ -33,16 +32,6 @@ export const metadata: Metadata = {
   // Icons come from app/icon.svg and app/apple-icon.tsx.
 };
 
-// Content runs under the notch and home indicator; components pad themselves with env(safe-area-inset-*).
-// theme-color starts as the hero's night blue and EdgeColors keeps it in sync after that.
-export const viewport: Viewport = {
-  viewportFit: "cover",
-  themeColor: "#050b1f",
-};
-
-// Runs before paint so a saved dark preference never flashes light.
-const themeScript = `try{if(localStorage.getItem("theme")==="dark")document.documentElement.classList.add("dark")}catch(e){}`;
-
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -52,16 +41,10 @@ export default function RootLayout({
     // Font variables go on <html>: Tailwind resolves --font-sans at the root, so on <body> Inter never applied.
     <html
       lang="en"
-      suppressHydrationWarning
       className={`${inter.variable} ${unbounded.variable}`}
     >
-      <head>
-        <script dangerouslySetInnerHTML={{ __html: themeScript }} />
-      </head>
       <body className="antialiased">
-        <div id="page">{children}</div>
-        {/* Outside #page so no transformed ancestor can break position: fixed. */}
-        <EdgeColors />
+        {children}
       </body>
     </html>
   );

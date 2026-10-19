@@ -1,3 +1,5 @@
+import { ArrowRight02Icon } from "@hugeicons/core-free-icons";
+import { HugeiconsIcon } from "@hugeicons/react";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -15,7 +17,7 @@ export function Logo({ className = "", onDark = false }: { className?: string; o
 
 export function Eyebrow({ children, className = "" }: { children: React.ReactNode; className?: string }) {
   return (
-    <p className={`font-display text-[11px] font-bold uppercase tracking-[0.25em] text-brand-deep dark:text-brand-soft ${className}`}>
+    <p className={`font-display text-[11px] font-bold uppercase tracking-[0.25em] text-brand-deep ${className}`}>
       {children}
     </p>
   );
@@ -57,9 +59,5 @@ export function QrCode({ seed = "smooth", size = 21, className = "" }: { seed?: 
 }
 
 export function Arrow({ className = "size-4" }: { className?: string }) {
-  return (
-    <svg viewBox="0 0 16 16" fill="none" className={className} aria-hidden>
-      <path d="M3 8h10m0 0L9 4m4 4-4 4" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
-    </svg>
-  );
+  return <HugeiconsIcon icon={ArrowRight02Icon} size={16} strokeWidth={2} className={className} aria-hidden />;
 }

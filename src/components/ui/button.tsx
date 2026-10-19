@@ -9,12 +9,12 @@ const buttonVariants = cva(
   {
     variants: {
       variant: {
-        default: "bg-brand text-white shadow-[0_8px_30px_-8px_rgba(0,122,255,.8)] hover:bg-[#0068d9]",
+        default: "bg-brand text-white hover:bg-[#0068d9]",
         outline: "bg-surface text-fg ring-1 ring-line hover:bg-surface-2",
         // for photos and always-dark sections
         glass: "bg-white/10 text-white ring-1 ring-white/25 backdrop-blur-md hover:bg-white/20",
         lime: "bg-lime text-night hover:bg-[#d6ff5c]",
-        dark: "bg-night text-white hover:bg-night-3",
+        night: "bg-night text-white hover:bg-night-3",
         ghost: "text-muted hover:bg-fg/5 hover:text-fg",
       },
       size: {

@@ -1,4 +1,4 @@
-import type { Metadata, Viewport } from "next";
+import type { Metadata } from "next";
 import { Phone } from "@/components/Devices";
 import { Footer } from "@/components/FinalCta";
 import { Nav } from "@/components/Nav";
@@ -9,9 +9,6 @@ import { pageMetadata } from "@/lib/seo";
 
 const description =
   "Smooth Affiliates lets organisers turn their network into event promoters. Affiliates share event links and earn commission on every ticket they sell.";
-
-// Opens on the white page background, not the dark hero.
-export const viewport: Viewport = { themeColor: "#ffffff" };
 
 export const metadata: Metadata = pageMetadata({
   title: "Affiliates: Promote Events and Earn Commission",
@@ -48,7 +45,7 @@ export default function AffiliatesPage() {
   return (
     <>
       <Nav overHero={false} />
-      <main className="overflow-x-clip pt-[calc(8rem+env(safe-area-inset-top))] sm:pt-[calc(10rem+env(safe-area-inset-top))]">
+      <main className="overflow-x-clip pt-32 sm:pt-40">
         <section className="mx-auto grid max-w-6xl items-center gap-14 px-page lg:grid-cols-[1.1fr_1fr]">
           <div>
             <h1 className="font-display text-[clamp(2.2rem,5.5vw,4.2rem)] leading-[0.95] font-black tracking-[-0.03em] uppercase">
@@ -70,7 +67,7 @@ export default function AffiliatesPage() {
             </div>
             <p className="mt-5 text-sm text-muted">
               Already promoting?{" "}
-              <a href={`${APP_URL}/affiliate/auth/login`} className="font-semibold text-brand-deep hover:underline dark:text-brand-soft">
+              <a href={`${APP_URL}/affiliate/auth/login`} className="font-semibold text-brand-deep hover:underline">
                 Affiliate login
               </a>
             </p>

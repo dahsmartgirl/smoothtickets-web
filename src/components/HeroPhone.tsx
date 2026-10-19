@@ -21,7 +21,7 @@ export function HeroPhone() {
 
       {/* ticket preview */}
       <div
-        className="ticket absolute -bottom-8 -left-10 w-44 animate-float rounded-2xl bg-white p-3 text-night shadow-2xl [animation-delay:-3s] sm:-left-28 sm:w-52"
+        className="ticket absolute -bottom-8 -left-10 w-44 animate-float rounded-2xl bg-white p-3 text-night [animation-delay:-3s] sm:-left-28 sm:w-52"
         style={{ ["--r" as string]: "-6deg", ["--notch" as string]: "9px", ["--notch-y" as string]: "38px" }}
         role="img"
         aria-label="Example QR ticket"

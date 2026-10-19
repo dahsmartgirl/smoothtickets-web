@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 
 export function Hero() {
   return (
-    <section className="torn-bottom grain relative isolate overflow-hidden bg-night pt-[calc(9.5rem+env(safe-area-inset-top))] pb-24 text-white sm:pt-[calc(10rem+env(safe-area-inset-top))] sm:pb-28 lg:min-h-[92dvh] lg:pb-36">
+    <section className="torn-bottom grain relative isolate overflow-hidden bg-night pt-38 pb-24 text-white sm:pt-40 sm:pb-28 lg:min-h-[92dvh] lg:pb-36">
       {/* Party photo. Mobile shows the dark top of the shot behind the headline; desktop centers on the crowd. */}
       <Image
         src="/images/hero-party.jpg"

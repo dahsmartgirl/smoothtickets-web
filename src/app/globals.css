@@ -1,8 +1,6 @@
 @import "tailwindcss";
 
-@custom-variant dark (&:where(.dark, .dark *));
-
-/* Theme tokens: light by default, `.dark` on <html> switches them. */
+/* Theme tokens (light only). */
 :root {
   --bg: #ffffff;
   --surface: #ffffff;
@@ -10,21 +8,11 @@
   --fg: #0a1230;
   --muted: #5a6784;
   --line: rgb(10 18 48 / 0.09);
-  color-scheme: light;
-}
-
-.dark {
-  --bg: #050b1f;
-  --surface: #0b1534;
-  --surface-2: #14204a;
-  --fg: #ffffff;
-  --muted: rgb(255 255 255 / 0.62);
-  --line: rgb(255 255 255 / 0.09);
-  color-scheme: dark;
+  color-scheme: light only;
 }
 
 @theme {
-  /* Brand constants (same in both themes) */
+  /* Brand constants */
   --color-brand: #007aff;
   --color-brand-deep: #0654b0;
   --color-brand-soft: #5aa9ff;
@@ -41,30 +29,12 @@
   --animate-float: float 6s ease-in-out infinite;
   --animate-progress: progress 4.5s linear forwards;
 
-  --animate-accordion-down: accordion-down 0.2s ease-out;
-  --animate-accordion-up: accordion-up 0.2s ease-out;
   --animate-fade-in: fade-in 0.2s ease-out;
   --animate-fade-out: fade-out 0.15s ease-in;
   --animate-sheet-down: sheet-down 0.25s ease-out;
   --animate-sheet-up: sheet-up 0.2s ease-in;
 
-  /* shadcn Accordion / Sheet */
-  @keyframes accordion-down {
-    from {
-      height: 0;
-    }
-    to {
-      height: var(--radix-accordion-content-height);
-    }
-  }
-  @keyframes accordion-up {
-    from {
-      height: var(--radix-accordion-content-height);
-    }
-    to {
-      height: 0;
-    }
-  }
+  /* shadcn Sheet */
   @keyframes fade-in {
     from {
       opacity: 0;
@@ -127,59 +97,42 @@ html {
   scroll-behavior: smooth;
 }
 
-/*
- * Edge colors for mobile Safari's status bar and toolbar. EdgeColors.tsx writes one pair of values
- * that the document backgrounds, the edge strips and theme-color all share. The page's own
- * background lives on #page, so changing these never shows through transparent sections.
- */
-html {
-  background: var(--edge-top-background, var(--bg));
-}
-
 body {
-  background: var(--edge-bottom-background, var(--bg));
+  background: var(--bg);
   color: var(--fg);
   font-family: var(--font-sans);
-}
-
-#page {
-  background: var(--bg);
   transition: background-color 0.2s;
 }
 
-.edge-top,
-.edge-bottom {
-  position: fixed;
-  inset-inline: 0;
-  z-index: 60;
-  pointer-events: none;
+/* Custom scrollbar: slim rounded thumb on a page-coloured track, brand blue on hover. */
+:root {
+  --scrollbar-thumb: #c3cfe2;
+  --scrollbar-thumb-hover: #007aff;
+  --scrollbar-track: var(--bg);
 }
-.edge-top {
-  top: 0;
-  height: max(12px, env(safe-area-inset-top));
+/* Firefox and Chrome 121+ */
+html {
+  scrollbar-width: thin;
+  scrollbar-color: var(--scrollbar-thumb) var(--scrollbar-track);
 }
-.edge-bottom {
-  bottom: 0;
-  height: max(12px, env(safe-area-inset-bottom));
+/* Safari (and older Chromium) */
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
 }
-.edge-top::after,
-.edge-bottom::after {
-  content: "";
-  position: absolute;
-  inset: 0;
+::-webkit-scrollbar-track {
+  background: var(--scrollbar-track);
 }
-.edge-top::after {
-  background: var(--edge-top-background, transparent);
+::-webkit-scrollbar-thumb {
+  background: var(--scrollbar-thumb);
+  border: 3px solid var(--scrollbar-track);
+  border-radius: 999px;
 }
-.edge-bottom::after {
-  background: var(--edge-bottom-background, transparent);
+::-webkit-scrollbar-thumb:hover {
+  background: var(--scrollbar-thumb-hover);
 }
-/* Only touch browsers have toolbars to tint; on desktop the strips would just cover content. */
-@media (hover: hover) and (pointer: fine) {
-  .edge-top,
-  .edge-bottom {
-    display: none;
-  }
+::-webkit-scrollbar-corner {
+  background: var(--scrollbar-track);
 }
 
 /* Looping decoration: hold still off-screen (usePauseOffscreen) and for reduced-motion users. */
@@ -191,8 +144,6 @@ body {
   .animate-marquee,
   .animate-float,
   .animate-progress,
-  .animate-accordion-down,
-  .animate-accordion-up,
   .animate-sheet-down,
   .animate-sheet-up {
     animation: none;
@@ -222,13 +173,11 @@ body {
   }
 }
 
-/* Side padding that also clears the notch in landscape (viewport-fit=cover). */
+/* Page side padding, shared by every section container and the nav. */
 @utility px-page {
-  padding-left: max(1rem, env(safe-area-inset-left));
-  padding-right: max(1rem, env(safe-area-inset-right));
+  padding-inline: 1rem;
   @variant sm {
-    padding-left: max(1.5rem, env(safe-area-inset-left));
-    padding-right: max(1.5rem, env(safe-area-inset-right));
+    padding-inline: 1.5rem;
   }
 }
 
@@ -254,6 +203,9 @@ body {
   /* Torn-ticket bottom edge: a row of semicircle bites along the bottom. */
   .torn-bottom {
     mask: radial-gradient(circle 9px at 50% 100%, #0000 97%, #000) 0 0 / 24px 100% repeat-x;
+  }
+  .torn-top {
+    mask: radial-gradient(circle 9px at 50% 0, #0000 97%, #000) 0 0 / 24px 100% repeat-x;
   }
 }
 

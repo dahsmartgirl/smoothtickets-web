@@ -1,8 +1,9 @@
 "use client";
 
+import { Cancel01Icon, Menu01Icon } from "@hugeicons/core-free-icons";
+import { HugeiconsIcon } from "@hugeicons/react";
 import { useEffect, useRef, useState } from "react";
 import { APP_URL } from "@/lib/events";
-import { ThemeToggle } from "./ThemeToggle";
 import { Arrow, Logo } from "./brand";
 import { Button } from "./ui/button";
 import { Sheet, SheetClose, SheetContent, SheetTitle, SheetTrigger } from "./ui/sheet";
@@ -38,13 +39,13 @@ export function Nav({ overHero = true }: { overHero?: boolean }) {
   return (
     <>
       <div ref={sentinel} aria-hidden className="pointer-events-none absolute inset-x-0 top-0 h-6" />
-      <header className="fixed inset-x-0 top-[calc(1rem+env(safe-area-inset-top))] z-50 px-page">
+      <header className="fixed inset-x-0 top-4 z-50 px-page">
         {/* Docked width = the hero's text column (max-w-6xl minus its 1.5rem side padding), so the logo and CTA line up with it. */}
         <nav
-          className={`mx-auto flex items-center justify-between gap-2 rounded-full py-1.5 transition-[max-width,padding,background-color,box-shadow] duration-300 ease-out ${
+          className={`mx-auto flex items-center justify-between gap-2 rounded-full py-1.5 transition-[max-width,padding,background-color] duration-300 ease-out ${
             docked
               ? `max-w-[calc(72rem-3rem)] px-0 ${onDark ? "text-white" : "text-fg"}`
-              : "max-w-4xl bg-night-2 pr-1.5 pl-4 text-white shadow-[0_10px_30px_-12px_rgba(5,11,31,.5)] sm:pl-5"
+              : "max-w-4xl bg-night-2 pr-1.5 pl-4 text-white sm:pl-5"
           }`}
         >
           <Logo onDark={onDark} />
@@ -59,13 +60,10 @@ export function Nav({ overHero = true }: { overHero?: boolean }) {
             ))}
           </ul>
           <div className="flex items-center gap-1">
-            <div className="hidden md:block">
-              <ThemeToggle color={subtle} />
-            </div>
             <a href={`${APP_URL}/auth/login`} className={`hidden rounded-full px-3 py-2 text-sm whitespace-nowrap transition-colors md:block ${subtle}`}>
               Log in
             </a>
-            <Button asChild size="sm" className="hidden shadow-none md:inline-flex">
+            <Button asChild size="sm" className="hidden md:inline-flex">
               <a href={`${APP_URL}/auth/signup`}>Create Event</a>
             </Button>
 
@@ -75,13 +73,11 @@ export function Nav({ overHero = true }: { overHero?: boolean }) {
                 aria-label="Open menu"
                 className={`grid size-10 place-items-center rounded-full transition-colors outline-none focus-visible:ring-2 focus-visible:ring-brand md:hidden ${subtle}`}
               >
-                <svg viewBox="0 0 24 24" className="size-5" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" aria-hidden>
-                  <path d="M4 7h16M4 12h16M4 17h16" />
-                </svg>
+                <HugeiconsIcon icon={Menu01Icon} size={20} strokeWidth={2} aria-hidden />
               </SheetTrigger>
               <SheetContent
                 aria-describedby={undefined}
-                className="rounded-b-3xl px-page pt-[calc(1rem+env(safe-area-inset-top))] pb-5"
+                className="rounded-b-3xl px-page pt-4 pb-5"
               >
                 <SheetTitle className="sr-only">Menu</SheetTitle>
                 <div className="flex items-center justify-between py-1.5">
@@ -90,9 +86,7 @@ export function Nav({ overHero = true }: { overHero?: boolean }) {
                     aria-label="Close menu"
                     className="grid size-10 place-items-center rounded-full text-muted outline-none hover:bg-fg/5 hover:text-fg focus-visible:ring-2 focus-visible:ring-brand"
                   >
-                    <svg viewBox="0 0 24 24" className="size-5" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" aria-hidden>
-                      <path d="m6 6 12 12M18 6 6 18" />
-                    </svg>
+                    <HugeiconsIcon icon={Cancel01Icon} size={20} strokeWidth={2} aria-hidden />
                   </SheetClose>
                 </div>
                 <ul className="mt-3">
@@ -115,13 +109,9 @@ export function Nav({ overHero = true }: { overHero?: boolean }) {
                   <Button asChild variant="outline">
                     <a href={`${APP_URL}/auth/login`}>Log in</a>
                   </Button>
-                  <Button asChild className="shadow-none">
+                  <Button asChild>
                     <a href={`${APP_URL}/auth/signup`}>Create Event</a>
                   </Button>
-                </div>
-                <div className="mt-3 flex items-center justify-between rounded-2xl bg-surface-2 py-1 pr-1 pl-4 text-sm text-muted">
-                  Appearance
-                  <ThemeToggle />
                 </div>
               </SheetContent>
             </Sheet>
