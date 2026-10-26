@@ -8,7 +8,7 @@ import { Arrow, Logo } from "./brand";
 import { Button } from "./ui/button";
 
 const links = [
-  { label: "Discover Events", href: `${APP_URL}/discovery` },
+  { label: "Discover Events", href: "/discovery" },
   { label: "Affiliates", href: "/affiliates", badge: "Earn" },
   { label: "Pricing", href: "/pricing" },
 ];

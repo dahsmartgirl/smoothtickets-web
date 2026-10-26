@@ -27,6 +27,8 @@
   --color-sticker-lime: #c8f53c;
   --color-sticker-pink: #ff5fa2;
   --color-sticker-sky: #5aa9ff;
+  --color-danger: #c4152f; /* form errors */
+  --color-danger-soft: #fdecef;
 
   /* Neutrals for light sections */
   --color-white: #ffffff;
@@ -358,7 +360,11 @@ body {
 }
 /* Divider: a ticket perforation line (short dashes) along the top edge. Every divider on the site uses it. */
 @utility rule-top {
-  background: linear-gradient(to right, var(--rule-color, var(--color-rule)) 60%, transparent 0) left top / 10px 1px repeat-x;
+  /* Image properties only, so it combines with a background colour on the same element */
+  background-image: linear-gradient(to right, var(--rule-color, var(--color-rule)) 60%, transparent 0);
+  background-position: left top;
+  background-size: 10px 1px;
+  background-repeat: repeat-x;
 }
 @utility rule-on-dark {
   --rule-color: var(--color-rule-dark);
@@ -608,16 +614,20 @@ body {
   .sticker {
     @apply absolute top-4 left-4 rounded-sm px-3 py-1.5 text-center text-night;
   }
-  .event-card:nth-child(4n + 1) .sticker {
+  .event-card:nth-child(4n + 1) .sticker,
+  .event-grid > li:nth-child(4n + 1) .sticker {
     @apply -rotate-6 bg-sticker-amber;
   }
-  .event-card:nth-child(4n + 2) .sticker {
+  .event-card:nth-child(4n + 2) .sticker,
+  .event-grid > li:nth-child(4n + 2) .sticker {
     @apply rotate-3 bg-sticker-lime;
   }
-  .event-card:nth-child(4n + 3) .sticker {
+  .event-card:nth-child(4n + 3) .sticker,
+  .event-grid > li:nth-child(4n + 3) .sticker {
     @apply -rotate-3 bg-sticker-pink;
   }
-  .event-card:nth-child(4n + 4) .sticker {
+  .event-card:nth-child(4n + 4) .sticker,
+  .event-grid > li:nth-child(4n + 4) .sticker {
     @apply rotate-6 bg-sticker-sky;
   }
   .ticket-outline {
@@ -646,6 +656,189 @@ body {
   }
   .device-layer {
     @apply absolute inset-0;
+  }
+
+  /* Discovery (DiscoveryBrowser.tsx): navy header with search and filter chips, then a grid of event cards */
+  .page-head {
+    @apply torn-bottom grain relative isolate overflow-hidden pt-36 pb-16 text-white sm:pt-44 sm:pb-20;
+    background:
+      radial-gradient(ellipse 55% 90% at 12% 0%, color-mix(in srgb, var(--color-brand) 32%, transparent), transparent),
+      var(--color-night);
+  }
+  .search {
+    @apply flex h-12 items-center gap-3 rounded-full bg-glass pr-2 pl-5 ring-1 ring-line-dark transition-shadow focus-within:ring-on-dark-muted;
+    & > svg {
+      @apply size-4.5 shrink-0 text-on-dark-muted;
+    }
+    & input {
+      @apply min-w-0 flex-1 bg-transparent text-body text-white outline-none placeholder:text-on-dark-muted;
+      &::-webkit-search-cancel-button {
+        appearance: none;
+      }
+    }
+  }
+  .search-clear {
+    @apply grid size-8 shrink-0 place-items-center rounded-full text-on-dark-muted transition-colors hover:bg-glass hover:text-white;
+    & svg {
+      @apply size-4;
+    }
+  }
+  /* One scrolling row on phones, wrapping from sm up */
+  .chip-row {
+    @apply -mx-4 mt-5 flex gap-2 overflow-x-auto px-4 sm:mx-0 sm:flex-wrap sm:px-0;
+  }
+  .chip {
+    @apply h-9 shrink-0 rounded-full px-4 text-body whitespace-nowrap text-on-dark-muted ring-1 ring-line-dark transition-colors hover:bg-glass hover:text-white;
+    &[aria-pressed="true"] {
+      @apply bg-white text-fg ring-white hover:bg-white hover:text-fg;
+    }
+  }
+  .chip-divider {
+    @apply mx-1 h-5 w-px shrink-0 self-center bg-line-dark;
+  }
+  .event-grid {
+    @apply mt-6 grid gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-3;
+  }
+  /* The rail's card, filling a grid cell instead */
+  .event-card-grid {
+    @apply w-full max-w-none snap-align-none sm:w-full;
+  }
+  .empty-state {
+    @apply mt-6 rounded-lg bg-paper px-6 py-16 text-center;
+  }
+
+  /* Event page: navy header tinted by the poster, then tickets beside the details */
+  .event-head {
+    @apply torn-bottom grain relative isolate overflow-hidden bg-night pt-28 pb-16 text-white sm:pt-36 lg:pb-24;
+  }
+  .event-backdrop {
+    @apply absolute inset-0 -z-10;
+    & img {
+      @apply scale-125 object-cover opacity-50;
+      filter: blur(64px) saturate(1.5);
+    }
+    /* Keep it dark enough for white text, darkest on the left where the copy sits on desktop */
+    &::after {
+      content: "";
+      @apply absolute inset-0;
+      background: linear-gradient(
+        to bottom,
+        color-mix(in srgb, var(--color-night) 55%, transparent),
+        color-mix(in srgb, var(--color-night) 85%, transparent)
+      );
+    }
+  }
+  .event-head-inner {
+    @apply grid items-center gap-10 lg:grid-cols-[22rem_1fr] lg:gap-14;
+  }
+  .event-poster-lg {
+    @apply relative grid aspect-4/5 w-full max-w-narrow place-items-center overflow-hidden rounded-lg bg-glass ring-1 ring-line-dark;
+    & img {
+      @apply object-cover;
+    }
+  }
+  .sticker-lg {
+    @apply -rotate-6 bg-sticker-amber px-4 py-2;
+  }
+  .event-title {
+    @apply mt-3 font-display text-[clamp(1.75rem,4.2vw,3.25rem)] leading-[1.05] font-black tracking-display text-balance;
+  }
+  .event-fact {
+    @apply flex gap-3 text-lead;
+    & > svg {
+      @apply mt-0.5 size-5 shrink-0 text-brand;
+    }
+  }
+  /* Phones: tickets first, then the details. Desktop: details left, tickets in a sticky column on the right. */
+  .event-body {
+    @apply grid gap-14 pt-12 pb-24 sm:pt-16 lg:grid-cols-[minmax(0,1fr)_25rem] lg:items-start lg:gap-16;
+  }
+  .event-about {
+    @apply space-y-10 lg:col-start-1 lg:row-start-1;
+  }
+  .event-map {
+    @apply mt-5 aspect-16/9 overflow-hidden rounded-lg bg-mist ring-1 ring-line;
+    & iframe {
+      @apply size-full border-0;
+    }
+  }
+
+  /* Ticket counter (TicketPanel.tsx): stubs separated by perforations */
+  .ticket-panel {
+    @apply scroll-mt-28 rounded-lg bg-white ring-1 ring-line lg:sticky lg:top-28 lg:col-start-2 lg:flex lg:max-h-[calc(100svh-8rem)] lg:flex-col;
+  }
+  /* Desktop: with many categories the list scrolls inside the panel, so the total and button stay in view */
+  .tier-list {
+    @apply lg:min-h-0 lg:overflow-y-auto lg:overscroll-contain;
+  }
+  .ticket-panel-head {
+    @apply px-6 pt-6 pb-5;
+  }
+  .tier {
+    @apply relative rule-top px-6 py-5 transition-colors;
+    &[data-selected] {
+      @apply bg-paper;
+    }
+    &[data-sold-out] {
+      @apply opacity-60;
+    }
+  }
+  .tier-tag {
+    @apply inline-flex rounded-full bg-paper px-2 py-0.5 text-small text-brand-deep;
+  }
+  .stepper {
+    @apply flex items-center gap-3;
+    & button {
+      @apply grid size-9 place-items-center rounded-full text-fg ring-1 ring-line transition-colors hover:bg-smoke disabled:pointer-events-none disabled:opacity-30;
+      & svg {
+        @apply size-4;
+      }
+    }
+    & button[data-primary] {
+      @apply bg-brand text-white ring-0 hover:bg-brand-deep;
+    }
+    & span {
+      @apply w-5 text-center text-subheading;
+    }
+  }
+  .ticket-summary {
+    @apply rule-top px-6 pt-5 pb-6;
+  }
+  .ticket-bar {
+    @apply fixed inset-x-0 bottom-0 z-30 flex items-center justify-between gap-4 bg-white px-page py-3 ring-1 ring-line lg:hidden;
+    padding-bottom: max(0.75rem, env(safe-area-inset-bottom));
+  }
+
+  /* Form fields (checkout, coupon codes) */
+  .field {
+    @apply h-11 w-full rounded-md bg-white px-3.5 text-body text-fg ring-1 ring-line transition-shadow outline-none placeholder:text-muted focus:ring-2 focus:ring-brand;
+  }
+  .check {
+    @apply size-4 accent-brand;
+  }
+
+  /* Checkout (Checkout.tsx): bottom sheet on phones, centred panel from sm */
+  .checkout-scrim {
+    @apply fixed inset-0 z-[70] flex items-end justify-center bg-scrim sm:items-center sm:p-6;
+  }
+  .checkout {
+    @apply flex max-h-[92svh] w-full flex-col overflow-hidden rounded-t-xl bg-white sm:max-w-[32rem] sm:rounded-xl;
+  }
+  .checkout-head {
+    @apply flex items-start justify-between gap-4 px-6 pt-6 pb-4;
+  }
+  .checkout-body {
+    @apply overflow-y-auto overscroll-contain px-6;
+  }
+  .checkout-lines {
+    @apply space-y-2 rounded-md bg-paper px-4 py-3.5;
+  }
+  .holder {
+    @apply rounded-md px-4 py-3 ring-1 ring-line;
+  }
+  .checkout-foot {
+    @apply sticky bottom-0 -mx-6 mt-7 rule-top bg-white px-6 pt-5;
+    padding-bottom: max(1.5rem, env(safe-area-inset-bottom));
   }
 
   /* How it works */

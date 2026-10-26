@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 import { APP_URL } from "@/lib/events";
 import { Arrow } from "./brand";
 import { HeroVideo } from "./HeroVideo";
@@ -34,7 +35,7 @@ export function Hero() {
             </a>
           </Button>
           <Button asChild variant="glass">
-            <a href={`${APP_URL}/discovery`}>Explore Events</a>
+            <Link href="/discovery">Explore Events</Link>
           </Button>
         </div>
       </div>

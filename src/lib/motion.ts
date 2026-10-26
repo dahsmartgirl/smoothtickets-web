@@ -59,3 +59,21 @@ export const screenSwap: Variants = {
 };
 
 export const screenTransition: Transition = { duration: 0.6, ease: [0.22, 1, 0.36, 1] };
+
+/** Discovery: cards settle in and shrink away as the filters change; the grid reflows on `layout`. */
+export const cardSwap: Variants = {
+  out: { opacity: 0, scale: 0.96, transition: { duration: 0.18 } },
+  in: { opacity: 1, scale: 1, transition: { duration: 0.3, ease: [0.22, 1, 0.36, 1] } },
+};
+
+/** Event page, phones: the total-and-continue bar rises from the bottom edge. */
+export const stickyBar: Variants = {
+  hidden: { y: "110%" },
+  shown: { y: 0, transition: { type: "spring", stiffness: 420, damping: 38 } },
+};
+
+/** Checkout: slides up as a sheet on phones and settles into place as a panel on larger screens. */
+export const sheet: Variants = {
+  hidden: { y: 48, opacity: 0, transition: { duration: 0.2 } },
+  shown: { y: 0, opacity: 1, transition: { type: "spring", stiffness: 380, damping: 36 } },
+};

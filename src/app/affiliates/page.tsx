@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { AppPhone } from "@/components/Devices";
 import { Footer } from "@/components/FinalCta";
 import { Nav } from "@/components/Nav";
@@ -98,9 +99,9 @@ export default function AffiliatesPage() {
               </a>
             </Button>
             <Button asChild variant="outline">
-              <a href={`${APP_URL}/discovery`}>
+              <Link href="/discovery">
                 Explore Events
-              </a>
+              </Link>
             </Button>
           </div>
         </section>

@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 import { Arrow } from "./brand";
 import { Button } from "./ui/button";
 import { Reveal } from "./Reveal";
@@ -43,9 +44,9 @@ export function Affiliates() {
               handle affiliate payouts automatically.
             </p>
             <Button asChild className="mt-6">
-              <a href="/affiliates">
+              <Link href="/affiliates">
                 Explore Affiliates <Arrow />
-              </a>
+              </Link>
             </Button>
           </div>
         </Reveal>

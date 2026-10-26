@@ -4,7 +4,6 @@ import { Footer } from "@/components/FinalCta";
 import { Nav } from "@/components/Nav";
 import { Arrow } from "@/components/brand";
 import { Button } from "@/components/ui/button";
-import { APP_URL } from "@/lib/events";
 
 export const metadata: Metadata = {
   title: "Page not found",
@@ -27,9 +26,9 @@ export default function NotFound() {
         </p>
         <div className="mt-10 flex flex-wrap justify-center gap-3">
           <Button asChild>
-            <a href={`${APP_URL}/discovery`}>
+            <Link href="/discovery">
               Explore Events <Arrow />
-            </a>
+            </Link>
           </Button>
           <Button asChild variant="outline">
             <Link href="/">

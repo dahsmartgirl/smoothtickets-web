@@ -1,17 +1,18 @@
 import { Location01Icon } from "@hugeicons/core-free-icons";
+import Link from "next/link";
 import { HugeiconsIcon } from "@hugeicons/react";
 import Image from "next/image";
-import { APP_URL, formatEventDate, formatNaira, formatTimeRange, type EventSummary } from "@/lib/events";
+import { formatEventDate, formatNaira, formatTimeRange, type EventSummary } from "@/lib/events";
 import { Arrow } from "./brand";
 import { Button } from "./ui/button";
 import { Rail } from "./Rail";
 import { TicketOutline } from "./TicketOutline";
 import { Reveal } from "./Reveal";
 
-function EventCard({ event }: { event: EventSummary }) {
+export function EventCard({ event, className = "" }: { event: EventSummary; className?: string }) {
   const d = formatEventDate(event.startDate);
   return (
-    <a href={event.url} className="event-card">
+    <a href={event.href} className={`event-card ${className}`}>
       <div className="event-poster">
         {event.image && (
           <Image
@@ -72,7 +73,7 @@ export function EventRail({ events }: { events: EventSummary[] }) {
             <p className="mt-3 text-lead text-muted">Discover events worth showing up for.</p>
           </Reveal>
           <Button asChild variant="line" size="lg" className="hidden sm:inline-flex">
-            <a href={`${APP_URL}/discovery`}>View All Events</a>
+            <Link href="/discovery">View All Events</Link>
           </Button>
         </div>
       </div>
@@ -85,7 +86,7 @@ export function EventRail({ events }: { events: EventSummary[] }) {
       </div>
       <div className="container-page">
         <Button asChild variant="line" size="lg" className="mt-2 w-full sm:hidden">
-          <a href={`${APP_URL}/discovery`}>View All Events</a>
+          <Link href="/discovery">View All Events</Link>
         </Button>
       </div>
     </section>

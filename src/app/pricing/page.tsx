@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { Footer } from "@/components/FinalCta";
 import { Nav } from "@/components/Nav";
 import { Arrow } from "@/components/brand";
@@ -57,9 +58,9 @@ export default function PricingPage() {
             </a>
           </Button>
           <Button asChild variant="outline">
-            <a href={`${APP_URL}/discovery`}>
+            <Link href="/discovery">
               Explore Events
-            </a>
+            </Link>
           </Button>
         </div>
       </main>

@@ -1,4 +1,5 @@
 import { Mail01Icon } from "@hugeicons/core-free-icons";
+import Link from "next/link";
 import { HugeiconsIcon } from "@hugeicons/react";
 import { APP_URL } from "@/lib/events";
 import { Arrow } from "./brand";
@@ -36,9 +37,9 @@ const faqs: [string, React.ReactNode][] = [
     "How do affiliates work?",
     <>
       Affiliates share your event link and earn a commission, which you set per ticket type, on every ticket they sell.{" "}
-      <a href="/affiliates" className="link">
+      <Link href="/affiliates" className="link">
         Learn about Smooth Affiliates
-      </a>
+      </Link>
       .
     </>,
   ],

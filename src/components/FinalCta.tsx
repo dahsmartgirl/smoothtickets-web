@@ -48,7 +48,7 @@ const columns: { title: string; links: FooterLink[] }[] = [
   {
     title: "Product",
     links: [
-      { label: "Discover Events", href: `${APP_URL}/discovery` },
+      { label: "Discover Events", href: "/discovery" },
       { label: "Create an Event", href: `${APP_URL}/auth/signup` },
       { label: "Pricing", href: "/pricing" },
     ],
