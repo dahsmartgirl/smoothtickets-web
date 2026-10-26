@@ -48,3 +48,14 @@ export const accordionIcon: Variants = {
   closed: { rotate: 0 },
   open: { rotate: 45 },
 };
+
+/** How it works: the blue highlight springs from step to step (shared layoutId). */
+export const stepSpring: Transition = { type: "spring", stiffness: 380, damping: 34, mass: 0.8 };
+
+/** Phone screens: the incoming one sharpens and settles from a slight zoom as the old one blurs away. */
+export const screenSwap: Variants = {
+  hidden: { opacity: 0, scale: 1.04, filter: "blur(8px)" },
+  shown: { opacity: 1, scale: 1, filter: "blur(0px)" },
+};
+
+export const screenTransition: Transition = { duration: 0.6, ease: [0.22, 1, 0.36, 1] };

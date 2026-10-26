@@ -3,41 +3,40 @@ import { HugeiconsIcon } from "@hugeicons/react";
 import { APP_URL } from "@/lib/events";
 import { Arrow, Logo, QrCode } from "./brand";
 import { Confetti } from "./Confetti";
+import { UncoverSection } from "./Uncover";
 import { Button } from "./ui/button";
 
 /**
- * Full-width ticket band with a torn top edge. It is pinned under the page (globals.css: .cta),
- * so the FAQ slides up off it as you scroll down, and back over it as you scroll up.
+ * Full-width ticket band. It looks pinned under the page (UncoverSection), so the FAQ slides up off it
+ * as you scroll down, and back over it as you scroll up.
  */
 export function FinalCta() {
   return (
-    <section aria-labelledby="cta-title" className="cta">
-      <div className="container-page cta-inner">
-        <div className="cta-body">
-          <h2 id="cta-title" className="type-display">
-            Your next event
-            <br />
-            starts with <span className="text-night">Smooth.</span>
-          </h2>
-          <p className="mt-5 max-w-narrow text-lead text-on-dark-muted">Everything you need to get started is right here.</p>
-          <div className="mt-10 flex flex-wrap gap-3">
-            <Button asChild variant="night">
-              <a href={`${APP_URL}/auth/signup`}>
-                Create an Event <Arrow />
-              </a>
-            </Button>
-          </div>
-        </div>
-        {/* stub */}
-        <div className="cta-stub">
-          <div className="perf-y absolute top-0 bottom-0 left-0 text-on-dark-faint" />
-          <div className="cta-qr">
-            <QrCode seed="your-event" className="size-32" />
-          </div>
-          <p className="type-caption text-on-dark-muted">No. 000001</p>
+    <UncoverSection aria-labelledby="cta-title" className="cta" contentClassName="container-page cta-inner">
+      <div className="cta-body">
+        <h2 id="cta-title" className="type-display">
+          Your next event
+          <br />
+          starts with <span className="text-night">Smooth.</span>
+        </h2>
+        <p className="mt-5 max-w-narrow text-lead text-on-dark-muted">Everything you need to get started is right here.</p>
+        <div className="mt-10 flex flex-wrap gap-3">
+          <Button asChild variant="night">
+            <a href={`${APP_URL}/auth/signup`}>
+              Create an Event <Arrow />
+            </a>
+          </Button>
         </div>
       </div>
-    </section>
+      {/* stub */}
+      <div className="cta-stub">
+        <div className="perf-y absolute top-0 bottom-0 left-0 text-on-dark-faint" />
+        <div className="cta-qr">
+          <QrCode seed="your-event" className="size-32" />
+        </div>
+        <p className="type-caption text-on-dark-muted">No. 000001</p>
+      </div>
+    </UncoverSection>
   );
 }
 

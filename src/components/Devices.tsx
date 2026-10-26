@@ -1,7 +1,12 @@
+"use client";
+
+import { motion } from "motion/react";
 import Image from "next/image";
+import { screenSwap, screenTransition } from "@/lib/motion";
 
 /**
- * Phone with a clean status bar, showing real app screens (crossfading when there are several).
+ * Phone with a clean status bar, showing real app screens. With several, they swap with a blur-and-settle
+ * crossfade (lib/motion: screenSwap); all stay mounted so every screen is loaded before it shows.
  * The screen matches the screenshots' proportions, so nothing is cropped off the sides.
  * Styles live in globals.css (device-*).
  */
@@ -38,15 +43,16 @@ export function AppPhone({
         </div>
         <div className="device-shot">
           {screens.map((s, i) => (
-            <Image
+            <motion.div
               key={s.src}
-              src={s.src}
-              alt={i === active ? s.alt : ""}
-              fill
-              sizes="320px"
-              priority={priority && i === 0}
-              className={i === active ? "opacity-100" : "opacity-0"}
-            />
+              className="device-layer"
+              variants={screenSwap}
+              initial={false}
+              animate={i === active ? "shown" : "hidden"}
+              transition={screenTransition}
+            >
+              <Image src={s.src} alt={i === active ? s.alt : ""} fill sizes="320px" priority={priority && i === 0} />
+            </motion.div>
           ))}
         </div>
       </div>

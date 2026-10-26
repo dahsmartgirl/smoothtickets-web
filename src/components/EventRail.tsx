@@ -42,7 +42,8 @@ function EventCard({ event }: { event: EventSummary }) {
           </p>
         )}
         <div data-perf className="my-4 h-px" />
-        <div className="flex items-center justify-between">
+        {/* Price and button share a row; when the card is too narrow for both (small phones, long prices), the button wraps under the price. */}
+        <div className="flex flex-wrap items-center justify-between gap-x-4 gap-y-3">
           <div>
             <p className="type-caption text-muted">From</p>
             <p className="type-number text-subheading">

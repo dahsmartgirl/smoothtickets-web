@@ -1,6 +1,7 @@
 import Image from "next/image";
 import { APP_URL } from "@/lib/events";
 import { Arrow } from "./brand";
+import { TypeWords } from "./TypeWords";
 import { Button } from "@/components/ui/button";
 
 /**
@@ -8,6 +9,9 @@ import { Button } from "@/components/ui/button";
  * muted, and under ~3 MB. When null, the party photo shows.
  */
 const HERO_VIDEO: string | null = null;
+
+/** "Make it ___": the hero types through these. The first is what loads and what screen readers hear. */
+const HAPPEN = ["happen.", "smooth.", "pop.", "lit.", "sell out."];
 
 export function Hero() {
   return (
@@ -34,7 +38,7 @@ export function Hero() {
           <span>Create your event.</span>
           <span>Sell more tickets.</span>
           <span>
-            Make it <span className="text-brand">happen.</span>
+            Make it <TypeWords words={HAPPEN} className="text-brand" />
           </span>
         </h1>
         <p className="mt-7 max-w-copy text-lead text-on-dark-muted">

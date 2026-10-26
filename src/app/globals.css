@@ -36,6 +36,7 @@
   --color-paper: #f5f9ff; /* lightest tint */
   --color-mist: #e9f1fc; /* panels */
   --color-hover: rgb(10 18 48 / 0.05);
+  --color-smoke: #f2f2f3; /* neutral light grey, for hover fills on white */
   --color-perf: rgb(10 18 48 / 0.3); /* dotted ticket outlines */
   --color-rule: rgb(10 18 48 / 0.22); /* ticket-perforation dividers on light */
   --color-rule-dark: rgb(255 255 255 / 0.22); /* ticket-perforation dividers on dark */
@@ -47,6 +48,7 @@
   --color-glass-faint: rgb(255 255 255 / 0.04); /* cards on navy */
   --color-glass: rgb(255 255 255 / 0.08);
   --color-glass-strong: rgb(255 255 255 / 0.16);
+  --color-sheen: rgb(255 255 255 / 0.35); /* the light streak across primary buttons */
   --color-line-dark: rgb(255 255 255 / 0.15);
 
   /* Fonts: Unbounded for display, Inter for everything else */
@@ -125,7 +127,23 @@
 
   /* Motion */
   --animate-progress: progress 4.5s linear forwards;
+  --animate-sheen: sheen 4.5s ease-in-out infinite; /* a sweep every 4.5s: ~1.3s moving, then still */
+  --animate-blink: blink 1s steps(1) infinite;
 
+  @keyframes sheen {
+    from {
+      transform: translateX(-150%) skewX(-20deg);
+    }
+    30%,
+    to {
+      transform: translateX(250%) skewX(-20deg);
+    }
+  }
+  @keyframes blink {
+    50% {
+      opacity: 0;
+    }
+  }
   @keyframes progress {
     from {
       transform: scaleX(0);
@@ -264,21 +282,38 @@ body {
 @utility btn-icon {
   @apply size-10;
 }
+/* Shared by the filled buttons: a light sheen sweeps across every few seconds; on hover the arrow nudges right. */
+@utility btn-sheen {
+  @apply relative isolate overflow-hidden;
+  &::after {
+    content: "";
+    @apply pointer-events-none absolute inset-y-0 left-0 -z-10 w-1/2 animate-sheen;
+    background: linear-gradient(90deg, transparent, var(--color-sheen), transparent);
+    transform: translateX(-150%) skewX(-20deg); /* parked off the button between sweeps and for reduced motion */
+  }
+  & svg {
+    @apply transition-transform duration-300 ease-out;
+  }
+  &:hover svg {
+    @apply translate-x-1;
+  }
+}
 @utility btn-primary {
-  @apply bg-brand text-white hover:bg-brand-deep;
+  @apply btn-sheen bg-brand text-white hover:bg-brand-deep;
 }
 @utility btn-outline {
   @apply bg-white text-fg ring-1 ring-line hover:bg-mist;
 }
 /* Secondary button: no fill, just a hairline. glass = on photos and dark sections, line = on white. */
+/* Outline buttons tint their background on hover */
 @utility btn-glass {
-  @apply bg-transparent text-white ring-1 ring-line-dark hover:ring-on-dark-muted;
+  @apply bg-transparent text-white ring-1 ring-line-dark hover:bg-glass;
 }
 @utility btn-line {
-  @apply bg-transparent text-fg ring-1 ring-line hover:ring-muted;
+  @apply bg-transparent text-fg ring-1 ring-line hover:bg-smoke;
 }
 @utility btn-night {
-  @apply bg-night text-white hover:opacity-90;
+  @apply btn-sheen bg-night text-white hover:opacity-90;
 }
 @utility btn-ghost {
   @apply text-muted hover:bg-hover hover:text-fg;
@@ -408,14 +443,15 @@ body {
   .nav-link {
     @apply flex h-8 items-center gap-1.5 rounded-full px-3 text-body whitespace-nowrap transition-colors;
   }
+  /* Nav items: hover only brightens the text (white on dark, full ink on light pages); no background. */
   .on-dark {
-    @apply text-on-dark-muted hover:bg-glass hover:text-white;
+    @apply text-on-dark-muted transition-colors hover:text-white;
   }
   .on-light {
-    @apply text-muted hover:bg-hover hover:text-fg;
+    @apply text-muted transition-colors hover:text-fg;
   }
   .menu-panel {
-    @apply overflow-hidden md:hidden;
+    @apply overflow-hidden lg:hidden;
   }
   .menu-body {
     @apply pt-2 pr-2.5 pb-7 pl-0.5; /* room for the buttons' outline; bottom room for the ticket bites */
@@ -433,7 +469,7 @@ body {
     @apply mt-3 grid grid-cols-2 gap-2 rule-top rule-on-dark pt-4;
   }
   .menu-scrim {
-    @apply fixed inset-0 z-40 bg-scrim md:hidden;
+    @apply fixed inset-0 z-40 bg-scrim lg:hidden;
   }
 
   /* Hamburger: two lines that cross into an X while the menu is open, and back. */
@@ -497,6 +533,13 @@ body {
   .hero-title > span {
     @apply block lg:whitespace-nowrap; /* one sentence per line on desktop */
   }
+  /* Typing caret (TypeWords.tsx): a thin white bar, blinking while the word rests */
+  .type-caret {
+    @apply ml-[0.06em] inline-block h-[0.9em] w-[0.07em] translate-y-[0.1em] animate-blink bg-white;
+    &[data-moving] {
+      animation: none;
+    }
+  }
 
 
   /* Horizontal snap row of cards */
@@ -541,13 +584,17 @@ body {
     }
   }
   .event-cta {
-    @apply flex items-center gap-1.5 rounded-full bg-brand px-4 py-1.5 text-small text-white transition-colors;
+    @apply flex shrink-0 items-center gap-1.5 rounded-full bg-brand px-4 py-1.5 text-small whitespace-nowrap text-white transition-colors;
     & svg {
-      @apply size-3.5;
+      @apply size-3.5 transition-transform duration-300 ease-out;
     }
   }
   .event-cta:hover {
     @apply bg-brand-deep;
+  }
+  /* The whole card is the link, so the arrow nudges right on card hover, like the primary button's */
+  .event-card:hover .event-cta svg {
+    @apply translate-x-1;
   }
   /* Date sticker: hand-placed look, each at a slight angle and in its own colour */
   .sticker {
@@ -586,8 +633,11 @@ body {
     @apply relative;
     aspect-ratio: 780 / 1407; /* the app screenshots */
     & img {
-      @apply object-cover object-top transition-opacity duration-500;
+      @apply object-cover object-top;
     }
+  }
+  .device-layer {
+    @apply absolute inset-0;
   }
 
   /* How it works */
@@ -604,16 +654,20 @@ body {
     @apply absolute top-12 left-1/2 w-70 -translate-x-1/2 sm:w-78;
   }
   .step {
-    @apply relative flex w-full gap-5 overflow-hidden rounded-md px-6 py-5 text-left text-fg transition-colors hover:bg-paper;
+    @apply relative isolate flex w-full gap-5 overflow-hidden rounded-md px-6 py-5 text-left text-fg transition-colors duration-300 hover:bg-paper;
+  }
+  /* The active step's blue fill: one element that springs between steps (HowItWorks, layoutId) */
+  .step-highlight {
+    @apply absolute inset-0 -z-10 rounded-md bg-brand;
   }
   .step-number {
-    @apply type-number text-heading text-brand-faint;
+    @apply type-number text-heading text-brand-faint transition-colors duration-300;
   }
   .step-body {
-    @apply mt-1 block text-body text-muted;
+    @apply mt-1 block text-body text-muted transition-colors duration-300;
   }
   .step[aria-pressed="true"] {
-    @apply bg-brand text-white;
+    @apply text-white;
     & .step-number {
       @apply text-on-dark-faint;
     }
@@ -652,7 +706,7 @@ body {
     @apply lg:col-start-2 lg:row-span-2 lg:row-start-1;
   }
   .faq-contact {
-    @apply max-w-narrow lg:col-start-1 lg:row-start-2 lg:self-start;
+    @apply lg:col-start-1 lg:max-w-narrow lg:row-start-2 lg:self-start;
   }
 
   /* Accordion: plain rows on the page background, separated by hairlines */
@@ -693,9 +747,10 @@ body {
     }
   }
   /* Final CTA: a full-width brand-blue ticket band, torn top (hung from .above-cta) and bottom, with a QR stub.
-     Pinned to the bottom of the screen underneath .above-cta, so it is uncovered rather than scrolled in. */
+     It looks pinned underneath .above-cta and is uncovered rather than scrolled in (UncoverSection). Not
+     position: sticky: iOS Safari would tint its bottom toolbar blue on every screen to match it. */
   .cta {
-    @apply grain sticky bottom-0 z-0 -mb-px overflow-hidden bg-brand text-white; /* -1px: no hairline gap above the footer at fractional scroll positions */
+    @apply grain relative overflow-hidden bg-brand text-white;
     /* Torn bottom edge: navy bites from the footer below */
     &::before {
       content: "";

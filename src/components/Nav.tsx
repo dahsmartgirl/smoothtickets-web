@@ -49,7 +49,7 @@ export function Nav({ overHero = true }: { overHero?: boolean }) {
       setOpen(false);
       trigger.current?.focus();
     };
-    const desktop = window.matchMedia("(min-width: 48rem)");
+    const desktop = window.matchMedia("(min-width: 64rem)");
     const onWide = () => desktop.matches && setOpen(false);
     window.addEventListener("keydown", onKey);
     desktop.addEventListener("change", onWide);
@@ -94,7 +94,7 @@ export function Nav({ overHero = true }: { overHero?: boolean }) {
         >
           <div className="nav-bar">
             <Logo onDark={onDark} />
-            <ul className="hidden items-center gap-0.5 md:flex">
+            <ul className="hidden items-center gap-0.5 lg:flex">
               {links.map((l) => (
                 <li key={l.label}>
                   <a href={l.href} className={`nav-link ${tone}`}>
@@ -105,11 +105,13 @@ export function Nav({ overHero = true }: { overHero?: boolean }) {
               ))}
             </ul>
             <div className="flex items-center gap-1">
-              <a href={`${APP_URL}/auth/login`} className={`nav-link hidden md:flex ${tone}`}>
+              <a href={`${APP_URL}/auth/login`} className={`nav-link hidden lg:flex ${tone}`}>
                 Log in
               </a>
-              <Button asChild size="sm" className="hidden md:inline-flex">
-                <a href={`${APP_URL}/auth/signup`}>Create Event</a>
+              <Button asChild size="sm" className="hidden lg:inline-flex">
+                <a href={`${APP_URL}/auth/signup`}>
+                  Create Event <Arrow />
+                </a>
               </Button>
 
               <button
@@ -119,7 +121,7 @@ export function Nav({ overHero = true }: { overHero?: boolean }) {
                 aria-expanded={open}
                 aria-controls="mobile-menu"
                 onClick={toggle}
-                className={`icon-btn md:hidden ${tone}`}
+                className={`icon-btn lg:hidden ${tone}`}
               >
                 <span className="burger" aria-hidden>
                   <span className="burger-line" />
@@ -161,7 +163,9 @@ export function Nav({ overHero = true }: { overHero?: boolean }) {
                       <a href={`${APP_URL}/auth/login`}>Log in</a>
                     </Button>
                     <Button asChild>
-                      <a href={`${APP_URL}/auth/signup`}>Create Event</a>
+                      <a href={`${APP_URL}/auth/signup`}>
+                        Create Event <Arrow />
+                      </a>
                     </Button>
                   </motion.div>
                 </motion.div>
