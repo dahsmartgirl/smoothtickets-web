@@ -1,14 +1,9 @@
 import Image from "next/image";
 import { APP_URL } from "@/lib/events";
 import { Arrow } from "./brand";
+import { HeroVideo } from "./HeroVideo";
 import { TypeWords } from "./TypeWords";
 import { Button } from "@/components/ui/button";
-
-/**
- * Optional background clip, e.g. "/videos/hero.mp4" in public/. Keep it short (8–15s loop),
- * muted, and under ~3 MB. When null, the party photo shows.
- */
-const HERO_VIDEO: string | null = null;
 
 /** "Make it ___": the hero types through these. The first is what loads and what screen readers hear. */
 const HAPPEN = ["happen.", "smooth.", "pop.", "lit.", "sell out."];
@@ -17,20 +12,7 @@ export function Hero() {
   return (
     <section className="hero">
       <Image src="/images/hero-party.jpg" alt="" fill priority sizes="100vw" className="hero-media" />
-      {HERO_VIDEO && (
-        // Reduced-motion users keep the still photo underneath.
-        <video
-          className="hero-media motion-reduce:hidden"
-          src={HERO_VIDEO}
-          poster="/images/hero-party.jpg"
-          autoPlay
-          muted
-          loop
-          playsInline
-          preload="metadata"
-          aria-hidden
-        />
-      )}
+      <HeroVideo />
       <div className="hero-scrim" />
 
       <div className="container-page">
