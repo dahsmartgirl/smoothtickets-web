@@ -29,3 +29,22 @@ export const fade: Variants = {
   closed: { opacity: 0 },
   open: { opacity: 1 },
 };
+
+/** FAQ answers: height springs open/shut; the text fades and settles in slightly after. */
+export const accordionSpring: Transition = { type: "spring", stiffness: 300, damping: 34, mass: 0.9 };
+
+export const accordionPanel: Variants = {
+  closed: { height: 0 },
+  open: { height: "auto" },
+};
+
+export const accordionText: Variants = {
+  closed: { opacity: 0, y: -6, transition: { duration: 0.15 } },
+  open: { opacity: 1, y: 0, transition: { duration: 0.28, delay: 0.08, ease: [0.22, 1, 0.36, 1] } },
+};
+
+/** The plus turns into an X (45°) on the same spring as the panel. */
+export const accordionIcon: Variants = {
+  closed: { rotate: 0 },
+  open: { rotate: 45 },
+};

@@ -29,14 +29,17 @@ export default async function Home() {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(organization) }} />
       <Nav />
       <main className="overflow-x-clip">
-        <Hero />
-        <EventRail events={events} />
-        <HowItWorks />
-        <Affiliates />
-        <Faq />
+        {/* The final CTA sits pinned underneath this layer and is uncovered as it scrolls away. */}
+        <div className="above-cta">
+          <Hero />
+          <EventRail events={events} />
+          <HowItWorks />
+          <Affiliates />
+          <Faq />
+        </div>
         <FinalCta />
       </main>
-      <Footer />
+      <Footer torn={false} />
     </>
   );
 }

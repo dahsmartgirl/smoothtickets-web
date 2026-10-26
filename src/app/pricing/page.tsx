@@ -37,7 +37,7 @@ export default function PricingPage() {
               <dt>Service fee</dt>
               <dd>₦150</dd>
             </div>
-            <div className="flex justify-between border-t border-line pt-3 type-heading">
+            <div className="flex justify-between rule-top pt-3 type-heading">
               <dt>Buyer pays</dt>
               <dd>₦3,150</dd>
             </div>

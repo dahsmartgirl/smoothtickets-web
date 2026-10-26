@@ -31,12 +31,14 @@
   /* Neutrals for light sections */
   --color-white: #ffffff;
   --color-fg: #0a1230; /* text */
-  --color-muted: #5a6784; /* secondary text */
+  --color-muted: #66728d; /* secondary text: the lightest that still passes 4.5:1 on white and paper */
   --color-line: rgb(10 18 48 / 0.09); /* borders and rings */
   --color-paper: #f5f9ff; /* lightest tint */
   --color-mist: #e9f1fc; /* panels */
   --color-hover: rgb(10 18 48 / 0.05);
   --color-perf: rgb(10 18 48 / 0.3); /* dotted ticket outlines */
+  --color-rule: rgb(10 18 48 / 0.22); /* ticket-perforation dividers on light */
+  --color-rule-dark: rgb(255 255 255 / 0.22); /* ticket-perforation dividers on dark */
   --color-scrim: rgb(5 11 31 / 0.5);
 
   /* Text and surfaces on dark sections */
@@ -70,7 +72,7 @@
   --text-body--line-height: 1.6;
   --text-small: 0.75rem;
   --text-small--line-height: 1.5;
-  --text-micro: 0.625rem; /* badges only */
+  --text-micro: 0.625rem; /* all-caps labels: badges and footer column titles */
   --text-micro--line-height: 1.4;
   --text-logo: clamp(0.8125rem, 0.75rem + 0.3vw, 0.9375rem);
   --text-logo--line-height: 1;
@@ -84,7 +86,7 @@
   --tracking-*: initial;
   --tracking-tight: -0.025em;
   --tracking-display: -0.03em;
-  --tracking-badge: 0.15em; /* the all-caps badges */
+  --tracking-caps: 0.15em; /* all-caps labels */
 
   --leading-*: initial;
   --leading-none: 1;
@@ -109,6 +111,7 @@
 
   --blur-*: initial;
   --blur-glow: 100px; /* brand-blue light behind panels */
+  --blur-veil: 6px; /* the soft blur over the bottom of the footer logo */
 
   /* Content widths */
   --container-*: initial;
@@ -222,9 +225,13 @@ body {
 @utility type-label {
   @apply font-display text-body font-bold;
 }
-/* Small labels: "From", footer column titles, badges, sticker months */
+/* Small labels in sentence case: "From", sticker months, the ticket number */
 @utility type-caption {
   @apply text-small font-normal;
+}
+/* The only all-caps text on the site: badges ("EARN", "SMOOTH AFFILIATES") and footer column titles */
+@utility type-overline {
+  @apply text-micro font-normal tracking-caps uppercase;
 }
 @utility type-number {
   @apply font-display font-black tabular-nums;
@@ -286,7 +293,7 @@ body {
 }
 
 @utility badge {
-  @apply inline-flex items-center rounded-full bg-brand px-1.5 py-0.5 text-micro font-normal tracking-badge text-white uppercase; /* the one all-caps element: "EARN", "SMOOTH AFFILIATES" */
+  @apply inline-flex items-center rounded-full bg-brand px-1.5 py-0.5 type-overline text-white;
 }
 @utility badge-lg {
   @apply px-3 py-1;
@@ -307,20 +314,19 @@ body {
   @apply pointer-events-none absolute inset-x-0 bottom-0 h-24 bg-linear-to-t from-paper to-transparent;
 }
 
-/* Ticket silhouette: side notches cut out with a mask so it works on any background. */
-@utility ticket {
-  --notch: 14px;
-  --notch-y: 50%;
-  mask:
-    radial-gradient(circle var(--notch) at 0 var(--notch-y), #0000 98%, #000) left / 51% 100% no-repeat,
-    radial-gradient(circle var(--notch) at 100% var(--notch-y), #0000 98%, #000) right / 51% 100% no-repeat;
-}
 /* Torn-ticket edges: a row of semicircle bites. */
 @utility torn-bottom {
   mask: radial-gradient(circle 9px at 50% 100%, #0000 97%, #000) 0 0 / 24px 100% repeat-x;
 }
 @utility torn-top {
   mask: radial-gradient(circle 9px at 50% 0, #0000 97%, #000) 0 0 / 24px 100% repeat-x;
+}
+/* Divider: a ticket perforation line (short dashes) along the top edge. Every divider on the site uses it. */
+@utility rule-top {
+  background: linear-gradient(to right, var(--rule-color, var(--color-rule)) 60%, transparent 0) left top / 10px 1px repeat-x;
+}
+@utility rule-on-dark {
+  --rule-color: var(--color-rule-dark);
 }
 /* Vertical perforation line */
 @utility perf-y {
@@ -424,7 +430,7 @@ body {
     }
   }
   .menu-actions {
-    @apply mt-3 grid grid-cols-2 gap-2 border-t border-line-dark pt-4;
+    @apply mt-3 grid grid-cols-2 gap-2 rule-top rule-on-dark pt-4;
   }
   .menu-scrim {
     @apply fixed inset-0 z-40 bg-scrim md:hidden;
@@ -650,16 +656,16 @@ body {
   }
 
   /* Accordion: plain rows on the page background, separated by hairlines */
-  /* Hairlines between questions only: none above the first or below the last */
-  .accordion {
-    @apply divide-y divide-line;
+  /* Perforation lines between questions only: none above the first or below the last */
+  .accordion > * + * {
+    @apply rule-top;
   }
   .accordion-trigger {
     @apply flex flex-1 items-center justify-between gap-4 py-5 text-left text-lead outline-none focus-visible:ring-2 focus-visible:ring-brand;
   }
   /* Just the icon: a plus that turns a quarter-and-a-half into an X when open, and back */
   .accordion-icon {
-    @apply grid size-5 shrink-0 place-items-center text-fg transition-[transform,color] duration-300 ease-out;
+    @apply grid size-5 shrink-0 place-items-center text-fg transition-colors;
     & svg {
       @apply size-4;
     }
@@ -667,21 +673,41 @@ body {
   .accordion-trigger:hover .accordion-icon {
     @apply text-brand;
   }
-  .accordion-trigger[data-state="open"] .accordion-icon {
-    @apply rotate-45;
-  }
-  /* Answers stay in the HTML (crawlable); grid rows 0fr <-> 1fr animates the collapse both ways. */
+  /* Height, the plus-to-X turn and the text fade are animated by Motion (lib/motion.ts: accordion*). */
   .accordion-content {
-    @apply grid transition-[grid-template-rows,visibility] duration-300 ease-out motion-reduce:transition-none data-[state=closed]:invisible data-[state=closed]:grid-rows-[0fr] data-[state=open]:grid-rows-[1fr];
+    @apply overflow-hidden;
   }
   .accordion-body {
     @apply max-w-copy pb-6 text-lead text-muted;
   }
 
-  /* Final CTA: a big brand-blue ticket with a QR stub */
-  .cta-ticket {
-    @apply ticket grain relative grid overflow-hidden rounded-xl bg-brand text-white md:grid-cols-[1fr_auto];
-    --notch: 22px;
+  /* Everything above the final CTA: an opaque layer that slides up off the CTA as you scroll down. */
+  .above-cta {
+    @apply relative z-10 bg-white pb-20 sm:pb-28;
+    /* The CTA's torn top edge hangs off this layer, so it is always visible at the seam while the layer
+       slides off the CTA (the CTA itself is covered until then). */
+    &::after {
+      content: "";
+      @apply absolute inset-x-0 top-full h-[9px];
+      background: radial-gradient(circle 9px at 50% 0, var(--color-white) 97%, transparent) 0 0 / 24px 9px repeat-x;
+    }
+  }
+  /* Final CTA: a full-width brand-blue ticket band, torn top (hung from .above-cta) and bottom, with a QR stub.
+     Pinned to the bottom of the screen underneath .above-cta, so it is uncovered rather than scrolled in. */
+  .cta {
+    @apply grain sticky bottom-0 z-0 -mb-px overflow-hidden bg-brand text-white; /* -1px: no hairline gap above the footer at fractional scroll positions */
+    /* Torn bottom edge: navy bites from the footer below */
+    &::before {
+      content: "";
+      @apply pointer-events-none absolute inset-x-0 bottom-0 h-[9px];
+      background: radial-gradient(circle 9px at 50% 100%, var(--color-night) 97%, transparent) 0 0 / 24px 9px repeat-x;
+    }
+  }
+  .cta-inner {
+    @apply grid md:grid-cols-[1fr_auto];
+  }
+  .cta-body {
+    @apply py-20 sm:py-28;
   }
   .cta-stub {
     @apply relative hidden flex-col items-center justify-center gap-4 px-14 md:flex;
@@ -692,21 +718,49 @@ body {
 
   /* Footer */
   .footer {
-    @apply torn-top overflow-hidden bg-night pt-20 text-white;
+    @apply relative overflow-hidden bg-night pt-20 text-white;
+  }
+  .footer-content {
+    @apply relative z-10;
   }
   .footer-link {
-    @apply text-on-dark-muted transition-colors hover:text-white;
+    @apply inline-flex items-center gap-1 text-on-dark-muted transition-colors hover:text-white;
+    & svg {
+      @apply size-3.5;
+    }
   }
   .social {
     @apply icon-btn bg-glass text-white hover:bg-brand;
   }
-  /* The wordmark stretched to the container width, its base cropped by the page's bottom edge. */
-  .wordmark {
-    @apply block w-full translate-y-[14%];
+  /* Footer art: the logo drawn in outline across the full width, rising from below the bottom of the page.
+     Its lower part sits under a soft blur, and confetti bursts up from behind it (Confetti.tsx). */
+  .footer-art {
+    @apply relative mt-10 px-2 sm:mt-14 sm:px-4; /* a hair of inset so the outline isn't clipped at the screen edge */
+  }
+  .footer-lockup {
+    @apply relative z-10 block w-full translate-y-[28%];
+    & path,
     & text {
-      @apply fill-brand font-display font-black;
-      font-size: 172px; /* in the SVG's own units, sized to its 1000-wide viewBox */
+      fill: none;
+      stroke-width: 0.75px; /* hairline outline */
+      vector-effect: non-scaling-stroke;
     }
+    & .lockup-mark {
+      @apply stroke-brand;
+    }
+    & text {
+      @apply stroke-white font-display font-bold tracking-tight;
+      font-size: 92px; /* SVG units: natural width ≈ the 840 the text is given, so the letters are not stretched */
+    }
+  }
+  /* The blur over the bottom of the logo: strongest at the page edge, fading out upward */
+  .footer-veil {
+    @apply pointer-events-none absolute inset-x-0 bottom-0 z-20 h-1/2 backdrop-blur-veil;
+    mask-image: linear-gradient(to top, #000 25%, transparent);
+    background: linear-gradient(to top, var(--color-night), transparent 75%);
+  }
+  .confetti {
+    @apply pointer-events-none absolute inset-0 z-0 size-full text-white;
   }
 }
 

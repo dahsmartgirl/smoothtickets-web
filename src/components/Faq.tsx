@@ -3,7 +3,7 @@ import { HugeiconsIcon } from "@hugeicons/react";
 import { APP_URL } from "@/lib/events";
 import { Arrow } from "./brand";
 import { Button } from "./ui/button";
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "./ui/accordion";
+import { Accordion, type AccordionEntry } from "./ui/accordion";
 
 // Answers state only what the product shows today. No FAQ schema: the brief rules out that shortcut.
 const faqs: [string, React.ReactNode][] = [
@@ -44,6 +44,8 @@ const faqs: [string, React.ReactNode][] = [
   ],
 ];
 
+const items: AccordionEntry[] = faqs.map(([question, answer]) => ({ question, answer }));
+
 export function Faq() {
   return (
     <section id="faq" aria-labelledby="faq-title" className="section-top scroll-mt-24">
@@ -56,14 +58,7 @@ export function Faq() {
           <p className="mt-5 max-w-narrow text-lead text-muted">Everything organisers usually ask before their first event.</p>
         </div>
 
-        <Accordion type="single" collapsible defaultValue={faqs[0][0]} className="faq-list">
-          {faqs.map(([q, a]) => (
-            <AccordionItem key={q} value={q}>
-              <AccordionTrigger>{q}</AccordionTrigger>
-              <AccordionContent>{a}</AccordionContent>
-            </AccordionItem>
-          ))}
-        </Accordion>
+        <Accordion items={items} className="faq-list" />
 
         <div className="faq-contact card-dark">
           <span className="icon-btn bg-glass">

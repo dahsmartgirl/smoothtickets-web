@@ -2,42 +2,62 @@
 
 import { Add01Icon } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
-import * as AccordionPrimitive from "@radix-ui/react-accordion";
-import type { ComponentProps } from "react";
-import { cn } from "@/lib/utils";
+import { MotionConfig, motion } from "motion/react";
+import { useId, useState } from "react";
+import { accordionIcon, accordionPanel, accordionSpring, accordionText } from "@/lib/motion";
 
-// shadcn/ui Accordion. Styles live in globals.css (accordion, accordion-*).
-function Accordion({ className, ...props }: ComponentProps<typeof AccordionPrimitive.Root>) {
-  return <AccordionPrimitive.Root data-slot="accordion" className={cn("accordion", className)} {...props} />;
-}
+export type AccordionEntry = { question: string; answer: React.ReactNode };
 
-function AccordionItem({ className, ...props }: ComponentProps<typeof AccordionPrimitive.Item>) {
-  return <AccordionPrimitive.Item data-slot="accordion-item" className={className} {...props} />;
-}
+/**
+ * Single-open accordion, animated with Motion (presets in lib/motion.ts, styles in globals.css: accordion-*).
+ * Every answer stays in the server HTML so it can be crawled; closed answers are `inert`, which keeps them
+ * out of the tab order and away from screen readers.
+ */
+export function Accordion({ items, defaultOpen = 0, className = "" }: { items: AccordionEntry[]; defaultOpen?: number | null; className?: string }) {
+  const [open, setOpen] = useState<number | null>(defaultOpen);
+  const id = useId();
 
-function AccordionTrigger({ className, children, ...props }: ComponentProps<typeof AccordionPrimitive.Trigger>) {
   return (
-    <AccordionPrimitive.Header className="flex">
-      <AccordionPrimitive.Trigger data-slot="accordion-trigger" className={cn("accordion-trigger", className)} {...props}>
-        {children}
-        <span aria-hidden className="accordion-icon">
-          <HugeiconsIcon icon={Add01Icon} strokeWidth={2.2} />
-        </span>
-      </AccordionPrimitive.Trigger>
-    </AccordionPrimitive.Header>
-  );
-}
-
-function AccordionContent({ className, children, ...props }: ComponentProps<typeof AccordionPrimitive.Content>) {
-  return (
-    // forceMount keeps every answer in the server HTML (crawlable). Radix then treats them as open, so the
-    // collapse is CSS, and `invisible` keeps closed answers out of the tab order and screen readers.
-    <AccordionPrimitive.Content data-slot="accordion-content" forceMount className="accordion-content" {...props}>
-      <div className="min-h-0 overflow-hidden">
-        <div className={cn("accordion-body", className)}>{children}</div>
+    <MotionConfig reducedMotion="user" transition={accordionSpring}>
+      <div className={`accordion ${className}`}>
+        {items.map((item, i) => {
+          const isOpen = open === i;
+          const state = isOpen ? "open" : "closed";
+          return (
+            <div key={item.question}>
+              <h3 className="flex">
+                <button
+                  type="button"
+                  id={`${id}-q${i}`}
+                  aria-expanded={isOpen}
+                  aria-controls={`${id}-a${i}`}
+                  onClick={() => setOpen(isOpen ? null : i)}
+                  className="accordion-trigger"
+                >
+                  {item.question}
+                  <motion.span aria-hidden className="accordion-icon" variants={accordionIcon} initial={false} animate={state}>
+                    <HugeiconsIcon icon={Add01Icon} strokeWidth={2.2} />
+                  </motion.span>
+                </button>
+              </h3>
+              <motion.div
+                id={`${id}-a${i}`}
+                role="region"
+                aria-labelledby={`${id}-q${i}`}
+                inert={!isOpen}
+                className="accordion-content"
+                variants={accordionPanel}
+                initial={false}
+                animate={state}
+              >
+                <motion.div className="accordion-body" variants={accordionText}>
+                  {item.answer}
+                </motion.div>
+              </motion.div>
+            </div>
+          );
+        })}
       </div>
-    </AccordionPrimitive.Content>
+    </MotionConfig>
   );
 }
-
-export { Accordion, AccordionContent, AccordionItem, AccordionTrigger };
