@@ -38,7 +38,7 @@ export function Affiliates() {
             </h2>
           </div>
           <div>
-            <p className="text-subtext text-on-dark-muted">
+            <p className="text-lead text-on-dark-muted">
               Turn your network into event promoters. Set commissions, choose who can promote your event, and let Smooth Tickets
               handle affiliate payouts automatically.
             </p>

@@ -22,7 +22,7 @@ export default function NotFound() {
         <h1 className="type-display">
           This page <span className="text-brand">isn&apos;t here.</span>
         </h1>
-        <p className="mt-6 text-subtext text-muted">
+        <p className="mt-6 text-lead text-muted">
           The link may be mistyped, or the event may have ended or been removed. Find what&apos;s on now, or create your own event.
         </p>
         <div className="mt-10 flex flex-wrap justify-center gap-3">

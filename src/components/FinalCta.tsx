@@ -16,7 +16,7 @@ export function FinalCta() {
               <br />
               starts with <span className="text-night">Smooth.</span>
             </h2>
-            <p className="mt-5 max-w-narrow text-subtext text-on-dark-muted">Everything you need to get started is right here.</p>
+            <p className="mt-5 max-w-narrow text-lead text-on-dark-muted">Everything you need to get started is right here.</p>
             <div className="mt-10 flex flex-wrap gap-3">
               <Button asChild variant="night">
                 <a href={`${APP_URL}/auth/signup`}>

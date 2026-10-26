@@ -64,8 +64,6 @@
   --text-subheading--line-height: 1.4;
   --text-lead: clamp(0.9375rem, 0.9rem + 0.15vw, 1rem); /* supporting copy */
   --text-lead--line-height: 1.65;
-  --text-subtext: clamp(0.8125rem, 0.5rem + 0.78125vw, 1rem); /* section intros and FAQ: 13px on phones, growing to 16px by desktop */
-  --text-subtext--line-height: 1.65;
   --text-button: 0.8125rem; /* buttons on phones */
   --text-button--line-height: 1;
   --text-body: 0.875rem;
@@ -657,7 +655,7 @@ body {
     @apply divide-y divide-line;
   }
   .accordion-trigger {
-    @apply flex flex-1 items-center justify-between gap-4 py-5 text-left text-subtext outline-none focus-visible:ring-2 focus-visible:ring-brand;
+    @apply flex flex-1 items-center justify-between gap-4 py-5 text-left text-lead outline-none focus-visible:ring-2 focus-visible:ring-brand;
   }
   /* Just the icon: a plus that turns a quarter-and-a-half into an X when open, and back */
   .accordion-icon {
@@ -677,7 +675,7 @@ body {
     @apply grid transition-[grid-template-rows,visibility] duration-300 ease-out motion-reduce:transition-none data-[state=closed]:invisible data-[state=closed]:grid-rows-[0fr] data-[state=open]:grid-rows-[1fr];
   }
   .accordion-body {
-    @apply max-w-copy pb-6 text-subtext text-muted;
+    @apply max-w-copy pb-6 text-lead text-muted;
   }
 
   /* Final CTA: a big brand-blue ticket with a QR stub */

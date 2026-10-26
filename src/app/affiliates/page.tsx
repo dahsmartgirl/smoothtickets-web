@@ -51,7 +51,7 @@ export default function AffiliatesPage() {
             <h1 className="type-display">
               Let more people <span className="text-brand">sell your</span> tickets.
             </h1>
-            <p className="mt-6 max-w-copy text-subtext text-muted">{description}</p>
+            <p className="mt-6 max-w-copy text-lead text-muted">{description}</p>
             <div className="mt-9 flex flex-wrap gap-3">
               <Button asChild>
                 <a href={`${APP_URL}/auth/signup`}>

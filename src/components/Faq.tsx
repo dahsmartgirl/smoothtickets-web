@@ -53,7 +53,7 @@ export function Faq() {
           <h2 id="faq-title" className="type-title">
             Questions, answered
           </h2>
-          <p className="mt-5 max-w-narrow text-subtext text-muted">Everything organisers usually ask before their first event.</p>
+          <p className="mt-5 max-w-narrow text-lead text-muted">Everything organisers usually ask before their first event.</p>
         </div>
 
         <Accordion type="single" collapsible defaultValue={faqs[0][0]} className="faq-list">

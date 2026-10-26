@@ -21,7 +21,7 @@ export default function PricingPage() {
         <h1 className="type-display">
           No surprises <span className="text-brand">at checkout.</span>
         </h1>
-        <p className="mt-6 text-subtext text-muted">
+        <p className="mt-6 text-lead text-muted">
           Every Smooth Tickets event page shows the ticket price and the service fee as separate lines, so buyers see the full
           amount before they pay.
         </p>
@@ -44,7 +44,7 @@ export default function PricingPage() {
           </dl>
         </figure>
 
-        <p className="mt-10 text-subtext text-muted">
+        <p className="mt-10 text-lead text-muted">
           Questions about fees or payouts for your event?{" "}
           <a href="mailto:hello@smooth.africa" className="link">
             hello@smooth.africa
