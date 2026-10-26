@@ -80,7 +80,9 @@ export async function getEvent(slug: string): Promise<EventDetail | null> {
     const e = json.data?.event;
     if (!json.status || !e) return null;
 
-    const couponIds = new Set((json.data?.active_coupon_ids ?? []).map(Number));
+    // Same rule as the main app: active_coupon_ids decides when it's sent (even empty), else each ticket's own flag.
+    const ids = json.data?.active_coupon_ids;
+    const couponIds = Array.isArray(ids) ? new Set(ids.map(Number)) : null;
     const loc = e.location;
     const venue = loc?.venue?.trim() ?? "";
     const city = loc?.city?.trim() ?? "";
@@ -109,7 +111,7 @@ export async function getEvent(slug: string): Promise<EventDetail | null> {
         flatFee: Number(t.flat_fee) || 0,
         stock: t.stock_count ?? null,
         admits: t.admits ?? 1,
-        couponActive: couponIds.size ? couponIds.has(t.id) : !!t.coupon_is_active,
+        couponActive: couponIds ? couponIds.has(t.id) : !!t.coupon_is_active,
       })),
     };
   } catch {
