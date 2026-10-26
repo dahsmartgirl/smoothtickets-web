@@ -2,7 +2,7 @@ import { readFile } from "node:fs/promises";
 import { join } from "node:path";
 import { ImageResponse } from "next/og";
 
-/** The Smooth Tickets logo centered on white, as a PNG (apple-touch-icon; Safari also uses it for tabs). */
+/** Rendered on the server without CSS, so white is written out (globals.css: --color-white). The Smooth Tickets logo centered on white, as a PNG (apple-touch-icon; Safari also uses it for tabs). */
 export async function brandIcon(size: number) {
   const svg = await readFile(join(process.cwd(), "public/logo.svg"));
   const src = `data:image/svg+xml;base64,${svg.toString("base64")}`;

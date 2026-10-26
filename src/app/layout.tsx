@@ -43,7 +43,7 @@ export default function RootLayout({
       lang="en"
       className={`${inter.variable} ${unbounded.variable}`}
     >
-      <body className="antialiased">
+      <body>
         {children}
       </body>
     </html>

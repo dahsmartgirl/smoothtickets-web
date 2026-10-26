@@ -4,7 +4,6 @@ import { Faq } from "@/components/Faq";
 import { FinalCta, Footer } from "@/components/FinalCta";
 import { Hero } from "@/components/Hero";
 import { HowItWorks } from "@/components/HowItWorks";
-import { Marquee } from "@/components/Marquee";
 import { Nav } from "@/components/Nav";
 import { APP_URL, getUpcomingEvents } from "@/lib/events";
 
@@ -23,7 +22,7 @@ const organization = {
 };
 
 export default async function Home() {
-  const events = await getUpcomingEvents(6, { withLocation: true });
+  const events = await getUpcomingEvents(6, { withLocation: true, onePerSeries: true });
 
   return (
     <>
@@ -31,7 +30,6 @@ export default async function Home() {
       <Nav />
       <main className="overflow-x-clip">
         <Hero />
-        <Marquee />
         <EventRail events={events} />
         <HowItWorks />
         <Affiliates />

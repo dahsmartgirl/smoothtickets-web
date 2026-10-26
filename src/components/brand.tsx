@@ -3,23 +3,13 @@ import { HugeiconsIcon } from "@hugeicons/react";
 import Image from "next/image";
 import Link from "next/link";
 
-export function Logo({ className = "", onDark = false }: { className?: string; onDark?: boolean }) {
+export function Logo({ onDark = false }: { onDark?: boolean }) {
   return (
-    <Link href="/" className={`flex items-center gap-2 ${className}`} aria-label="Smooth Tickets home">
+    <Link href="/" className="logo" aria-label="Smooth Tickets home">
       <Image src="/logo.svg" alt="" width={26} height={26} priority />
       {/* One colour: black on light backgrounds, white on dark ones. */}
-      <span className={`font-display text-[13px] font-bold tracking-tight sm:text-[15px] ${onDark ? "text-white" : "text-fg"}`}>
-        smoothtickets
-      </span>
+      <span className={`logo-text ${onDark ? "text-white" : "text-fg"}`}>smoothtickets</span>
     </Link>
-  );
-}
-
-export function Eyebrow({ children, className = "" }: { children: React.ReactNode; className?: string }) {
-  return (
-    <p className={`font-display text-[11px] font-bold uppercase tracking-[0.25em] text-brand-deep ${className}`}>
-      {children}
-    </p>
   );
 }
 
@@ -58,6 +48,7 @@ export function QrCode({ seed = "smooth", size = 21, className = "" }: { seed?: 
   );
 }
 
-export function Arrow({ className = "size-4" }: { className?: string }) {
-  return <HugeiconsIcon icon={ArrowRight02Icon} size={16} strokeWidth={2} className={className} aria-hidden />;
+/** `icon` sizes it; containers like btn and event-cta resize it from globals.css. */
+export function Arrow({ className = "icon" }: { className?: string }) {
+  return <HugeiconsIcon icon={ArrowRight02Icon} strokeWidth={2} className={className} aria-hidden />;
 }

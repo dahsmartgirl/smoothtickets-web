@@ -1,40 +1,128 @@
 @import "tailwindcss";
 
-/* Theme tokens (light only). */
-:root {
-  --bg: #ffffff;
-  --surface: #ffffff;
-  --surface-2: #e9f1fc;
-  --fg: #0a1230;
-  --muted: #5a6784;
-  --line: rgb(10 18 48 / 0.09);
-  color-scheme: light only;
-}
+/*
+ * SMOOTH TICKETS DESIGN SYSTEM
+ *
+ * Every colour, font, type size, weight, letter-spacing, radius, width and blur
+ * lives in this file. Tailwind's default scales are switched off (`--x-*: initial`),
+ * so a class that isn't defined here doesn't exist: `text-lg`, `rounded-3xl` or
+ * `bg-[#123456]` won't style anything.
+ *
+ * Components use the tokens and the named classes below, plus layout utilities
+ * (flex, grid, gap, margin, padding) on the one 4px spacing unit.
+ */
+
+/* ---------------------------------------------------------------- tokens */
 
 @theme {
-  /* Brand constants */
-  --color-brand: #007aff;
-  --color-brand-deep: #0654b0;
-  --color-brand-soft: #5aa9ff;
-  --color-night: #050b1f;
-  --color-night-2: #0b1534;
-  --color-night-3: #14204a;
-  --color-paper: #f5f9ff;
-  --color-flame: #ff9f0a;
-  --color-lime: #c8f53c;
-  --color-pink: #ff5fa2;
-  --color-success: #0fbf6b;
+  /* Colour. Two brand colours: blue and navy. Don't add more. */
+  --color-*: initial;
+  --color-brand: #007aff; /* actions and links */
+  --color-brand-deep: #0654b0; /* hover, link text on white */
+  --color-brand-faint: rgb(0 122 255 / 0.4);
+  --color-night: #050b1f; /* dark sections */
 
-  --animate-marquee: marquee 40s linear infinite;
-  --animate-float: float 6s ease-in-out infinite;
+  /* Event date stickers only: each card's date gets its own colour, like a flyer. Not for anything else. */
+  --color-sticker-amber: #f99c00;
+  --color-sticker-lime: #c8f53c;
+  --color-sticker-pink: #ff5fa2;
+  --color-sticker-sky: #5aa9ff;
+
+  /* Neutrals for light sections */
+  --color-white: #ffffff;
+  --color-fg: #0a1230; /* text */
+  --color-muted: #5a6784; /* secondary text */
+  --color-line: rgb(10 18 48 / 0.09); /* borders and rings */
+  --color-paper: #f5f9ff; /* lightest tint */
+  --color-mist: #e9f1fc; /* panels */
+  --color-hover: rgb(10 18 48 / 0.05);
+  --color-perf: rgb(10 18 48 / 0.3); /* dotted ticket outlines */
+  --color-scrim: rgb(5 11 31 / 0.5);
+
+  /* Text and surfaces on dark sections */
+  --color-on-dark-muted: rgb(255 255 255 / 0.72);
+  --color-on-dark-faint: rgb(255 255 255 / 0.45);
+  --color-glass: rgb(255 255 255 / 0.08);
+  --color-glass-strong: rgb(255 255 255 / 0.16);
+  --color-line-dark: rgb(255 255 255 / 0.15);
+
+  /* Fonts: Unbounded for display, Inter for everything else */
+  --font-*: initial;
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  --font-display: var(--font-unbounded), ui-sans-serif, system-ui, sans-serif;
+
+  /* Type scale. Each size carries its line height. */
+  --text-*: initial;
+  --text-display: clamp(2.2rem, 5vw, 4.25rem); /* page h1s and the final CTA: the only all-caps moments */
+  --text-display--line-height: 1;
+  --text-title: clamp(1.5rem, 3.2vw, 2.25rem); /* section headings */
+  --text-title--line-height: 1.15;
+  --text-heading: 1.125rem; /* card titles, big numbers */
+  --text-heading--line-height: 1.3;
+  --text-subheading: 1rem;
+  --text-subheading--line-height: 1.4;
+  --text-lead: clamp(0.9375rem, 0.9rem + 0.15vw, 1rem); /* supporting copy */
+  --text-lead--line-height: 1.65;
+  --text-body: 0.875rem;
+  --text-body--line-height: 1.6;
+  --text-small: 0.75rem;
+  --text-small--line-height: 1.5;
+  --text-micro: 0.625rem; /* uppercase labels and badges */
+  --text-micro--line-height: 1.4;
+  --text-logo: clamp(0.8125rem, 0.75rem + 0.3vw, 0.9375rem);
+  --text-logo--line-height: 1;
+
+  /* Weights: Inter is regular only (400). Bold and black are for Unbounded. */
+  --font-weight-*: initial;
+  --font-weight-normal: 400;
+  --font-weight-bold: 700;
+  --font-weight-black: 900;
+
+  --tracking-*: initial;
+  --tracking-tight: -0.025em;
+  --tracking-display: -0.03em;
+  --tracking-label: 0.15em; /* uppercase micro labels */
+
+  --leading-*: initial;
+  --leading-none: 1;
+  --leading-relaxed: 1.65;
+
+  /* Radius */
+  --radius-*: initial;
+  --radius-sm: 0.75rem; /* stickers, small boxes */
+  --radius-md: 1rem; /* list items, small boxes */
+  --radius-lg: 1.5rem; /* cards, event posters */
+  --radius-xl: 2.25rem; /* big panels */
+  --radius-device: 2.875rem; /* phone bezel */
+  --radius-screen: 2.375rem; /* phone screen */
+  --radius-full: 9999px;
+
+  /* No shadows anywhere on the site */
+  --shadow-*: initial;
+  --inset-shadow-*: initial;
+  --drop-shadow-*: initial;
+  --text-shadow-*: initial;
+
+  --blur-*: initial;
+  --blur-glow: 100px; /* brand-blue light behind panels */
+
+  /* Content widths */
+  --container-*: initial;
+  --container-page: 72rem; /* every section */
+  --container-nav: 56rem; /* the scrolled nav pill */
+  --container-copy: 42rem; /* paragraphs */
+  --container-narrow: 24rem; /* side notes, footer blurb */
+
+  /* The one spacing unit: every gap, margin and padding is a multiple of 4px */
+  --spacing: 0.25rem;
+
+  /* Motion */
   --animate-progress: progress 4.5s linear forwards;
-
   --animate-fade-in: fade-in 0.2s ease-out;
   --animate-fade-out: fade-out 0.15s ease-in;
   --animate-sheet-down: sheet-down 0.25s ease-out;
   --animate-sheet-up: sheet-up 0.2s ease-in;
 
-  /* shadcn Sheet */
   @keyframes fade-in {
     from {
       opacity: 0;
@@ -55,7 +143,6 @@
       transform: translateY(-100%);
     }
   }
-
   @keyframes progress {
     from {
       transform: scaleX(0);
@@ -64,94 +151,44 @@
       transform: scaleX(1);
     }
   }
-
-  @keyframes marquee {
-    to {
-      transform: translateX(-50%);
-    }
-  }
-  @keyframes float {
-    0%,
-    100% {
-      transform: translateY(0) rotate(var(--r, 0deg));
-    }
-    50% {
-      transform: translateY(-10px) rotate(var(--r, 0deg));
-    }
-  }
 }
 
-@theme inline {
-  --color-bg: var(--bg);
-  --color-surface: var(--surface);
-  --color-surface-2: var(--surface-2);
-  --color-fg: var(--fg);
-  --color-muted: var(--muted);
-  --color-line: var(--line);
-
-  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
-  --font-display: var(--font-unbounded), ui-sans-serif, system-ui, sans-serif;
-}
+/* ------------------------------------------------------------------ base */
 
 html {
   scroll-behavior: smooth;
-}
-
-body {
-  background: var(--bg);
-  color: var(--fg);
-  font-family: var(--font-sans);
-  transition: background-color 0.2s;
-}
-
-/* Custom scrollbar: slim rounded thumb on a page-coloured track, brand blue on hover. */
-:root {
+  color-scheme: light only;
+  /* Slim scrollbar: soft thumb on a white track, brand blue on hover */
   --scrollbar-thumb: #c3cfe2;
-  --scrollbar-thumb-hover: #007aff;
-  --scrollbar-track: var(--bg);
-}
-/* Firefox and Chrome 121+ */
-html {
   scrollbar-width: thin;
-  scrollbar-color: var(--scrollbar-thumb) var(--scrollbar-track);
+  scrollbar-color: var(--scrollbar-thumb) var(--color-white);
 }
-/* Safari (and older Chromium) */
+body {
+  background: var(--color-white);
+  color: var(--color-fg);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
 ::-webkit-scrollbar {
   width: 10px;
   height: 10px;
 }
-::-webkit-scrollbar-track {
-  background: var(--scrollbar-track);
+::-webkit-scrollbar-track,
+::-webkit-scrollbar-corner {
+  background: var(--color-white);
 }
 ::-webkit-scrollbar-thumb {
   background: var(--scrollbar-thumb);
-  border: 3px solid var(--scrollbar-track);
-  border-radius: 999px;
+  border: 3px solid var(--color-white);
+  border-radius: var(--radius-full);
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: var(--scrollbar-thumb-hover);
-}
-::-webkit-scrollbar-corner {
-  background: var(--scrollbar-track);
+  background: var(--color-brand);
 }
 
-/* Looping decoration: hold still off-screen (usePauseOffscreen) and for reduced-motion users. */
-[data-offscreen],
-[data-offscreen] * {
-  animation-play-state: paused !important;
-}
-@media (prefers-reduced-motion: reduce) {
-  .animate-marquee,
-  .animate-float,
-  .animate-progress,
-  .animate-sheet-down,
-  .animate-sheet-up {
-    animation: none;
-  }
-}
-
-/* Headings balance their lines; body copy avoids orphans. */
 @layer base {
+  /* Headings balance their lines; body copy avoids orphans. */
   h1,
   h2,
   h3 {
@@ -164,81 +201,468 @@ html {
   }
 }
 
-/* Supporting copy: one size site-wide (15px on phones, 16px from sm). */
-@utility text-lead {
-  font-size: 0.9375rem;
-  line-height: 1.65;
-  @variant sm {
-    font-size: 1rem;
-  }
-}
+/* ------------------------------------------------- layout and typography */
 
 /* Page side padding, shared by every section container and the nav. */
 @utility px-page {
-  padding-inline: 1rem;
+  padding-inline: calc(var(--spacing) * 4);
   @variant sm {
-    padding-inline: 1.5rem;
+    padding-inline: calc(var(--spacing) * 6);
+  }
+}
+@utility container-page {
+  @apply mx-auto w-full max-w-page px-page;
+}
+/* Vertical rhythm between homepage sections */
+@utility section {
+  @apply py-20 sm:py-28;
+}
+@utility section-top {
+  @apply pt-20 sm:pt-28;
+}
+/* Narrow column + wide column (FAQ, footer) */
+@utility layout-aside {
+  @apply grid gap-10 lg:grid-cols-[1fr_1.6fr] lg:gap-16;
+}
+
+/* The biggest type: the hero, in sentence case. */
+@utility type-display {
+  @apply font-display text-display font-black tracking-display;
+}
+/* Same size in all caps: the final CTA and the inner pages' h1s. */
+@utility type-display-caps {
+  @apply type-display uppercase;
+}
+/* Section headings: sentence case, a size down, so only the display moments shout. */
+@utility type-title {
+  @apply font-display text-title font-bold tracking-tight;
+}
+@utility type-heading {
+  @apply font-display text-heading font-bold;
+}
+@utility type-subheading {
+  @apply font-display text-subheading font-bold;
+}
+@utility type-label {
+  @apply font-display text-body font-bold;
+}
+@utility type-eyebrow {
+  @apply text-micro font-normal tracking-label uppercase;
+}
+@utility type-number {
+  @apply font-display font-black tabular-nums;
+}
+
+@utility link {
+  @apply text-brand-deep hover:underline;
+}
+
+/* ------------------------------------------------------------ primitives */
+
+@utility btn {
+  @apply inline-flex h-9 shrink-0 items-center justify-center gap-2 rounded-full px-4 text-body whitespace-nowrap transition-colors outline-none focus-visible:ring-2 focus-visible:ring-brand focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50;
+  & svg {
+    @apply pointer-events-none size-4 shrink-0;
+  }
+}
+@utility btn-sm {
+  @apply h-8 px-3;
+}
+@utility btn-icon {
+  @apply size-10 px-0;
+}
+@utility btn-primary {
+  @apply bg-brand text-white hover:bg-brand-deep;
+}
+@utility btn-outline {
+  @apply bg-white text-fg ring-1 ring-line hover:bg-mist;
+}
+/* Secondary button: no fill, just a hairline. glass = on photos and dark sections, line = on white. */
+@utility btn-glass {
+  @apply bg-transparent text-white ring-1 ring-line-dark hover:ring-on-dark-muted;
+}
+@utility btn-line {
+  @apply bg-transparent text-fg ring-1 ring-line hover:ring-muted;
+}
+@utility btn-night {
+  @apply bg-night text-white hover:opacity-90;
+}
+@utility btn-ghost {
+  @apply text-muted hover:bg-hover hover:text-fg;
+}
+
+/* Round icon button (menu, close, socials) */
+@utility icon-btn {
+  @apply grid size-10 shrink-0 place-items-center rounded-full transition-colors outline-none focus-visible:ring-2 focus-visible:ring-brand;
+  & svg {
+    @apply size-5;
   }
 }
 
-@layer components {
-  /* Ticket silhouette: side notches cut out with a mask so it works on any background. */
-  .ticket {
-    --notch: 14px;
-    --notch-y: 50%;
-    mask:
-      radial-gradient(circle var(--notch) at 0 var(--notch-y), #0000 98%, #000) left / 51% 100% no-repeat,
-      radial-gradient(circle var(--notch) at 100% var(--notch-y), #0000 98%, #000) right / 51% 100% no-repeat;
-  }
-
-  /* Horizontal ticket (notches top and bottom), used for stubs stacked side by side. */
-  .ticket-x {
-    --notch: 14px;
-    --notch-x: 50%;
-    mask:
-      radial-gradient(circle var(--notch) at var(--notch-x) 0, #0000 98%, #000) top / 100% 51% no-repeat,
-      radial-gradient(circle var(--notch) at var(--notch-x) 100%, #0000 98%, #000) bottom / 100% 51% no-repeat;
-  }
-
-  /* Torn-ticket bottom edge: a row of semicircle bites along the bottom. */
-  .torn-bottom {
-    mask: radial-gradient(circle 9px at 50% 100%, #0000 97%, #000) 0 0 / 24px 100% repeat-x;
-  }
-  .torn-top {
-    mask: radial-gradient(circle 9px at 50% 0, #0000 97%, #000) 0 0 / 24px 100% repeat-x;
-  }
+@utility badge {
+  @apply inline-flex items-center rounded-full bg-brand px-1.5 py-0.5 type-eyebrow text-white;
+}
+@utility badge-lg {
+  @apply px-3 py-1;
 }
 
-.perf-x {
-  background-image: linear-gradient(to right, currentColor 50%, transparent 0);
-  background-size: 10px 2px;
-  background-repeat: repeat-x;
-  height: 2px;
+@utility card {
+  @apply rounded-lg bg-white p-7 ring-1 ring-line;
+}
+@utility card-dark {
+  @apply rounded-lg bg-night p-6 text-white;
+}
+@utility panel {
+  @apply relative overflow-hidden rounded-xl bg-mist;
 }
 
-.perf-y {
+/* Soft brand-blue light. Size and position it with layout utilities. */
+@utility glow {
+  @apply pointer-events-none absolute rounded-full bg-brand opacity-30 blur-glow;
+}
+@utility fade-bottom {
+  @apply pointer-events-none absolute inset-x-0 bottom-0 h-24 bg-linear-to-t from-mist to-transparent;
+}
+
+/* Ticket silhouette: side notches cut out with a mask so it works on any background. */
+@utility ticket {
+  --notch: 14px;
+  --notch-y: 50%;
+  mask:
+    radial-gradient(circle var(--notch) at 0 var(--notch-y), #0000 98%, #000) left / 51% 100% no-repeat,
+    radial-gradient(circle var(--notch) at 100% var(--notch-y), #0000 98%, #000) right / 51% 100% no-repeat;
+}
+/* Torn-ticket edges: a row of semicircle bites. */
+@utility torn-bottom {
+  mask: radial-gradient(circle 9px at 50% 100%, #0000 97%, #000) 0 0 / 24px 100% repeat-x;
+}
+@utility torn-top {
+  mask: radial-gradient(circle 9px at 50% 0, #0000 97%, #000) 0 0 / 24px 100% repeat-x;
+}
+/* Vertical perforation line */
+@utility perf-y {
+  width: 2px;
   background-image: linear-gradient(to bottom, currentColor 50%, transparent 0);
   background-size: 2px 10px;
   background-repeat: repeat-y;
-  width: 2px;
 }
-
-.grain::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  opacity: 0.08;
-  mix-blend-mode: overlay;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+@utility perf-x {
+  height: 2px;
+  background-image: linear-gradient(to right, currentColor 50%, transparent 0);
+  background-size: 10px 2px;
+  background-repeat: repeat-x;
 }
-
-.no-scrollbar {
+/* Film grain over dark and brand surfaces */
+@utility grain {
+  &::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    opacity: 0.08;
+    mix-blend-mode: overlay;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+}
+@utility no-scrollbar {
   scrollbar-width: none;
+  &::-webkit-scrollbar {
+    display: none;
+  }
 }
-.no-scrollbar::-webkit-scrollbar {
-  display: none;
+
+/* ------------------------------------------------------------ components */
+
+@layer components {
+  /* Inline icon. Containers (btn, event-cta, …) resize it. */
+  .icon {
+    @apply size-4 shrink-0;
+  }
+  .icon-flip {
+    @apply rotate-180;
+  }
+
+  /* Logo */
+  .logo {
+    @apply flex items-center gap-2;
+  }
+  .logo-text {
+    @apply font-display text-logo font-bold tracking-tight;
+  }
+
+  /* Nav: transparent and aligned with the page at the top; a navy pill once scrolled. */
+  .nav {
+    @apply mx-auto flex items-center justify-between gap-2 rounded-full py-1.5 transition-[max-width,padding,background-color] duration-300 ease-out;
+  }
+  .nav-docked {
+    /* The hero's text column: page width minus its side padding, so logo and CTA line up with it. */
+    max-width: calc(var(--container-page) - 3rem);
+    @apply px-0;
+  }
+  .nav-pill {
+    @apply max-w-nav bg-night pr-1.5 pl-4 text-white sm:pl-5;
+  }
+  /* Same height as the nav's Create Event button (btn-sm), so the button sets the bar's height
+     and the pill wraps it with an even inset. */
+  .nav-link {
+    @apply flex h-8 items-center gap-1.5 rounded-full px-3 text-body whitespace-nowrap transition-colors;
+  }
+  .on-dark {
+    @apply text-on-dark-muted hover:bg-glass hover:text-white;
+  }
+  .on-light {
+    @apply text-muted hover:bg-hover hover:text-fg;
+  }
+  .menu-sheet {
+    @apply fixed inset-x-0 top-0 z-50 rounded-b-lg bg-white px-page pt-4 pb-5 text-fg outline-none data-[state=closed]:animate-sheet-up data-[state=open]:animate-sheet-down;
+  }
+  .menu-overlay {
+    @apply fixed inset-0 z-50 bg-scrim data-[state=closed]:animate-fade-out data-[state=open]:animate-fade-in;
+  }
+  .menu-link {
+    @apply flex items-center justify-between rounded-md px-2 py-3.5 type-subheading hover:bg-hover;
+  }
+
+  /* Hero */
+  /* Fills the first screen on desktop; on phones it leaves a sliver so the next section peeks in.
+     svh = the viewport with the browser bars showing, so it doesn't jump when they hide. */
+  .hero {
+    @apply torn-bottom relative isolate flex min-h-[92svh] items-center overflow-hidden bg-night pt-38 pb-24 text-white sm:pt-40 sm:pb-28 lg:min-h-svh lg:pb-36;
+  }
+  .hero-media {
+    @apply absolute inset-0 -z-20 size-full object-cover;
+    /* Mobile shows the dark top of the shot behind the headline; desktop centers on the crowd. */
+    object-position: 50% 30%;
+    @variant lg {
+      object-position: 50% 68%;
+    }
+  }
+  /* Readability + brand wash over the photo */
+  .hero-scrim {
+    @apply absolute inset-0 -z-10;
+    background:
+      linear-gradient(color-mix(in srgb, var(--color-brand) 25%, transparent) 0 0),
+      linear-gradient(
+        to bottom,
+        color-mix(in srgb, var(--color-night) 80%, transparent),
+        color-mix(in srgb, var(--color-night) 30%, transparent),
+        color-mix(in srgb, var(--color-night) 85%, transparent)
+      );
+    background-blend-mode: color, normal;
+    @variant lg {
+      background:
+        linear-gradient(color-mix(in srgb, var(--color-brand) 25%, transparent) 0 0),
+        linear-gradient(
+          to right,
+          color-mix(in srgb, var(--color-night) 90%, transparent),
+          color-mix(in srgb, var(--color-night) 50%, transparent),
+          color-mix(in srgb, var(--color-night) 20%, transparent)
+        );
+      background-blend-mode: color, normal;
+    }
+  }
+  .hero-title > span {
+    @apply block lg:whitespace-nowrap; /* one sentence per line on desktop */
+  }
+
+
+  /* Horizontal snap row of cards */
+  .rail {
+    @apply no-scrollbar flex snap-x snap-mandatory scroll-px-4 gap-4 overflow-x-auto px-page pt-2 pb-8 outline-none focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-brand sm:scroll-px-6 sm:gap-5;
+    /* Auto margins centre a short list; once it overflows they collapse to 0. */
+    & > :first-child {
+      margin-inline-start: auto;
+    }
+    & > :last-child {
+      margin-inline-end: auto;
+    }
+  }
+  .rail-controls {
+    @apply pointer-events-none absolute inset-x-0 top-[38%] hidden justify-between px-3 sm:flex;
+  }
+  .rail-btn {
+    /* `!` beats btn's disabled:opacity-50 (utilities layer outranks components). */
+    @apply pointer-events-auto transition-opacity disabled:opacity-0!;
+  }
+
+  /* Event card: poster on top, a dotted ticket stub below */
+  .event-card {
+    @apply relative flex w-[78%] max-w-75 shrink-0 snap-start flex-col sm:w-75;
+  }
+  .event-poster {
+    @apply relative aspect-4/5 overflow-hidden rounded-t-lg bg-mist;
+    & img {
+      @apply object-cover transition-transform duration-500;
+    }
+  }
+  .event-card:hover .event-poster img {
+    @apply scale-105;
+  }
+  .event-stub {
+    @apply relative px-6 pt-5 pb-6;
+  }
+  .event-meta {
+    @apply mt-1 flex items-center gap-1 text-small text-muted tabular-nums;
+    & svg {
+      @apply size-3 shrink-0;
+    }
+  }
+  .event-cta {
+    @apply flex items-center gap-1.5 rounded-full bg-brand px-4 py-1.5 text-small text-white transition-colors;
+    & svg {
+      @apply size-3.5;
+    }
+  }
+  .event-card:hover .event-cta {
+    @apply bg-brand-deep;
+  }
+  /* Date sticker: hand-placed look, each at a slight angle and in its own colour */
+  .sticker {
+    @apply absolute top-4 left-4 rounded-sm px-3 py-1.5 text-center text-night;
+  }
+  .event-card:nth-child(4n + 1) .sticker {
+    @apply -rotate-6 bg-sticker-amber;
+  }
+  .event-card:nth-child(4n + 2) .sticker {
+    @apply rotate-3 bg-sticker-lime;
+  }
+  .event-card:nth-child(4n + 3) .sticker {
+    @apply -rotate-3 bg-sticker-pink;
+  }
+  .event-card:nth-child(4n + 4) .sticker {
+    @apply rotate-6 bg-sticker-sky;
+  }
+  .ticket-outline {
+    @apply pointer-events-none absolute inset-0 size-full overflow-visible text-perf;
+  }
+
+  /* Phone frame around a real app screenshot */
+  .device {
+    @apply rounded-device bg-night p-2.5 ring-1 ring-line-dark;
+  }
+  .device-screen {
+    @apply overflow-hidden rounded-screen bg-white;
+  }
+  .device-status {
+    @apply relative flex h-10 items-center justify-between px-7 text-small text-night;
+  }
+  .device-island {
+    @apply absolute top-2.5 left-1/2 h-6 w-24 -translate-x-1/2 rounded-full bg-night;
+  }
+  .device-shot {
+    @apply relative;
+    aspect-ratio: 780 / 1407; /* the app screenshots */
+    & img {
+      @apply object-cover object-top transition-opacity duration-500;
+    }
+  }
+
+  /* How it works */
+  .how-panel {
+    @apply panel h-110 sm:h-150;
+  }
+  .how-phone {
+    @apply absolute top-12 left-1/2 w-70 -translate-x-1/2 sm:w-78;
+  }
+  .step {
+    @apply relative flex w-full gap-5 overflow-hidden rounded-md px-6 py-5 text-left text-fg transition-colors hover:bg-paper;
+  }
+  .step-number {
+    @apply type-number text-heading text-brand-faint;
+  }
+  .step-body {
+    @apply mt-1 block text-body text-muted;
+  }
+  .step[aria-pressed="true"] {
+    @apply bg-brand text-white;
+    & .step-number {
+      @apply text-on-dark-faint;
+    }
+    & .step-body {
+      @apply text-on-dark-muted;
+    }
+  }
+  .step-progress {
+    @apply absolute inset-x-0 bottom-0 h-1 origin-left animate-progress bg-on-dark-faint;
+  }
+
+  /* Affiliates */
+  .aff-card {
+    @apply flex h-full flex-col overflow-hidden rounded-xl bg-glass;
+  }
+  .aff-shot {
+    @apply relative mx-6 mt-auto h-52 overflow-hidden rounded-t-lg bg-white ring-1 ring-line-dark sm:mx-7 sm:h-60;
+    & img {
+      @apply object-cover object-top;
+    }
+    &::after {
+      content: "";
+      @apply absolute inset-x-0 bottom-0 h-16 bg-linear-to-t from-scrim to-transparent;
+    }
+  }
+
+  /* Accordion: each item is a soft card */
+  /* Accordion: plain rows on the page background, separated by hairlines */
+  .accordion {
+    @apply divide-y divide-line border-y border-line;
+  }
+  .accordion-trigger {
+    @apply flex flex-1 items-center justify-between gap-4 py-5 text-left text-lead outline-none focus-visible:ring-2 focus-visible:ring-brand;
+  }
+  .accordion-icon {
+    @apply grid size-9 shrink-0 place-items-center rounded-full text-fg ring-1 ring-line transition-[transform,background-color,color] duration-200;
+    & svg {
+      @apply size-4;
+    }
+  }
+  .accordion-trigger:hover .accordion-icon,
+  .accordion-trigger[data-state="open"] .accordion-icon {
+    @apply bg-brand text-white ring-brand;
+  }
+  .accordion-trigger[data-state="open"] .accordion-icon {
+    @apply rotate-45;
+  }
+  /* Answers stay in the HTML (crawlable); grid rows 0fr <-> 1fr animates the collapse both ways. */
+  .accordion-content {
+    @apply grid transition-[grid-template-rows,visibility] duration-300 ease-out motion-reduce:transition-none data-[state=closed]:invisible data-[state=closed]:grid-rows-[0fr] data-[state=open]:grid-rows-[1fr];
+  }
+  .accordion-body {
+    @apply max-w-copy pb-6 text-lead text-muted;
+  }
+
+  /* Final CTA: a big brand-blue ticket with a QR stub */
+  .cta-ticket {
+    @apply ticket grain relative grid overflow-hidden rounded-xl bg-brand text-white md:grid-cols-[1fr_auto];
+    --notch: 22px;
+  }
+  .cta-stub {
+    @apply relative hidden flex-col items-center justify-center gap-4 px-14 md:flex;
+  }
+  .cta-qr {
+    @apply rounded-md bg-white p-3 text-night;
+  }
+
+  /* Footer */
+  .footer {
+    @apply torn-top overflow-hidden bg-night pt-20 text-white;
+  }
+  .footer-link {
+    @apply text-on-dark-muted transition-colors hover:text-white;
+  }
+  .social {
+    @apply icon-btn bg-glass text-white hover:bg-brand;
+  }
+  /* The wordmark stretched to the container width, its base cropped by the page's bottom edge. */
+  .wordmark {
+    @apply block w-full translate-y-[14%];
+    & text {
+      @apply fill-brand font-display font-black uppercase;
+      font-size: 172px; /* in the SVG's own units, sized to its 1000-wide viewBox */
+    }
+  }
 }
+
+/* ---------------------------------------------------------------- motion */
 
 @media (prefers-reduced-motion: reduce) {
   *,
@@ -247,5 +671,10 @@ html {
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
     scroll-behavior: auto !important;
+  }
+  .animate-progress,
+  .animate-sheet-down,
+  .animate-sheet-up {
+    animation: none;
   }
 }

@@ -18,8 +18,8 @@ export default function NotFound() {
   return (
     <>
       <Nav overHero={false} />
-      <main className="mx-auto max-w-2xl px-page pt-40 pb-28 text-center sm:pt-48">
-        <h1 className="font-display text-[clamp(2.2rem,5.5vw,3.6rem)] leading-[0.95] font-black tracking-[-0.03em] uppercase">
+      <main className="mx-auto max-w-copy px-page pt-40 pb-28 text-center sm:pt-48">
+        <h1 className="type-display-caps">
           This page <span className="text-brand">isn&apos;t here.</span>
         </h1>
         <p className="mt-6 text-lead text-muted">

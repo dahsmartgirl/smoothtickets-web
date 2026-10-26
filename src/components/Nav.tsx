@@ -15,7 +15,7 @@ const links = [
 ];
 
 function EarnBadge({ children }: { children: React.ReactNode }) {
-  return <span className="rounded-full bg-lime px-1.5 py-0.5 text-[9px] font-bold tracking-wide text-night uppercase">{children}</span>;
+  return <span className="badge">{children}</span>;
 }
 
 /** `overHero`: the page opens on the dark hero photo, so the docked bar uses white text. */
@@ -34,25 +34,18 @@ export function Nav({ overHero = true }: { overHero?: boolean }) {
     return () => io.disconnect();
   }, []);
 
-  const subtle = onDark ? "text-white/85 hover:bg-white/10 hover:text-white" : "text-muted hover:bg-fg/5 hover:text-fg";
+  const tone = onDark ? "on-dark" : "on-light";
 
   return (
     <>
       <div ref={sentinel} aria-hidden className="pointer-events-none absolute inset-x-0 top-0 h-6" />
       <header className="fixed inset-x-0 top-4 z-50 px-page">
-        {/* Docked width = the hero's text column (max-w-6xl minus its 1.5rem side padding), so the logo and CTA line up with it. */}
-        <nav
-          className={`mx-auto flex items-center justify-between gap-2 rounded-full py-1.5 transition-[max-width,padding,background-color] duration-300 ease-out ${
-            docked
-              ? `max-w-[calc(72rem-3rem)] px-0 ${onDark ? "text-white" : "text-fg"}`
-              : "max-w-4xl bg-night-2 pr-1.5 pl-4 text-white sm:pl-5"
-          }`}
-        >
+        <nav className={`nav ${docked ? `nav-docked ${onDark ? "text-white" : "text-fg"}` : "nav-pill"}`}>
           <Logo onDark={onDark} />
-          <ul className="hidden items-center gap-0.5 text-sm md:flex">
+          <ul className="hidden items-center gap-0.5 md:flex">
             {links.map((l) => (
               <li key={l.label}>
-                <a href={l.href} className={`flex items-center gap-1.5 rounded-full px-3 py-2 whitespace-nowrap transition-colors ${subtle}`}>
+                <a href={l.href} className={`nav-link ${tone}`}>
                   {l.label}
                   {l.badge && <EarnBadge>{l.badge}</EarnBadge>}
                 </a>
@@ -60,7 +53,7 @@ export function Nav({ overHero = true }: { overHero?: boolean }) {
             ))}
           </ul>
           <div className="flex items-center gap-1">
-            <a href={`${APP_URL}/auth/login`} className={`hidden rounded-full px-3 py-2 text-sm whitespace-nowrap transition-colors md:block ${subtle}`}>
+            <a href={`${APP_URL}/auth/login`} className={`nav-link hidden md:flex ${tone}`}>
               Log in
             </a>
             <Button asChild size="sm" className="hidden md:inline-flex">
@@ -71,36 +64,30 @@ export function Nav({ overHero = true }: { overHero?: boolean }) {
             <Sheet>
               <SheetTrigger
                 aria-label="Open menu"
-                className={`grid size-10 place-items-center rounded-full transition-colors outline-none focus-visible:ring-2 focus-visible:ring-brand md:hidden ${subtle}`}
+                className={`icon-btn md:hidden ${tone}`}
               >
-                <HugeiconsIcon icon={Menu01Icon} size={20} strokeWidth={2} aria-hidden />
+                <HugeiconsIcon icon={Menu01Icon} strokeWidth={2} aria-hidden />
               </SheetTrigger>
-              <SheetContent
-                aria-describedby={undefined}
-                className="rounded-b-3xl px-page pt-4 pb-5"
-              >
+              <SheetContent aria-describedby={undefined}>
                 <SheetTitle className="sr-only">Menu</SheetTitle>
                 <div className="flex items-center justify-between py-1.5">
                   <Logo />
                   <SheetClose
                     aria-label="Close menu"
-                    className="grid size-10 place-items-center rounded-full text-muted outline-none hover:bg-fg/5 hover:text-fg focus-visible:ring-2 focus-visible:ring-brand"
+                    className="icon-btn on-light"
                   >
-                    <HugeiconsIcon icon={Cancel01Icon} size={20} strokeWidth={2} aria-hidden />
+                    <HugeiconsIcon icon={Cancel01Icon} strokeWidth={2} aria-hidden />
                   </SheetClose>
                 </div>
                 <ul className="mt-3">
                   {links.map((l) => (
                     <li key={l.label}>
-                      <a
-                        href={l.href}
-                        className="flex items-center justify-between rounded-2xl px-2 py-3.5 font-display text-base font-bold hover:bg-fg/5"
-                      >
+                      <a href={l.href} className="menu-link">
                         <span className="flex items-center gap-2">
                           {l.label}
                           {l.badge && <EarnBadge>{l.badge}</EarnBadge>}
                         </span>
-                        <Arrow className="size-4 text-muted" />
+                        <Arrow className="icon text-muted" />
                       </a>
                     </li>
                   ))}

@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Phone } from "@/components/Devices";
+import { AppPhone } from "@/components/Devices";
 import { Footer } from "@/components/FinalCta";
 import { Nav } from "@/components/Nav";
 import { Arrow } from "@/components/brand";
@@ -46,13 +46,12 @@ export default function AffiliatesPage() {
     <>
       <Nav overHero={false} />
       <main className="overflow-x-clip pt-32 sm:pt-40">
-        <section className="mx-auto grid max-w-6xl items-center gap-14 px-page lg:grid-cols-[1.1fr_1fr]">
+        <section className="container-page grid items-center gap-14 lg:grid-cols-2">
           <div>
-            <h1 className="font-display text-[clamp(2.2rem,5.5vw,4.2rem)] leading-[0.95] font-black tracking-[-0.03em] uppercase">
-              Let more people <span className="text-brand">sell your</span>{" "}
-              tickets.
+            <h1 className="type-display-caps">
+              Let more people <span className="text-brand">sell your</span> tickets.
             </h1>
-            <p className="mt-6 max-w-lg text-lead text-muted">{description}</p>
+            <p className="mt-6 max-w-copy text-lead text-muted">{description}</p>
             <div className="mt-9 flex flex-wrap gap-3">
               <Button asChild>
                 <a href={`${APP_URL}/auth/signup`}>
@@ -65,33 +64,33 @@ export default function AffiliatesPage() {
                 </a>
               </Button>
             </div>
-            <p className="mt-5 text-sm text-muted">
+            <p className="mt-5 text-body text-muted">
               Already promoting?{" "}
-              <a href={`${APP_URL}/affiliate/auth/login`} className="font-semibold text-brand-deep hover:underline">
+              <a href={`${APP_URL}/affiliate/auth/login`} className="link">
                 Affiliate login
               </a>
             </p>
           </div>
-          <div className="relative mx-auto flex w-full max-w-md items-start justify-center gap-4">
-            <div className="absolute inset-10 -z-10 rounded-full bg-brand/20 blur-[90px]" />
-            <Phone {...screens[0]} priority className="w-1/2 -rotate-[3deg]" />
-            <Phone {...screens[1]} className="mt-16 w-1/2 rotate-[3deg]" />
+          <div className="relative mx-auto flex w-full max-w-narrow items-start justify-center gap-4">
+            <div className="glow inset-10 -z-10" />
+            <AppPhone screens={[screens[0]]} priority className="w-1/2 -rotate-3" />
+            <AppPhone screens={[screens[1]]} className="mt-16 w-1/2 rotate-3" />
           </div>
         </section>
 
-        <section aria-label="Questions about Smooth Affiliates" className="mx-auto mt-28 max-w-6xl px-page">
+        <section aria-label="Questions about Smooth Affiliates" className="container-page section-top">
           <div className="grid gap-5 md:grid-cols-2">
             {answers.map(({ q, a }) => (
-              <article key={q} className="rounded-3xl bg-surface p-7 ring-1 ring-line">
-                <h2 className="font-display text-lg font-bold">{q}</h2>
+              <article key={q} className="card">
+                <h2 className="type-heading">{q}</h2>
                 <p className="mt-3 text-lead text-muted">{a}</p>
               </article>
             ))}
           </div>
         </section>
 
-        <section className="mx-auto max-w-6xl px-page py-24 text-center">
-          <h2 className="font-display text-2xl font-black tracking-tight uppercase sm:text-4xl">Ready to grow your sales?</h2>
+        <section className="container-page section text-center">
+          <h2 className="type-title">Ready to grow your sales?</h2>
           <div className="mt-8 flex flex-wrap justify-center gap-3">
             <Button asChild>
               <a href={`${APP_URL}/auth/signup`}>

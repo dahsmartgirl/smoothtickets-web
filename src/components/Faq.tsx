@@ -14,7 +14,7 @@ const faqs: [string, React.ReactNode][] = [
   [
     "How do I create an event?",
     <>
-      <a href={`${APP_URL}/auth/signup`} className="font-semibold text-brand-deep hover:underline">
+      <a href={`${APP_URL}/auth/signup`} className="link">
         Create an account
       </a>
       , tap Create Event on your dashboard, add your event details and ticket types, then share your event&apos;s public link.
@@ -36,7 +36,7 @@ const faqs: [string, React.ReactNode][] = [
     "How do affiliates work?",
     <>
       Affiliates share your event link and earn a commission, which you set per ticket type, on every ticket they sell.{" "}
-      <a href="/affiliates" className="font-semibold text-brand-deep hover:underline">
+      <a href="/affiliates" className="link">
         Learn about Smooth Affiliates
       </a>
       .
@@ -46,21 +46,21 @@ const faqs: [string, React.ReactNode][] = [
 
 export function Faq() {
   return (
-    <section id="faq" aria-labelledby="faq-title" className="scroll-mt-24 pt-28">
-      <div className="mx-auto grid max-w-6xl gap-10 px-page lg:grid-cols-[1fr_1.6fr] lg:gap-16">
+    <section id="faq" aria-labelledby="faq-title" className="section-top scroll-mt-24">
+      <div className="container-page layout-aside">
         <div className="lg:sticky lg:top-28 lg:self-start">
-          <h2 id="faq-title" className="font-display text-3xl leading-[0.95] font-black tracking-tight uppercase sm:text-5xl">
-            Questions, <span className="text-brand">answered.</span>
+          <h2 id="faq-title" className="type-title">
+            Questions, answered
           </h2>
-          <p className="mt-5 max-w-sm text-lead text-muted">Everything organisers usually ask before their first event.</p>
+          <p className="mt-5 max-w-narrow text-lead text-muted">Everything organisers usually ask before their first event.</p>
 
-          <div className="mt-8 max-w-sm rounded-3xl bg-night p-6 text-white">
-            <span className="grid size-10 place-items-center rounded-full bg-white/10">
-              <HugeiconsIcon icon={Mail01Icon} size={18} strokeWidth={2} aria-hidden />
+          <div className="mt-8 max-w-narrow card-dark">
+            <span className="icon-btn bg-glass">
+              <HugeiconsIcon icon={Mail01Icon} strokeWidth={2} aria-hidden />
             </span>
-            <p className="mt-4 font-display text-base font-bold">Still curious?</p>
-            <p className="mt-1 text-sm leading-relaxed text-white/65">Ask us anything about running your event on Smooth Tickets.</p>
-            <Button asChild variant="lime" size="sm" className="mt-5">
+            <p className="mt-4 type-subheading">Still curious?</p>
+            <p className="mt-1 text-body text-on-dark-muted">Ask us anything about running your event on Smooth Tickets.</p>
+            <Button asChild size="sm" className="mt-5">
               <a href="mailto:hello@smooth.africa">
                 Email hello@smooth.africa <Arrow />
               </a>
@@ -72,7 +72,7 @@ export function Faq() {
           {faqs.map(([q, a]) => (
             <AccordionItem key={q} value={q}>
               <AccordionTrigger>{q}</AccordionTrigger>
-              <AccordionContent className="max-w-2xl text-lead text-muted">{a}</AccordionContent>
+              <AccordionContent>{a}</AccordionContent>
             </AccordionItem>
           ))}
         </Accordion>

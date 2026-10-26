@@ -17,8 +17,8 @@ export default function PricingPage() {
   return (
     <>
       <Nav overHero={false} />
-      <main className="mx-auto max-w-3xl px-page pt-36 pb-24 sm:pt-44">
-        <h1 className="font-display text-[clamp(2.2rem,5.5vw,3.8rem)] leading-[0.95] font-black tracking-[-0.03em] uppercase">
+      <main className="mx-auto max-w-copy px-page pt-36 pb-24 sm:pt-44">
+        <h1 className="type-display-caps">
           No surprises <span className="text-brand">at checkout.</span>
         </h1>
         <p className="mt-6 text-lead text-muted">
@@ -26,18 +26,18 @@ export default function PricingPage() {
           amount before they pay.
         </p>
 
-        <figure className="mt-10 rounded-3xl bg-surface p-7 ring-1 ring-line">
-          <figcaption className="text-sm font-semibold text-muted">Example: a ₦3,000 ticket on a live event page</figcaption>
+        <figure className="mt-10 card">
+          <figcaption className="text-body text-muted">Example: a ₦3,000 ticket on a live event page</figcaption>
           <dl className="mt-5 space-y-3 tabular-nums">
             <div className="flex justify-between">
               <dt>Ticket</dt>
-              <dd className="font-semibold">₦3,000</dd>
+              <dd>₦3,000</dd>
             </div>
             <div className="flex justify-between text-muted">
               <dt>Service fee</dt>
               <dd>₦150</dd>
             </div>
-            <div className="flex justify-between border-t border-line pt-3 font-display text-lg font-extrabold">
+            <div className="flex justify-between border-t border-line pt-3 type-heading">
               <dt>Buyer pays</dt>
               <dd>₦3,150</dd>
             </div>
@@ -46,7 +46,7 @@ export default function PricingPage() {
 
         <p className="mt-10 text-lead text-muted">
           Questions about fees or payouts for your event?{" "}
-          <a href="mailto:hello@smooth.africa" className="font-semibold text-brand-deep hover:underline">
+          <a href="mailto:hello@smooth.africa" className="link">
             hello@smooth.africa
           </a>
         </p>

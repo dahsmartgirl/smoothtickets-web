@@ -40,7 +40,15 @@ async function getLocation(slug: string): Promise<string | null> {
   }
 }
 
-export async function getUpcomingEvents(limit = 10, { withLocation = false } = {}): Promise<EventSummary[]> {
+/** "The Untapped Experience {Lautech Edition}" -> "the untapped experience" */
+function seriesName(name: string) {
+  return name.replace(/\{[^}]*\}/g, "").trim().toLowerCase();
+}
+
+export async function getUpcomingEvents(
+  limit = 10,
+  { withLocation = false, onePerSeries = false } = {},
+): Promise<EventSummary[]> {
   try {
     const res = await fetch(`${API_URL}/ticket/whitelist/discovery`, {
       next: { revalidate: 300 },
@@ -61,6 +69,13 @@ export async function getUpcomingEvents(limit = 10, { withLocation = false } = {
         if (startedA !== startedB) return startedA ? 1 : -1;
         return sa - sb;
       })
+      // One card per series: editions like "The Untapped Experience {UI}" share a poster and
+      // truncate to the same title, so they read as duplicates. Keep the soonest edition.
+      // Off by default: the sitemap still needs every edition's page.
+      .filter(
+        (e, i, all) =>
+          !onePerSeries || all.findIndex((o) => seriesName(o.name) === seriesName(e.name)) === i,
+      )
       .slice(0, limit)
       .map((e) => {
         const tiers = (e.tickets ?? [])

@@ -3,29 +3,25 @@ import { cva, type VariantProps } from "class-variance-authority";
 import type { ComponentProps } from "react";
 import { cn } from "@/lib/utils";
 
-// shadcn/ui Button, restyled with the Smooth Tickets tokens.
-const buttonVariants = cva(
-  "inline-flex shrink-0 items-center justify-center gap-2 rounded-full font-semibold whitespace-nowrap transition-colors outline-none focus-visible:ring-2 focus-visible:ring-brand-soft focus-visible:ring-offset-2 focus-visible:ring-offset-transparent disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0",
-  {
-    variants: {
-      variant: {
-        default: "bg-brand text-white hover:bg-[#0068d9]",
-        outline: "bg-surface text-fg ring-1 ring-line hover:bg-surface-2",
-        // for photos and always-dark sections
-        glass: "bg-white/10 text-white ring-1 ring-white/25 backdrop-blur-md hover:bg-white/20",
-        lime: "bg-lime text-night hover:bg-[#d6ff5c]",
-        night: "bg-night text-white hover:bg-night-3",
-        ghost: "text-muted hover:bg-fg/5 hover:text-fg",
-      },
-      size: {
-        default: "h-10 px-5 text-sm",
-        sm: "h-9 px-4 text-[13px]",
-        icon: "size-10",
-      },
+// shadcn/ui Button. Every style lives in globals.css (btn, btn-*); this only maps props to class names.
+const buttonVariants = cva("btn", {
+  variants: {
+    variant: {
+      default: "btn-primary",
+      outline: "btn-outline",
+      glass: "btn-glass",
+      line: "btn-line",
+      night: "btn-night",
+      ghost: "btn-ghost",
     },
-    defaultVariants: { variant: "default", size: "default" },
+    size: {
+      default: "",
+      sm: "btn-sm",
+      icon: "btn-icon",
+    },
   },
-);
+  defaultVariants: { variant: "default", size: "default" },
+});
 
 function Button({
   className,

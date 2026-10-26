@@ -37,50 +37,43 @@ export function HowItWorks() {
   const { active, playing, select } = useCycle(steps.length, ref);
 
   return (
-    <section ref={ref} id="how" aria-labelledby="how-title" className="relative scroll-mt-24 py-28">
-      <div className="mx-auto grid max-w-6xl items-center gap-14 px-page lg:grid-cols-[1fr_1fr]">
-        <div>
-          <Reveal>
-            <h2 id="how-title" className="font-display text-3xl leading-[0.95] font-black tracking-tight uppercase sm:text-5xl">
-              Everything you need. <span className="text-brand">Nothing complicated.</span>
-            </h2>
-          </Reveal>
+    <section ref={ref} id="how" aria-labelledby="how-title" className="section relative scroll-mt-24">
+      {/* Mobile order: heading, phone, steps, so the screen sits next to the step it shows.
+          Desktop: heading and steps on the left, phone spanning both rows on the right. */}
+      <div className="container-page grid gap-10 lg:grid-cols-2 lg:gap-x-14">
+        <Reveal className="lg:self-end">
+          <h2 id="how-title" className="type-title">
+            Everything you need. Nothing complicated.
+          </h2>
+        </Reveal>
 
-          <ol className="mt-10 space-y-2" aria-label="How it works">
+        <Reveal delay={0.1} className="lg:col-start-2 lg:row-span-2 lg:row-start-1 lg:self-center">
+          <div className="how-panel">
+            <div className="glow top-1/4 left-1/2 size-80 -translate-x-1/2" />
+            <AppPhone screens={steps} active={active} className="how-phone" />
+            <div className="fade-bottom" />
+          </div>
+        </Reveal>
+
+        <div className="lg:self-start">
+          <ol className="space-y-2" aria-label="How it works">
             {steps.map((s, i) => {
               const on = i === active;
               return (
                 <li key={s.title}>
-                  <button
-                    type="button"
-                    aria-pressed={on}
-                    onClick={() => select(i)}
-                    className={`relative flex w-full gap-5 overflow-hidden rounded-2xl px-6 py-5 text-left transition-colors ${
-                      on ? "bg-brand text-white" : "text-fg hover:bg-surface"
-                    }`}
-                  >
-                    <span className={`font-display text-xl font-black ${on ? "text-white/50" : "text-brand/40"}`}>0{i + 1}</span>
+                  <button type="button" aria-pressed={on} onClick={() => select(i)} className="step">
+                    <span className="step-number">0{i + 1}</span>
                     <span>
-                      <span className="block font-display text-base font-bold">{s.title}</span>
-                      <span className={`mt-1 block text-sm leading-relaxed ${on ? "text-white/85" : "text-muted"}`}>{s.body}</span>
+                      <span className="block type-subheading">{s.title}</span>
+                      <span className="step-body">{s.body}</span>
                     </span>
-                    {on && playing && (
-                      <span key={active} className="absolute inset-x-0 bottom-0 h-1 origin-left animate-progress bg-white/40" />
-                    )}
+                    {on && playing && <span key={active} className="step-progress" />}
                   </button>
                 </li>
               );
             })}
           </ol>
         </div>
-
-        <Reveal delay={0.1}>
-          <div className="relative h-[520px] overflow-hidden rounded-[36px] bg-surface-2 sm:h-[600px]">
-            <div className="absolute top-1/4 left-1/2 size-80 -translate-x-1/2 rounded-full bg-brand/25 blur-[80px]" />
-            <AppPhone screens={steps} active={active} className="absolute top-12 left-1/2 w-[280px] -translate-x-1/2 sm:w-[310px]" />
-            <div className="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-surface-2 to-transparent" />
-          </div>
-        </Reveal>
       </div>
     </section>
   );
