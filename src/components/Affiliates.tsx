@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
+import { APP_URL } from "@/lib/events";
 import { Arrow } from "./brand";
 import { Button } from "./ui/button";
 import { Reveal } from "./Reveal";
@@ -25,8 +26,11 @@ const points = [
   },
 ];
 
-/** Organiser-facing affiliate spotlight: three static cards, each with the real screen behind it. */
-export function Affiliates() {
+/**
+ * Organiser-facing affiliate spotlight: three static cards, each with the real screen behind it.
+ * `onAffiliatesPage`: the button creates an event instead of linking back to /affiliates.
+ */
+export function Affiliates({ onAffiliatesPage = false }: { onAffiliatesPage?: boolean }) {
   return (
     <section id="affiliates" aria-labelledby="affiliates-title" className="section grain relative scroll-mt-24 overflow-hidden bg-night text-white">
       <div className="glow -top-40 -left-40 size-128" />
@@ -44,9 +48,15 @@ export function Affiliates() {
               handle affiliate payouts automatically.
             </p>
             <Button asChild className="mt-6">
-              <Link href="/affiliates">
-                Explore Affiliates <Arrow />
-              </Link>
+              {onAffiliatesPage ? (
+                <a href={`${APP_URL}/auth/signup`}>
+                  Create an Event <Arrow />
+                </a>
+              ) : (
+                <Link href="/affiliates">
+                  Explore Affiliates <Arrow />
+                </Link>
+              )}
             </Button>
           </div>
         </Reveal>

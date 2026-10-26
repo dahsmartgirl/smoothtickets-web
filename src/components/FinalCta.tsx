@@ -40,8 +40,6 @@ export function FinalCta() {
   );
 }
 
-const CONTACT_EMAIL = "hello@smooth.africa";
-
 type FooterLink = { label: string; href: string; external?: boolean };
 
 const columns: { title: string; links: FooterLink[] }[] = [
@@ -65,7 +63,7 @@ const columns: { title: string; links: FooterLink[] }[] = [
     title: "Company",
     links: [
       { label: "About us", href: "https://smooth.africa", external: true },
-      { label: "Contact us", href: `mailto:${CONTACT_EMAIL}` },
+      { label: "Contact us", href: "/contact" },
     ],
   },
   {

@@ -73,6 +73,15 @@ export const stickyBar: Variants = {
 };
 
 /** Checkout: slides up as a sheet on phones and settles into place as a panel on larger screens. */
+/**
+ * The checkout's backdrop. Its own tint and blur are animated, not its opacity: a backdrop blur inside anything
+ * fading in is only drawn once the fade ends, so it would snap on.
+ */
+export const scrim: Variants = {
+  hidden: { backgroundColor: "rgba(5, 11, 31, 0)", backdropFilter: "blur(0px)", transition: { duration: 0.2 } },
+  shown: { backgroundColor: "rgba(5, 11, 31, 0.5)", backdropFilter: "blur(8px)", transition: { duration: 0.25 } },
+};
+
 export const sheet: Variants = {
   hidden: { y: 48, opacity: 0, transition: { duration: 0.2 } },
   shown: { y: 0, opacity: 1, transition: { type: "spring", stiffness: 380, damping: 36 } },

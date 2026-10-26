@@ -173,6 +173,18 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
+/* Pages that open on a dark header (main[data-dark-top]): navy behind the page, so iOS Safari tints its
+   status bar to match while the nav is still transparent, and overscroll shows navy instead of white. */
+html:has(main[data-dark-top]),
+html:has(main[data-dark-top]) body {
+  background: var(--color-night);
+}
+main[data-dark-top] {
+  background: var(--color-white);
+  /* Run the white 9px under the footer, so its torn top edge bites white instead of the navy behind */
+  margin-bottom: -9px;
+  padding-bottom: 9px;
+}
 ::-webkit-scrollbar {
   width: 10px;
   height: 10px;
@@ -258,7 +270,7 @@ body {
 }
 
 @utility link {
-  @apply text-brand-deep hover:underline;
+  @apply text-brand hover:underline;
 }
 
 /* ------------------------------------------------------------ primitives */
@@ -298,6 +310,10 @@ body {
   }
   &:hover svg {
     @apply translate-x-1;
+  }
+  /* No sheen on a button you can't press */
+  &:disabled::after {
+    display: none;
   }
 }
 @utility btn-primary {
@@ -614,20 +630,17 @@ body {
   .sticker {
     @apply absolute top-4 left-4 rounded-sm px-3 py-1.5 text-center text-night;
   }
-  .event-card:nth-child(4n + 1) .sticker,
-  .event-grid > li:nth-child(4n + 1) .sticker {
+  /* Picked from the event's slug (stickerTone), so an event keeps its sticker from card to event page */
+  .sticker-amber {
     @apply -rotate-6 bg-sticker-amber;
   }
-  .event-card:nth-child(4n + 2) .sticker,
-  .event-grid > li:nth-child(4n + 2) .sticker {
+  .sticker-lime {
     @apply rotate-3 bg-sticker-lime;
   }
-  .event-card:nth-child(4n + 3) .sticker,
-  .event-grid > li:nth-child(4n + 3) .sticker {
+  .sticker-pink {
     @apply -rotate-3 bg-sticker-pink;
   }
-  .event-card:nth-child(4n + 4) .sticker,
-  .event-grid > li:nth-child(4n + 4) .sticker {
+  .sticker-sky {
     @apply rotate-6 bg-sticker-sky;
   }
   .ticket-outline {
@@ -666,12 +679,12 @@ body {
       var(--color-night);
   }
   .search {
-    @apply flex h-12 items-center gap-3 rounded-full bg-glass pr-2 pl-5 ring-1 ring-line-dark transition-shadow focus-within:ring-on-dark-muted;
+    @apply flex h-11 items-center gap-2.5 rounded-full pr-1.5 pl-4 ring-1 sm:h-12 sm:gap-3 sm:pr-2 sm:pl-5 ring-line-dark transition-shadow focus-within:ring-on-dark-muted;
     & > svg {
       @apply size-4.5 shrink-0 text-on-dark-muted;
     }
     & input {
-      @apply min-w-0 flex-1 bg-transparent text-body text-white outline-none placeholder:text-on-dark-muted;
+      @apply min-w-0 flex-1 bg-transparent text-subheading text-white outline-none sm:text-body placeholder:text-on-dark-muted;
       &::-webkit-search-cancel-button {
         appearance: none;
       }
@@ -685,7 +698,7 @@ body {
   }
   /* One scrolling row on phones, wrapping from sm up */
   .chip-row {
-    @apply -mx-4 mt-5 flex gap-2 overflow-x-auto px-4 sm:mx-0 sm:flex-wrap sm:px-0;
+    @apply -mx-4 mt-4 flex gap-2 overflow-x-auto px-4 py-1 sm:mx-0 sm:flex-wrap sm:px-0;
   }
   .chip {
     @apply h-9 shrink-0 rounded-full px-4 text-body whitespace-nowrap text-on-dark-muted ring-1 ring-line-dark transition-colors hover:bg-glass hover:text-white;
@@ -693,8 +706,48 @@ body {
       @apply bg-white text-fg ring-white hover:bg-white hover:text-fg;
     }
   }
-  .chip-divider {
-    @apply mx-1 h-5 w-px shrink-0 self-center bg-line-dark;
+  /* Pricing: the worked example as a ticket stub, notched where the perforation runs */
+  .price-stub {
+    @apply relative mx-auto w-full max-w-narrow overflow-hidden rounded-xl bg-paper;
+  }
+  .price-stub-top {
+    @apply relative px-7 pt-7 pb-6 sm:px-9 sm:pt-9;
+    /* The two half-circle bites at the perforation */
+    &::before,
+    &::after {
+      content: "";
+      @apply absolute -bottom-3 size-6 rounded-full bg-white;
+    }
+    &::before {
+      @apply -left-3;
+    }
+    &::after {
+      @apply -right-3;
+    }
+  }
+  .price-stub .perf-x {
+    @apply mx-6;
+  }
+  .price-stub-lines {
+    @apply space-y-3 px-7 pt-6 pb-7 text-lead tabular-nums sm:px-9 sm:pb-9;
+    & > div {
+      @apply flex items-baseline justify-between gap-4;
+    }
+  }
+
+  /* Affiliates page: the affiliate's four steps */
+  .earn-step {
+    @apply rounded-xl bg-paper p-6 sm:p-7;
+  }
+  /* Contact page: one card per channel */
+  .contact-card {
+    @apply flex flex-col items-start rounded-xl bg-paper p-7 sm:p-9;
+  }
+  .contact-icon {
+    @apply grid size-12 place-items-center rounded-full bg-brand text-white;
+    & svg {
+      @apply size-6;
+    }
   }
   .event-grid {
     @apply mt-6 grid gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-3;
@@ -737,9 +790,6 @@ body {
       @apply object-cover;
     }
   }
-  .sticker-lg {
-    @apply -rotate-6 bg-sticker-amber px-4 py-2;
-  }
   .event-title {
     @apply mt-3 font-display text-[clamp(1.75rem,4.2vw,3.25rem)] leading-[1.05] font-black tracking-display text-balance;
   }
@@ -755,6 +805,9 @@ body {
   }
   .event-about {
     @apply space-y-10 lg:col-start-1 lg:row-start-1;
+  }
+  .affiliate-invite {
+    @apply grain relative isolate overflow-hidden rounded-lg bg-night px-6 py-7 text-white sm:px-8 sm:py-9;
   }
   .event-map {
     @apply mt-5 aspect-16/9 overflow-hidden rounded-lg bg-mist ring-1 ring-line;
@@ -786,6 +839,10 @@ body {
   .tier-tag {
     @apply inline-flex rounded-full bg-paper px-2 py-0.5 text-small text-brand-deep;
   }
+  /* A picked stub turns paper, so its tag goes solid to stay visible */
+  .tier[data-selected] .tier-tag {
+    @apply bg-brand text-white;
+  }
   .stepper {
     @apply flex items-center gap-3;
     & button {
@@ -810,8 +867,9 @@ body {
   }
 
   /* Form fields (checkout, coupon codes) */
+  /* 16px text on phones: iOS Safari zooms into any field set smaller */
   .field {
-    @apply h-11 w-full rounded-md bg-white px-3.5 text-body text-fg ring-1 ring-line transition-shadow outline-none placeholder:text-muted focus:ring-2 focus:ring-brand;
+    @apply h-11 w-full rounded-md bg-white px-3.5 text-subheading text-fg ring-1 sm:text-body ring-line transition-shadow outline-none placeholder:text-muted focus:ring-2 focus:ring-brand;
   }
   .check {
     @apply size-4 accent-brand;
@@ -819,10 +877,10 @@ body {
 
   /* Checkout (Checkout.tsx): bottom sheet on phones, centred panel from sm */
   .checkout-scrim {
-    @apply fixed inset-0 z-[70] flex items-end justify-center bg-scrim sm:items-center sm:p-6;
+    @apply fixed inset-0 z-[70] flex items-end justify-center overscroll-contain sm:items-center sm:p-6; /* tint and blur: lib/motion scrim */
   }
   .checkout {
-    @apply flex max-h-[92svh] w-full flex-col overflow-hidden rounded-t-xl bg-white sm:max-w-[32rem] sm:rounded-xl;
+    @apply flex max-h-[92svh] outline-none w-full flex-col overflow-hidden rounded-t-xl bg-white sm:max-w-[32rem] sm:rounded-xl;
   }
   .checkout-head {
     @apply flex items-start justify-between gap-4 px-6 pt-6 pb-4;

@@ -7,7 +7,7 @@ import { useEffect, useRef, useState } from "react";
 import { API_URL } from "@/lib/api";
 import type { Tier } from "@/lib/event";
 import { APP_URL, formatNaira } from "@/lib/events";
-import { sheet } from "@/lib/motion";
+import { scrim, sheet } from "@/lib/motion";
 import { Arrow } from "../brand";
 import { Button } from "../ui/button";
 
@@ -59,31 +59,49 @@ export function Checkout({
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const firstField = useRef<HTMLInputElement>(null);
-
-  // Modal behaviour: lock the page, focus the first field, Escape closes.
+  const dialog = useRef<HTMLDivElement>(null);
+  // Latest values for the once-only effect below, so re-renders of the ticket panel never re-run it.
+  const closeRef = useRef(onClose);
+  const busyRef = useRef(busy);
   useEffect(() => {
-    const prev = document.body.style.overflow;
-    document.body.style.overflow = "hidden";
-    firstField.current?.focus();
-    const onKey = (e: KeyboardEvent) => e.key === "Escape" && !busy && onClose();
+    closeRef.current = onClose;
+    busyRef.current = busy;
+  });
+
+  // Modal behaviour, set up once on open: pin the page where it is, focus, Escape closes.
+  useEffect(() => {
+    // overflow: hidden alone lets iOS Safari scroll and jump the page behind; pinning the body holds it exactly
+    // where it was (even at the footer), and the padding stands in for the scrollbar so nothing shifts.
+    const y = window.scrollY;
+    const { body } = document;
+    const prev = body.style.cssText;
+    const gutter = window.innerWidth - document.documentElement.clientWidth;
+    Object.assign(body.style, { position: "fixed", top: `-${y}px`, left: "0", right: "0", overflow: "hidden", paddingRight: `${gutter}px` });
+
+    // A keyboard popping up over a sheet that's still sliding in is jarring on phones: focus the field on
+    // desktop, the dialog itself on touch.
+    if (window.matchMedia("(pointer: fine)").matches) firstField.current?.focus({ preventScroll: true });
+    else dialog.current?.focus({ preventScroll: true });
+
+    const onKey = (e: KeyboardEvent) => e.key === "Escape" && !busyRef.current && closeRef.current();
     window.addEventListener("keydown", onKey);
     return () => {
-      document.body.style.overflow = prev;
+      body.style.cssText = prev;
+      window.scrollTo({ top: y, behavior: "instant" }); // the site scrolls smoothly; this must not
       window.removeEventListener("keydown", onKey);
     };
-  }, [busy, onClose]);
+  }, []);
 
   const update = (key: string, patch: Partial<Holder>) => setHolders((hs) => hs.map((h) => (h.key === key ? { ...h, ...patch } : h)));
   const count = holders.length;
+  const complete =
+    !!(first.trim() && last.trim() && email.trim() && phone.trim()) && holders.every((h) => h.same || (h.name.trim() && h.email.trim()));
 
   const submit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError(null);
     const fullName = `${first.trim()} ${last.trim()}`.trim();
-    if (!first.trim() || !last.trim() || !email.trim() || !phone.trim() || holders.some((h) => !h.same && (!h.name.trim() || !h.email.trim()))) {
-      setError("Fill in every field marked with *.");
-      return;
-    }
+    if (!complete) return;
     setBusy(true);
     try {
       const body: Record<string, unknown> = {
@@ -125,8 +143,17 @@ export function Checkout({
   };
 
   return (
-    <div className="checkout-scrim" onClick={(e) => e.target === e.currentTarget && !busy && onClose()}>
+    <motion.div
+      className="checkout-scrim"
+      variants={scrim}
+      initial="hidden"
+      animate="shown"
+      exit="hidden"
+      onClick={(e) => e.target === e.currentTarget && !busy && onClose()}
+    >
       <motion.div
+        ref={dialog}
+        tabIndex={-1}
         role="dialog"
         aria-modal="true"
         aria-labelledby="checkout-title"
@@ -143,7 +170,7 @@ export function Checkout({
             </h2>
             <p className="mt-0.5 truncate text-body text-muted">{eventName}</p>
           </div>
-          <button type="button" onClick={onClose} disabled={busy} aria-label="Close checkout" className="icon-btn text-muted hover:bg-hover">
+          <button type="button" onClick={onClose} disabled={busy} aria-label="Close checkout" className="icon-btn text-muted transition-colors hover:text-night">
             <HugeiconsIcon icon={Cancel01Icon} strokeWidth={2} aria-hidden />
           </button>
         </div>
@@ -178,11 +205,11 @@ export function Checkout({
             <ul className="mt-3 space-y-3">
               {holders.map((h, i) => (
                 <li key={h.key} className="holder">
-                  <div className="flex items-center justify-between gap-3">
+                  <div className="flex items-start justify-between gap-3">
                     <p className="text-body">
                       <span className="text-muted">Ticket {i + 1} ·</span> {h.tierName}
                     </p>
-                    <label className="flex shrink-0 items-center gap-2 text-small text-muted">
+                    <label className="mt-0.5 flex shrink-0 items-center gap-2 text-small text-muted">
                       <input type="checkbox" checked={h.same} onChange={(e) => update(h.key, { same: e.target.checked })} className="check" />
                       Same as contact
                     </label>
@@ -209,14 +236,14 @@ export function Checkout({
               <span className="text-body text-muted">Total</span>
               <span className="type-number text-heading">{formatNaira(total).replace("Free", "₦0")}</span>
             </div>
-            <Button type="submit" size="lg" className="mt-4 w-full" disabled={busy}>
+            <Button type="submit" size="lg" className="mt-4 w-full" disabled={busy || !complete}>
               {busy ? "Starting checkout…" : total > 0 ? "Continue to payment" : "Get my tickets"} {!busy && <Arrow />}
             </Button>
             {total > 0 && <p className="mt-3 text-center text-small text-muted">You&apos;ll pay securely with Paystack.</p>}
           </div>
         </form>
       </motion.div>
-    </div>
+    </motion.div>
   );
 }
 

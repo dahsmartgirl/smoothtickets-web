@@ -2,20 +2,17 @@ import { Calendar03Icon, Clock01Icon, Location01Icon } from "@hugeicons/core-fre
 import { HugeiconsIcon } from "@hugeicons/react";
 import Image from "next/image";
 import type { EventDetail } from "@/lib/event";
-import { formatEventDate, formatLongDate, formatNaira, formatTimeRange } from "@/lib/events";
-import { totalFor } from "@/lib/tickets";
+import { formatEventDate, formatLongDate, formatTimeRange, stickerTone } from "@/lib/events";
 import { Arrow } from "../brand";
 import { Button } from "../ui/button";
 import { ShareButton } from "./ShareButton";
 
 /**
  * Navy header tinted by the event's own poster (blown up and blurred behind a scrim), with the poster as a
- * ticket on the left and the essentials on the right: who, when, where, from how much.
+ * ticket on the left and the essentials on the right: who, when, where.
  */
 export function EventHeader({ event, ended }: { event: EventDetail; ended: boolean }) {
   const d = formatEventDate(event.startDate);
-  const prices = event.tiers.map((t) => totalFor(t));
-  const from = prices.length ? Math.min(...prices) : null;
   const place = event.location;
 
   return (
@@ -32,8 +29,8 @@ export function EventHeader({ event, ended }: { event: EventDetail; ended: boole
           ) : (
             <span className="type-display text-on-dark-faint">{d.day}</span>
           )}
-          <div className="sticker sticker-lg">
-            <p className="type-number text-title leading-none">{d.day}</p>
+          <div className={`sticker ${stickerTone(event.slug)}`}>
+            <p className="type-number text-heading leading-none">{d.day}</p>
             <p className="type-caption">{d.month}</p>
           </div>
         </div>
@@ -78,11 +75,6 @@ export function EventHeader({ event, ended }: { event: EventDetail; ended: boole
               </Button>
             )}
             <ShareButton title={event.name} />
-            {!ended && from !== null && (
-              <p className="ml-1 text-body text-on-dark-muted">
-                From <span className="type-number text-white">{formatNaira(from)}</span>
-              </p>
-            )}
           </div>
         </div>
       </div>

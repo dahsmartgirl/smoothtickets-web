@@ -2,7 +2,7 @@ import { Location01Icon } from "@hugeicons/core-free-icons";
 import Link from "next/link";
 import { HugeiconsIcon } from "@hugeicons/react";
 import Image from "next/image";
-import { formatEventDate, formatNaira, formatTimeRange, type EventSummary } from "@/lib/events";
+import { formatEventDate, formatNaira, formatTimeRange, stickerTone, type EventSummary } from "@/lib/events";
 import { Arrow } from "./brand";
 import { Button } from "./ui/button";
 import { Rail } from "./Rail";
@@ -22,7 +22,7 @@ export function EventCard({ event, className = "" }: { event: EventSummary; clas
             sizes="(min-width: 640px) 300px, 78vw"
           />
         )}
-        <div className="sticker">
+        <div className={`sticker ${stickerTone(event.slug)}`}>
           <p className="type-number text-heading leading-none">{d.day}</p>
           <p className="type-caption">{d.month}</p>
         </div>

@@ -68,9 +68,9 @@ export function Faq() {
           <p className="mt-4 type-subheading">Still curious?</p>
           <p className="mt-1 text-body text-on-dark-muted">Ask us anything about running your event on Smooth Tickets.</p>
           <Button asChild size="sm" className="mt-5">
-            <a href="mailto:hello@smooth.africa">
+            <Link href="/contact">
               Contact us <Arrow />
-            </a>
+            </Link>
           </Button>
         </div>
       </div>

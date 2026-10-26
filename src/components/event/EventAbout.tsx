@@ -1,8 +1,9 @@
 import { Link01Icon, Navigation03Icon } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
 import type { EventDetail } from "@/lib/event";
+import { AffiliateInvite } from "./AffiliateInvite";
 
-/** About and location: the long-form half of the event page. */
+/** About, location and (for events open to affiliates) the affiliate invite: the long-form half of the event page. */
 export function EventAbout({ event }: { event: EventDetail }) {
   const place = event.location;
   const address = place ? [place.venue, place.address, place.city, place.state].filter(Boolean).join(", ") : "";
@@ -49,6 +50,8 @@ export function EventAbout({ event }: { event: EventDetail }) {
           </a>
         </section>
       )}
+
+      {event.openToAffiliates && <AffiliateInvite />}
     </div>
   );
 }

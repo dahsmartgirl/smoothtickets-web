@@ -7,7 +7,7 @@ import { useEffect, useRef, useState } from "react";
 import { API_URL } from "@/lib/api";
 import type { Tier } from "@/lib/event";
 import { formatNaira } from "@/lib/events";
-import { fade, stickyBar } from "@/lib/motion";
+import { stickyBar } from "@/lib/motion";
 import { feeFor, isSoldOut, totalFor } from "@/lib/tickets";
 import { Arrow } from "../brand";
 import { Button } from "../ui/button";
@@ -122,9 +122,7 @@ export function TicketPanel({
 
       <AnimatePresence>
         {checkout && (
-          <motion.div key="checkout" variants={fade} initial="closed" animate="open" exit="closed">
-            <Checkout slug={event.slug} eventName={event.name} lines={lines} total={total} onClose={() => setCheckout(false)} />
-          </motion.div>
+          <Checkout key="checkout" slug={event.slug} eventName={event.name} lines={lines} total={total} onClose={() => setCheckout(false)} />
         )}
       </AnimatePresence>
     </MotionConfig>
@@ -248,7 +246,7 @@ function TierRow({
               autoCapitalize="characters"
               className="field h-10 flex-1"
             />
-            <Button type="submit" variant="line" disabled={busy || !code.trim()}>
+            <Button type="submit" variant="line" className="h-10 px-4" disabled={busy || !code.trim()}>
               {busy ? "Checking…" : "Apply"}
             </Button>
           </div>

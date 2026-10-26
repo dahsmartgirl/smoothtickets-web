@@ -162,3 +162,12 @@ export function formatLongDate(iso: string) {
     timeZone: "Africa/Lagos",
   });
 }
+
+const STICKER_TONES = ["sticker-amber", "sticker-lime", "sticker-pink", "sticker-sky"] as const;
+
+/** An event's date-sticker colour, from its slug: the same on the card, the rail and the event page. */
+export function stickerTone(slug: string) {
+  let h = 0;
+  for (const c of slug) h = (h * 31 + c.charCodeAt(0)) >>> 0;
+  return STICKER_TONES[h % STICKER_TONES.length];
+}

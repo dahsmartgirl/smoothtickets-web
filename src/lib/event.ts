@@ -28,6 +28,8 @@ export type EventDetail = {
   host: string | null;
   communityLink: string | null;
   location: { venue: string; address: string; city: string; state: string } | null;
+  /** The organiser lets any affiliate promote it (affiliate_access_type "public"), not just invited ones. */
+  openToAffiliates: boolean;
   tiers: Tier[];
 };
 
@@ -59,6 +61,7 @@ type ApiResponse = {
       organized_by?: string | null;
       community_link?: string | null;
       location?: { venue?: string; address?: string; city?: string; state?: string } | null;
+      affiliate_access_type?: string | null;
     };
     tickets?: ApiTicket[];
     active_coupon_ids?: (number | string)[];
@@ -96,6 +99,7 @@ export async function getEvent(slug: string): Promise<EventDetail | null> {
         venue || city
           ? { venue, city, address: loc?.address?.trim() ?? "", state: loc?.state?.trim() ?? "" }
           : null,
+      openToAffiliates: e.affiliate_access_type === "public",
       tiers: (json.data?.tickets ?? []).map((t) => ({
         id: t.id,
         name: t.name.trim(),
