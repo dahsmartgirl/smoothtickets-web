@@ -1,7 +1,7 @@
 import { Location01Icon } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
 import Image from "next/image";
-import { APP_URL, formatEventDate, formatNaira, type EventSummary } from "@/lib/events";
+import { APP_URL, formatEventDate, formatNaira, formatTimeRange, type EventSummary } from "@/lib/events";
 import { Arrow } from "./brand";
 import { Button } from "./ui/button";
 import { Rail } from "./Rail";
@@ -23,7 +23,7 @@ function EventCard({ event }: { event: EventSummary }) {
         )}
         <div className="sticker">
           <p className="type-number text-heading leading-none">{d.day}</p>
-          <p className="type-eyebrow">{d.month}</p>
+          <p className="type-caption">{d.month}</p>
         </div>
       </div>
       {/* Content stub: the dotted ticket outline is its border. */}
@@ -32,7 +32,7 @@ function EventCard({ event }: { event: EventSummary }) {
         <h3 className="line-clamp-1 type-label">{event.name}</h3>
         <p className="event-meta">
           <time dateTime={event.startDate}>
-            {d.weekday} {d.day} {d.month} · {d.time}
+            {d.weekday} {d.day} {d.month} · {formatTimeRange(event.startDate, event.endDate)}
           </time>
         </p>
         {event.location && (
@@ -44,7 +44,7 @@ function EventCard({ event }: { event: EventSummary }) {
         <div data-perf className="my-4 h-px" />
         <div className="flex items-center justify-between">
           <div>
-            <p className="type-eyebrow text-muted">From</p>
+            <p className="type-caption text-muted">From</p>
             <p className="type-number text-subheading">
               {event.fromPrice === null ? "—" : formatNaira(event.fromPrice)}
             </p>
@@ -70,7 +70,7 @@ export function EventRail({ events }: { events: EventSummary[] }) {
             </h2>
             <p className="mt-3 text-lead text-muted">Discover events worth showing up for.</p>
           </Reveal>
-          <Button asChild variant="line" className="hidden sm:inline-flex">
+          <Button asChild variant="line" size="lg" className="hidden sm:inline-flex">
             <a href={`${APP_URL}/discovery`}>View All Events</a>
           </Button>
         </div>
@@ -83,7 +83,7 @@ export function EventRail({ events }: { events: EventSummary[] }) {
         </Rail>
       </div>
       <div className="container-page">
-        <Button asChild variant="line" className="mt-2 w-full sm:hidden">
+        <Button asChild variant="line" size="lg" className="mt-2 w-full sm:hidden">
           <a href={`${APP_URL}/discovery`}>View All Events</a>
         </Button>
       </div>

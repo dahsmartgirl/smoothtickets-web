@@ -42,6 +42,7 @@
   /* Text and surfaces on dark sections */
   --color-on-dark-muted: rgb(255 255 255 / 0.72);
   --color-on-dark-faint: rgb(255 255 255 / 0.45);
+  --color-glass-faint: rgb(255 255 255 / 0.04); /* cards on navy */
   --color-glass: rgb(255 255 255 / 0.08);
   --color-glass-strong: rgb(255 255 255 / 0.16);
   --color-line-dark: rgb(255 255 255 / 0.15);
@@ -53,7 +54,7 @@
 
   /* Type scale. Each size carries its line height. */
   --text-*: initial;
-  --text-display: clamp(2.2rem, 5vw, 4.25rem); /* page h1s and the final CTA: the only all-caps moments */
+  --text-display: clamp(2.2rem, 5vw, 4.25rem); /* hero, final CTA, inner page h1s */
   --text-display--line-height: 1;
   --text-title: clamp(1.5rem, 3.2vw, 2.25rem); /* section headings */
   --text-title--line-height: 1.15;
@@ -63,11 +64,15 @@
   --text-subheading--line-height: 1.4;
   --text-lead: clamp(0.9375rem, 0.9rem + 0.15vw, 1rem); /* supporting copy */
   --text-lead--line-height: 1.65;
+  --text-subtext: clamp(0.8125rem, 0.5rem + 0.78125vw, 1rem); /* section intros and FAQ: 13px on phones, growing to 16px by desktop */
+  --text-subtext--line-height: 1.65;
+  --text-button: 0.8125rem; /* buttons on phones */
+  --text-button--line-height: 1;
   --text-body: 0.875rem;
   --text-body--line-height: 1.6;
   --text-small: 0.75rem;
   --text-small--line-height: 1.5;
-  --text-micro: 0.625rem; /* uppercase labels and badges */
+  --text-micro: 0.625rem; /* badges only */
   --text-micro--line-height: 1.4;
   --text-logo: clamp(0.8125rem, 0.75rem + 0.3vw, 0.9375rem);
   --text-logo--line-height: 1;
@@ -81,7 +86,7 @@
   --tracking-*: initial;
   --tracking-tight: -0.025em;
   --tracking-display: -0.03em;
-  --tracking-label: 0.15em; /* uppercase micro labels */
+  --tracking-badge: 0.15em; /* the all-caps badges */
 
   --leading-*: initial;
   --leading-none: 1;
@@ -95,6 +100,7 @@
   --radius-xl: 2.25rem; /* big panels */
   --radius-device: 2.875rem; /* phone bezel */
   --radius-screen: 2.375rem; /* phone screen */
+  --radius-bar: 1.75rem; /* the nav: a full pill when closed, rounded top corners when the menu opens */
   --radius-full: 9999px;
 
   /* No shadows anywhere on the site */
@@ -118,31 +124,7 @@
 
   /* Motion */
   --animate-progress: progress 4.5s linear forwards;
-  --animate-fade-in: fade-in 0.2s ease-out;
-  --animate-fade-out: fade-out 0.15s ease-in;
-  --animate-sheet-down: sheet-down 0.25s ease-out;
-  --animate-sheet-up: sheet-up 0.2s ease-in;
 
-  @keyframes fade-in {
-    from {
-      opacity: 0;
-    }
-  }
-  @keyframes fade-out {
-    to {
-      opacity: 0;
-    }
-  }
-  @keyframes sheet-down {
-    from {
-      transform: translateY(-100%);
-    }
-  }
-  @keyframes sheet-up {
-    to {
-      transform: translateY(-100%);
-    }
-  }
   @keyframes progress {
     from {
       transform: scaleX(0);
@@ -225,13 +207,9 @@ body {
   @apply grid gap-10 lg:grid-cols-[1fr_1.6fr] lg:gap-16;
 }
 
-/* The biggest type: the hero, in sentence case. */
+/* The biggest type: the hero, the final CTA and the inner pages' h1s. Sentence case, like everything on the site. */
 @utility type-display {
   @apply font-display text-display font-black tracking-display;
-}
-/* Same size in all caps: the final CTA and the inner pages' h1s. */
-@utility type-display-caps {
-  @apply type-display uppercase;
 }
 /* Section headings: sentence case, a size down, so only the display moments shout. */
 @utility type-title {
@@ -246,8 +224,9 @@ body {
 @utility type-label {
   @apply font-display text-body font-bold;
 }
-@utility type-eyebrow {
-  @apply text-micro font-normal tracking-label uppercase;
+/* Small labels: "From", footer column titles, badges, sticker months */
+@utility type-caption {
+  @apply text-small font-normal;
 }
 @utility type-number {
   @apply font-display font-black tabular-nums;
@@ -259,17 +238,26 @@ body {
 
 /* ------------------------------------------------------------ primitives */
 
+/* Size comes from one size utility per button (btn-md, btn-lg, btn-sm, btn-icon), never from the base. */
 @utility btn {
-  @apply inline-flex h-9 shrink-0 items-center justify-center gap-2 rounded-full px-4 text-body whitespace-nowrap transition-colors outline-none focus-visible:ring-2 focus-visible:ring-brand focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50;
+  @apply inline-flex shrink-0 items-center justify-center gap-2 rounded-full whitespace-nowrap transition-colors outline-none focus-visible:ring-2 focus-visible:ring-brand focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50;
   & svg {
     @apply pointer-events-none size-4 shrink-0;
   }
 }
+/* Default: a size down on phones */
+@utility btn-md {
+  @apply h-8 px-3.5 text-button sm:h-9 sm:px-4 sm:text-body;
+}
+/* Same at every width (the Discover section keeps this on phones) */
+@utility btn-lg {
+  @apply h-9 px-4 text-body;
+}
 @utility btn-sm {
-  @apply h-8 px-3;
+  @apply h-8 px-3 text-body;
 }
 @utility btn-icon {
-  @apply size-10 px-0;
+  @apply size-10;
 }
 @utility btn-primary {
   @apply bg-brand text-white hover:bg-brand-deep;
@@ -300,7 +288,7 @@ body {
 }
 
 @utility badge {
-  @apply inline-flex items-center rounded-full bg-brand px-1.5 py-0.5 type-eyebrow text-white;
+  @apply inline-flex items-center rounded-full bg-brand px-1.5 py-0.5 text-micro font-normal tracking-badge text-white uppercase; /* the one all-caps element: "EARN", "SMOOTH AFFILIATES" */
 }
 @utility badge-lg {
   @apply px-3 py-1;
@@ -312,16 +300,13 @@ body {
 @utility card-dark {
   @apply rounded-lg bg-night p-6 text-white;
 }
-@utility panel {
-  @apply relative overflow-hidden rounded-xl bg-mist;
-}
 
 /* Soft brand-blue light. Size and position it with layout utilities. */
 @utility glow {
   @apply pointer-events-none absolute rounded-full bg-brand opacity-30 blur-glow;
 }
 @utility fade-bottom {
-  @apply pointer-events-none absolute inset-x-0 bottom-0 h-24 bg-linear-to-t from-mist to-transparent;
+  @apply pointer-events-none absolute inset-x-0 bottom-0 h-24 bg-linear-to-t from-paper to-transparent;
 }
 
 /* Ticket silhouette: side notches cut out with a mask so it works on any background. */
@@ -390,9 +375,21 @@ body {
     @apply font-display text-logo font-bold tracking-tight;
   }
 
-  /* Nav: transparent and aligned with the page at the top; a navy pill once scrolled. */
+  /* Nav: transparent and aligned with the page at the top; a navy pill once scrolled.
+     On phones the menu grows out of the bar itself, and the bar's bottom edge becomes a torn ticket. */
   .nav {
-    @apply mx-auto flex items-center justify-between gap-2 rounded-full py-1.5 transition-[max-width,padding,background-color] duration-300 ease-out;
+    @apply mx-auto flex flex-col rounded-bar transition-[max-width,padding,background-color] duration-300 ease-out;
+    /* --open runs 0 -> 1 with the menu (animated by Motion, in step with the menu's height).
+       As it rises the bottom corners square off and the ticket bites grow in; closing reverses it,
+       so pill and ticket morph into each other instead of snapping. */
+    --open: 0;
+    --o: clamp(0, var(--open), 1);
+    border-bottom-left-radius: calc(var(--radius-bar) * (1 - var(--o)));
+    border-bottom-right-radius: calc(var(--radius-bar) * (1 - var(--o)));
+    mask: radial-gradient(circle calc(9px * var(--o)) at 50% 100%, #0000 97%, #000) 0 0 / 24px 100% repeat-x;
+  }
+  .nav-bar {
+    @apply flex items-center justify-between gap-2 py-1.5;
   }
   .nav-docked {
     /* The hero's text column: page width minus its side padding, so logo and CTA line up with it. */
@@ -413,14 +410,46 @@ body {
   .on-light {
     @apply text-muted hover:bg-hover hover:text-fg;
   }
-  .menu-sheet {
-    @apply fixed inset-x-0 top-0 z-50 rounded-b-lg bg-white px-page pt-4 pb-5 text-fg outline-none data-[state=closed]:animate-sheet-up data-[state=open]:animate-sheet-down;
+  .menu-panel {
+    @apply overflow-hidden md:hidden;
   }
-  .menu-overlay {
-    @apply fixed inset-0 z-50 bg-scrim data-[state=closed]:animate-fade-out data-[state=open]:animate-fade-in;
+  .menu-body {
+    @apply pt-2 pr-2.5 pb-7 pl-0.5; /* room for the buttons' outline; bottom room for the ticket bites */
+    & ul {
+      @apply -ml-2.5; /* link text lines up with the logo */
+    }
   }
   .menu-link {
-    @apply flex items-center justify-between rounded-md px-2 py-3.5 type-subheading hover:bg-hover;
+    @apply flex items-center justify-between rounded-md px-2 py-3.5 type-subheading text-white hover:bg-glass;
+    & svg {
+      @apply size-4 text-on-dark-faint;
+    }
+  }
+  .menu-actions {
+    @apply mt-3 grid grid-cols-2 gap-2 border-t border-line-dark pt-4;
+  }
+  .menu-scrim {
+    @apply fixed inset-0 z-40 bg-scrim md:hidden;
+  }
+
+  /* Hamburger: two lines that cross into an X while the menu is open, and back. */
+  .burger {
+    @apply relative size-5;
+  }
+  .burger-line {
+    @apply absolute inset-x-0.5 h-0.5 rounded-full bg-current transition-transform duration-300 ease-out;
+    &:first-child {
+      @apply top-1.5;
+    }
+    &:last-child {
+      @apply top-3;
+    }
+  }
+  [aria-expanded="true"] .burger-line:first-child {
+    @apply translate-y-0.75 rotate-45;
+  }
+  [aria-expanded="true"] .burger-line:last-child {
+    @apply -translate-y-0.75 -rotate-45;
   }
 
   /* Hero */
@@ -513,7 +542,7 @@ body {
       @apply size-3.5;
     }
   }
-  .event-card:hover .event-cta {
+  .event-cta:hover {
     @apply bg-brand-deep;
   }
   /* Date sticker: hand-placed look, each at a slight angle and in its own colour */
@@ -558,8 +587,14 @@ body {
   }
 
   /* How it works */
+  /* A soft wash of blue behind the phone, fading to the lightest tint at the edges */
   .how-panel {
-    @apply panel h-110 sm:h-150;
+    @apply relative h-110 overflow-hidden rounded-xl sm:h-150;
+    background: radial-gradient(
+      ellipse 75% 60% at 50% 40%,
+      color-mix(in srgb, var(--color-brand) 6%, var(--color-paper)),
+      var(--color-paper)
+    );
   }
   .how-phone {
     @apply absolute top-12 left-1/2 w-70 -translate-x-1/2 sm:w-78;
@@ -588,7 +623,7 @@ body {
 
   /* Affiliates */
   .aff-card {
-    @apply flex h-full flex-col overflow-hidden rounded-xl bg-glass;
+    @apply flex h-full flex-col overflow-hidden rounded-xl bg-glass-faint;
   }
   .aff-shot {
     @apply relative mx-6 mt-auto h-52 overflow-hidden rounded-t-lg bg-white ring-1 ring-line-dark sm:mx-7 sm:h-60;
@@ -602,22 +637,37 @@ body {
   }
 
   /* Accordion: each item is a soft card */
+  /* FAQ */
+  .faq-layout {
+    @apply lg:grid-rows-[auto_1fr];
+  }
+  .faq-intro {
+    @apply lg:col-start-1 lg:row-start-1;
+  }
+  .faq-list {
+    @apply lg:col-start-2 lg:row-span-2 lg:row-start-1;
+  }
+  .faq-contact {
+    @apply max-w-narrow lg:col-start-1 lg:row-start-2 lg:self-start;
+  }
+
   /* Accordion: plain rows on the page background, separated by hairlines */
+  /* Hairlines between questions only: none above the first or below the last */
   .accordion {
-    @apply divide-y divide-line border-y border-line;
+    @apply divide-y divide-line;
   }
   .accordion-trigger {
-    @apply flex flex-1 items-center justify-between gap-4 py-5 text-left text-lead outline-none focus-visible:ring-2 focus-visible:ring-brand;
+    @apply flex flex-1 items-center justify-between gap-4 py-5 text-left text-subtext outline-none focus-visible:ring-2 focus-visible:ring-brand;
   }
+  /* Just the icon: a plus that turns a quarter-and-a-half into an X when open, and back */
   .accordion-icon {
-    @apply grid size-9 shrink-0 place-items-center rounded-full text-fg ring-1 ring-line transition-[transform,background-color,color] duration-200;
+    @apply grid size-5 shrink-0 place-items-center text-fg transition-[transform,color] duration-300 ease-out;
     & svg {
       @apply size-4;
     }
   }
-  .accordion-trigger:hover .accordion-icon,
-  .accordion-trigger[data-state="open"] .accordion-icon {
-    @apply bg-brand text-white ring-brand;
+  .accordion-trigger:hover .accordion-icon {
+    @apply text-brand;
   }
   .accordion-trigger[data-state="open"] .accordion-icon {
     @apply rotate-45;
@@ -627,7 +677,7 @@ body {
     @apply grid transition-[grid-template-rows,visibility] duration-300 ease-out motion-reduce:transition-none data-[state=closed]:invisible data-[state=closed]:grid-rows-[0fr] data-[state=open]:grid-rows-[1fr];
   }
   .accordion-body {
-    @apply max-w-copy pb-6 text-lead text-muted;
+    @apply max-w-copy pb-6 text-subtext text-muted;
   }
 
   /* Final CTA: a big brand-blue ticket with a QR stub */
@@ -656,7 +706,7 @@ body {
   .wordmark {
     @apply block w-full translate-y-[14%];
     & text {
-      @apply fill-brand font-display font-black uppercase;
+      @apply fill-brand font-display font-black;
       font-size: 172px; /* in the SVG's own units, sized to its 1000-wide viewBox */
     }
   }
@@ -672,9 +722,7 @@ body {
     animation-iteration-count: 1 !important;
     scroll-behavior: auto !important;
   }
-  .animate-progress,
-  .animate-sheet-down,
-  .animate-sheet-up {
+  .animate-progress {
     animation: none;
   }
 }

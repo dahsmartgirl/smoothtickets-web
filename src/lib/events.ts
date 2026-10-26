@@ -16,6 +16,7 @@ export type EventSummary = {
   slug: string;
   url: string;
   startDate: string;
+  endDate: string;
   image: string | null;
   /** "Venue, City". Only fetched when asked for (one request per event). */
   location: string | null;
@@ -86,6 +87,7 @@ export async function getUpcomingEvents(
           slug: e.slug,
           url: `${APP_URL}/${e.slug}`,
           startDate: e.start_date,
+          endDate: e.end_date ?? e.start_date,
           image: e.image?.link ?? null,
           location: null as string | null,
           fromPrice: tiers.length ? tiers[0].price : null,
@@ -112,10 +114,21 @@ export function formatEventDate(iso: string) {
   const d = new Date(iso);
   return {
     day: d.toLocaleDateString("en-NG", { day: "2-digit", timeZone: "Africa/Lagos" }),
-    month: d.toLocaleDateString("en-NG", { month: "short", timeZone: "Africa/Lagos" }).toUpperCase(),
+    month: d.toLocaleDateString("en-NG", { month: "short", timeZone: "Africa/Lagos" }),
     weekday: d.toLocaleDateString("en-NG", { weekday: "short", timeZone: "Africa/Lagos" }),
-    time: d
-      .toLocaleTimeString("en-NG", { hour: "numeric", minute: "2-digit", timeZone: "Africa/Lagos" })
-      .toUpperCase(),
   };
+}
+
+/** 12-hour clock in Lagos time, like the main site: "8:00 PM". */
+function formatTime(d: Date) {
+  return d
+    .toLocaleTimeString("en-NG", { hour: "numeric", minute: "2-digit", hour12: true, timeZone: "Africa/Lagos" })
+    .toUpperCase();
+}
+
+/** Start and end time as a range, like the main site: "8:00 PM - 4:30 AM". */
+export function formatTimeRange(startIso: string, endIso: string) {
+  const start = formatTime(new Date(startIso));
+  const end = formatTime(new Date(endIso));
+  return start === end ? start : `${start} - ${end}`;
 }

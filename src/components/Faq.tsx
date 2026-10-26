@@ -47,28 +47,16 @@ const faqs: [string, React.ReactNode][] = [
 export function Faq() {
   return (
     <section id="faq" aria-labelledby="faq-title" className="section-top scroll-mt-24">
-      <div className="container-page layout-aside">
-        <div className="lg:sticky lg:top-28 lg:self-start">
+      {/* Phones: intro, questions, then the contact box. Desktop: intro and contact box on the left, questions on the right. */}
+      <div className="container-page layout-aside faq-layout">
+        <div className="faq-intro">
           <h2 id="faq-title" className="type-title">
             Questions, answered
           </h2>
-          <p className="mt-5 max-w-narrow text-lead text-muted">Everything organisers usually ask before their first event.</p>
-
-          <div className="mt-8 max-w-narrow card-dark">
-            <span className="icon-btn bg-glass">
-              <HugeiconsIcon icon={Mail01Icon} strokeWidth={2} aria-hidden />
-            </span>
-            <p className="mt-4 type-subheading">Still curious?</p>
-            <p className="mt-1 text-body text-on-dark-muted">Ask us anything about running your event on Smooth Tickets.</p>
-            <Button asChild size="sm" className="mt-5">
-              <a href="mailto:hello@smooth.africa">
-                Email hello@smooth.africa <Arrow />
-              </a>
-            </Button>
-          </div>
+          <p className="mt-5 max-w-narrow text-subtext text-muted">Everything organisers usually ask before their first event.</p>
         </div>
 
-        <Accordion type="single" collapsible defaultValue={faqs[0][0]}>
+        <Accordion type="single" collapsible defaultValue={faqs[0][0]} className="faq-list">
           {faqs.map(([q, a]) => (
             <AccordionItem key={q} value={q}>
               <AccordionTrigger>{q}</AccordionTrigger>
@@ -76,6 +64,19 @@ export function Faq() {
             </AccordionItem>
           ))}
         </Accordion>
+
+        <div className="faq-contact card-dark">
+          <span className="icon-btn bg-glass">
+            <HugeiconsIcon icon={Mail01Icon} strokeWidth={2} aria-hidden />
+          </span>
+          <p className="mt-4 type-subheading">Still curious?</p>
+          <p className="mt-1 text-body text-on-dark-muted">Ask us anything about running your event on Smooth Tickets.</p>
+          <Button asChild size="sm" className="mt-5">
+            <a href="mailto:hello@smooth.africa">
+              Contact us <Arrow />
+            </a>
+          </Button>
+        </div>
       </div>
     </section>
   );

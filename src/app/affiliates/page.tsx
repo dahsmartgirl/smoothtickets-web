@@ -48,10 +48,10 @@ export default function AffiliatesPage() {
       <main className="overflow-x-clip pt-32 sm:pt-40">
         <section className="container-page grid items-center gap-14 lg:grid-cols-2">
           <div>
-            <h1 className="type-display-caps">
+            <h1 className="type-display">
               Let more people <span className="text-brand">sell your</span> tickets.
             </h1>
-            <p className="mt-6 max-w-copy text-lead text-muted">{description}</p>
+            <p className="mt-6 max-w-copy text-subtext text-muted">{description}</p>
             <div className="mt-9 flex flex-wrap gap-3">
               <Button asChild>
                 <a href={`${APP_URL}/auth/signup`}>

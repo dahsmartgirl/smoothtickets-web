@@ -49,7 +49,6 @@ export function HowItWorks() {
 
         <Reveal delay={0.1} className="lg:col-start-2 lg:row-span-2 lg:row-start-1 lg:self-center">
           <div className="how-panel">
-            <div className="glow top-1/4 left-1/2 size-80 -translate-x-1/2" />
             <AppPhone screens={steps} active={active} className="how-phone" />
             <div className="fade-bottom" />
           </div>

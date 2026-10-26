@@ -11,12 +11,12 @@ export function FinalCta() {
       <Reveal className="container-page">
         <div className="cta-ticket">
           <div className="p-8 sm:p-14">
-            <h2 id="cta-title" className="type-display-caps">
+            <h2 id="cta-title" className="type-display">
               Your next event
               <br />
               starts with <span className="text-night">Smooth.</span>
             </h2>
-            <p className="mt-5 max-w-narrow text-lead text-on-dark-muted">Everything you need to get started is right here.</p>
+            <p className="mt-5 max-w-narrow text-subtext text-on-dark-muted">Everything you need to get started is right here.</p>
             <div className="mt-10 flex flex-wrap gap-3">
               <Button asChild variant="night">
                 <a href={`${APP_URL}/auth/signup`}>
@@ -31,7 +31,7 @@ export function FinalCta() {
             <div className="cta-qr">
               <QrCode seed="your-event" className="size-32" />
             </div>
-            <p className="type-eyebrow text-on-dark-muted">No. 000001</p>
+            <p className="type-caption text-on-dark-muted">No. 000001</p>
           </div>
         </div>
       </Reveal>
@@ -109,7 +109,7 @@ export function Footer() {
           <nav aria-label="Footer" className="grid grid-cols-2 gap-10 sm:grid-cols-4">
             {columns.map((col) => (
               <div key={col.title}>
-                <p className="type-eyebrow text-on-dark-faint">{col.title}</p>
+                <p className="type-caption text-on-dark-faint">{col.title}</p>
                 <ul className="mt-4 space-y-3 text-body">
                   {col.links.map(([label, href]) => (
                     <li key={label}>

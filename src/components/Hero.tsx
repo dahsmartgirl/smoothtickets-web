@@ -37,7 +37,7 @@ export function Hero() {
             Make it <span className="text-brand">happen.</span>
           </span>
         </h1>
-        <p className="mt-7 max-w-copy text-lead text-on-dark-muted">
+        <p className="mt-7 max-w-copy text-subtext text-on-dark-muted">
           Smooth Tickets is an online event ticketing platform for African organisers. Create events, sell individual and group
           tickets, manage attendees, track earnings, and grow sales through affiliates. All in one place.
         </p>
