@@ -684,7 +684,7 @@ main[data-dark-top] {
       @apply size-4.5 shrink-0 text-on-dark-muted;
     }
     & input {
-      @apply h-full w-full min-w-0 flex-1 appearance-none rounded-none bg-transparent p-0 text-subheading text-white outline-none sm:text-body placeholder:text-on-dark-muted;
+      @apply h-full w-full min-w-0 flex-1 appearance-none rounded-none bg-transparent p-0 text-subheading text-white outline-none sm:text-body placeholder:text-body placeholder:text-on-dark-muted;
       /* iOS draws search fields its own way (padding, rounding, decorations): switch all of that off */
       &::-webkit-search-cancel-button,
       &::-webkit-search-decoration {
@@ -883,9 +883,9 @@ main[data-dark-top] {
   }
 
   /* Form fields (checkout, coupon codes) */
-  /* 16px text on phones: iOS Safari zooms into any field set smaller */
+  /* 16px text on phones: iOS Safari zooms into any field set smaller. The placeholder can stay small, it doesn't count. */
   .field {
-    @apply h-11 w-full min-w-0 appearance-none rounded-md bg-white px-3.5 text-subheading text-fg ring-1 sm:text-body ring-line transition-shadow outline-none placeholder:text-muted focus:ring-2 focus:ring-brand;
+    @apply h-11 w-full min-w-0 appearance-none rounded-md bg-white px-3.5 text-subheading text-fg ring-1 sm:text-body ring-line transition-shadow outline-none placeholder:text-body placeholder:text-muted focus:ring-2 focus:ring-brand;
   }
   .check {
     @apply size-4 accent-brand;
