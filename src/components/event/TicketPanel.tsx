@@ -234,7 +234,7 @@ function TierRow({
 
       {codeOpen && !coupon && (
         <form onSubmit={apply} className="mt-4">
-          <div className="flex gap-2">
+          <div className="flex min-w-0 gap-2">
             <label className="sr-only" htmlFor={`code-${tier.id}`}>
               Coupon code for {tier.name}
             </label>
@@ -244,7 +244,7 @@ function TierRow({
               onChange={(e) => setCode(e.target.value)}
               placeholder="Enter code"
               autoCapitalize="characters"
-              className="field h-10 flex-1"
+              className="field h-10 min-w-0 flex-1"
             />
             <Button type="submit" variant="line" className="h-10 px-4" disabled={busy || !code.trim()}>
               {busy ? "Checking…" : "Apply"}

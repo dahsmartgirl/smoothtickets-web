@@ -67,7 +67,7 @@ export function DiscoveryBrowser({ events, initial }: { events: EventSummary[]; 
                 type="search"
                 value={q}
                 onChange={(e) => setQ(e.target.value)}
-                placeholder="Search by event, venue or city"
+                placeholder="Search events, venues, cities"
                 autoComplete="off"
               />
               {q && (

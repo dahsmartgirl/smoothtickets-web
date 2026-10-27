@@ -6,7 +6,7 @@ import { motion } from "motion/react";
 import { useEffect, useRef, useState } from "react";
 import { API_URL } from "@/lib/api";
 import type { Tier } from "@/lib/event";
-import { APP_URL, formatNaira } from "@/lib/events";
+import { formatNaira } from "@/lib/events";
 import { scrim, sheet } from "@/lib/motion";
 import { Arrow } from "../brand";
 import { Button } from "../ui/button";
@@ -131,7 +131,7 @@ export function Checkout({
       if (json.status && payUrl) {
         window.location.href = payUrl; // Paystack
       } else if (json.status) {
-        window.location.href = `${APP_URL}/v2/payment-success`; // free tickets: no payment step
+        window.location.href = "/payment-success"; // free tickets: no payment step, so confirm here
       } else {
         setError(json.message || "We couldn't start checkout. Please try again.");
         setBusy(false);

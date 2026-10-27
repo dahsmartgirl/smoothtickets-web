@@ -78,13 +78,13 @@ export default function PricingPage() {
           </div>
 
           {/* A ticket stub: the worked example, as the event page shows it */}
-          <figure className="price-stub">
-            <div className="price-stub-top">
+          <figure className="stub">
+            <div className="stub-top">
               <p className="text-body text-muted">Example from a live event page</p>
               <p className="mt-2 type-heading">Regular ticket</p>
             </div>
             <div aria-hidden className="perf-x text-line" />
-            <dl className="price-stub-lines">
+            <dl className="stub-lines">
               <div>
                 <dt>Ticket price</dt>
                 <dd>₦3,000</dd>

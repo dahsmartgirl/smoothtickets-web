@@ -679,13 +679,15 @@ main[data-dark-top] {
       var(--color-night);
   }
   .search {
-    @apply flex h-11 items-center gap-2.5 rounded-full pr-1.5 pl-4 ring-1 sm:h-12 sm:gap-3 sm:pr-2 sm:pl-5 ring-line-dark transition-shadow focus-within:ring-on-dark-muted;
+    @apply flex h-11 w-full min-w-0 items-center gap-2.5 rounded-full pr-1.5 pl-4 ring-1 sm:h-12 sm:gap-3 sm:pr-2 sm:pl-5 ring-line-dark transition-shadow focus-within:ring-on-dark-muted;
     & > svg {
       @apply size-4.5 shrink-0 text-on-dark-muted;
     }
     & input {
-      @apply min-w-0 flex-1 bg-transparent text-subheading text-white outline-none sm:text-body placeholder:text-on-dark-muted;
-      &::-webkit-search-cancel-button {
+      @apply h-full w-full min-w-0 flex-1 appearance-none rounded-none bg-transparent p-0 text-subheading text-white outline-none sm:text-body placeholder:text-on-dark-muted;
+      /* iOS draws search fields its own way (padding, rounding, decorations): switch all of that off */
+      &::-webkit-search-cancel-button,
+      &::-webkit-search-decoration {
         appearance: none;
       }
     }
@@ -706,11 +708,11 @@ main[data-dark-top] {
       @apply bg-white text-fg ring-white hover:bg-white hover:text-fg;
     }
   }
-  /* Pricing: the worked example as a ticket stub, notched where the perforation runs */
-  .price-stub {
+  /* Ticket stub card, notched where the perforation runs (pricing example, payment confirmation) */
+  .stub {
     @apply relative mx-auto w-full max-w-narrow overflow-hidden rounded-xl bg-paper;
   }
-  .price-stub-top {
+  .stub-top {
     @apply relative px-7 pt-7 pb-6 sm:px-9 sm:pt-9;
     /* The two half-circle bites at the perforation */
     &::before,
@@ -725,10 +727,10 @@ main[data-dark-top] {
       @apply -right-3;
     }
   }
-  .price-stub .perf-x {
+  .stub .perf-x {
     @apply mx-6;
   }
-  .price-stub-lines {
+  .stub-lines {
     @apply space-y-3 px-7 pt-6 pb-7 text-lead tabular-nums sm:px-9 sm:pb-9;
     & > div {
       @apply flex items-baseline justify-between gap-4;
@@ -739,6 +741,20 @@ main[data-dark-top] {
   .earn-step {
     @apply rounded-xl bg-paper p-6 sm:p-7;
   }
+  /* Payment confirmation */
+  .confirm-check {
+    @apply mx-auto grid size-16 place-items-center rounded-full bg-brand text-white;
+    & svg {
+      @apply size-8;
+    }
+  }
+  .confirm-steps {
+    @apply space-y-5 px-7 pt-6 pb-7 sm:px-9 sm:pb-9;
+    & > li {
+      @apply flex gap-4;
+    }
+  }
+
   /* Contact page: one card per channel */
   .contact-card {
     @apply flex flex-col items-start rounded-xl bg-paper p-7 sm:p-9;
@@ -869,7 +885,7 @@ main[data-dark-top] {
   /* Form fields (checkout, coupon codes) */
   /* 16px text on phones: iOS Safari zooms into any field set smaller */
   .field {
-    @apply h-11 w-full rounded-md bg-white px-3.5 text-subheading text-fg ring-1 sm:text-body ring-line transition-shadow outline-none placeholder:text-muted focus:ring-2 focus:ring-brand;
+    @apply h-11 w-full min-w-0 appearance-none rounded-md bg-white px-3.5 text-subheading text-fg ring-1 sm:text-body ring-line transition-shadow outline-none placeholder:text-muted focus:ring-2 focus:ring-brand;
   }
   .check {
     @apply size-4 accent-brand;
