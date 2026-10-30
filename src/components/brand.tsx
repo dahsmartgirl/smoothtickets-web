@@ -1,4 +1,4 @@
-import { ArrowRight02Icon } from "@hugeicons/core-free-icons";
+import { ArrowRight02Icon, ArrowUpRight01Icon } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
 import Image from "next/image";
 import Link from "next/link";
@@ -51,4 +51,9 @@ export function QrCode({ seed = "smooth", size = 21, className = "" }: { seed?: 
 /** `icon` sizes it; containers like btn and event-cta resize it from globals.css. */
 export function Arrow({ className = "icon" }: { className?: string }) {
   return <HugeiconsIcon icon={ArrowRight02Icon} strokeWidth={2} className={className} aria-hidden />;
+}
+
+/** ↗ on the buttons that take you into the app to sign up (Create an Event, Become an affiliate). */
+export function ArrowOut({ className = "icon icon-out" }: { className?: string }) {
+  return <HugeiconsIcon icon={ArrowUpRight01Icon} strokeWidth={2} className={className} aria-hidden />;
 }

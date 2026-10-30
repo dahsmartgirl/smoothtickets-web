@@ -15,7 +15,7 @@ const faqs: [string, React.ReactNode][] = [
   [
     "How do I create an event?",
     <>
-      <a href={`${APP_URL}/auth/signup`} className="link">
+      <a href={`${APP_URL}/auth/signup`} target="_blank" rel="noopener" className="link">
         Create an account
       </a>
       , tap Create Event on your dashboard, add your event details and ticket types, then share your event&apos;s public link.
@@ -51,7 +51,7 @@ export function Faq() {
   return (
     <section id="faq" aria-labelledby="faq-title" className="section-top scroll-mt-24">
       {/* Phones: intro, questions, then the contact box. Desktop: intro and contact box on the left, questions on the right. */}
-      <div className="container-page layout-aside faq-layout">
+      <div data-stagger className="container-page layout-aside faq-layout">
         <div className="faq-intro">
           <h2 id="faq-title" className="type-title">
             Questions, answered

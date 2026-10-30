@@ -1,5 +1,5 @@
 import { APP_URL } from "@/lib/events";
-import { Arrow } from "../brand";
+import { ArrowOut } from "../brand";
 import { Button } from "../ui/button";
 
 /**
@@ -18,12 +18,12 @@ export function AffiliateInvite() {
       </p>
       <div className="mt-6 flex flex-wrap items-center gap-3">
         <Button asChild>
-          <a href={`${APP_URL}/affiliate/auth/signup`}>
-            Become an affiliate <Arrow />
+          <a href={`${APP_URL}/affiliate/auth/signup`} target="_blank" rel="noopener">
+            Become an affiliate <ArrowOut />
           </a>
         </Button>
         <Button asChild variant="glass">
-          <a href={`${APP_URL}/affiliate/auth/login`}>I&apos;m already an affiliate</a>
+          <a href={`${APP_URL}/affiliate/auth/login`} target="_blank" rel="noopener">I&apos;m already an affiliate</a>
         </Button>
       </div>
     </section>

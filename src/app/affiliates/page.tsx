@@ -6,7 +6,7 @@ import { Affiliates } from "@/components/Affiliates";
 import { AppPhone } from "@/components/Devices";
 import { Footer } from "@/components/FinalCta";
 import { Nav } from "@/components/Nav";
-import { Arrow } from "@/components/brand";
+import { ArrowOut } from "@/components/brand";
 import { Accordion, type AccordionEntry } from "@/components/ui/accordion";
 import { Button } from "@/components/ui/button";
 import { APP_URL } from "@/lib/events";
@@ -32,10 +32,10 @@ const steps = [
   { icon: MoneyBag02Icon, title: "Earn on every ticket", body: "Each ticket bought through your link earns the commission the organiser set." },
 ];
 
-const screens = [
-  { src: "/screens/app/aff-discover.jpg", alt: "Affiliate Discover Events screen listing events open to affiliates" },
-  { src: "/screens/app/aff-stats.jpg", alt: "My Promotions screen with total earnings, tickets sold and clicks" },
-];
+const heroScreen = {
+  src: "/screens/mockups/aff-discover.webp",
+  alt: "Affiliate Discover Events screen listing events open to affiliates",
+};
 
 // Answers stick to what the product shows today. Payout timing is not stated until ops confirms it.
 const answers: AccordionEntry[] = [
@@ -76,17 +76,16 @@ export default function AffiliatesPage() {
       <Nav />
       <main data-dark-top className="overflow-x-clip">
         <section aria-labelledby="affiliates-page-title" className="page-head">
-          <div className="container-page grid items-center gap-14 lg:grid-cols-[1.1fr_1fr]">
-            <div>
-              <p className="badge badge-lg">Smooth Affiliates</p>
-              <h1 id="affiliates-page-title" className="mt-5 type-display">
+          <div className="container-page grid gap-14 lg:grid-cols-[1.1fr_1fr] lg:items-start">
+            <div className="intro">
+              <h1 id="affiliates-page-title" className="type-display">
                 Share events. <span className="text-brand">Earn on every ticket.</span>
               </h1>
               <p className="mt-5 max-w-copy text-lead text-on-dark-muted">{description}</p>
               <div className="mt-9 flex flex-wrap gap-3">
                 <Button asChild>
-                  <a href={`${APP_URL}/affiliate/auth/signup`}>
-                    Become an affiliate <Arrow />
+                  <a href={`${APP_URL}/affiliate/auth/signup`} target="_blank" rel="noopener">
+                    Become an affiliate <ArrowOut />
                   </a>
                 </Button>
                 <Button asChild variant="glass">
@@ -95,25 +94,26 @@ export default function AffiliatesPage() {
               </div>
               <p className="mt-5 text-body text-on-dark-muted">
                 Already promoting?{" "}
-                <a href={`${APP_URL}/affiliate/auth/login`} className="text-white hover:underline">
+                <a href={`${APP_URL}/affiliate/auth/login`} target="_blank" rel="noopener" className="text-white hover:underline">
                   Affiliate login
                 </a>
               </p>
             </div>
-            <div className="relative mx-auto hidden w-full max-w-narrow items-start justify-center gap-4 sm:flex">
-              <div className="glow inset-10 -z-10" />
-              <AppPhone screens={[screens[0]]} priority className="w-1/2 -rotate-3" />
-              <AppPhone screens={[screens[1]]} className="mt-16 w-1/2 rotate-3" />
+            {/* Top aligned with the headline; the rest of the phone is tucked under the hero's torn bottom edge. */}
+            <div className="aff-hero-shot intro-item" style={{ "--intro-i": 2 } as React.CSSProperties}>
+              <div className="glow -inset-x-16 -top-10 -bottom-20 -z-10" />
+              <AppPhone screens={[heroScreen]} priority className="aff-hero-phone" />
             </div>
           </div>
         </section>
 
-        <section id="earn" aria-labelledby="earn-title" className="container-page section scroll-mt-24">
-          <h2 id="earn-title" className="type-title">
+        <section id="earn" aria-labelledby="earn-title" data-stagger className="container-page section scroll-mt-24">
+          <p className="badge badge-lg">For affiliates</p>
+          <h2 id="earn-title" className="mt-5 type-title">
             How affiliates earn
           </h2>
           <p className="mt-5 max-w-copy text-lead text-muted">If people listen when you say where the party is, you can earn from it.</p>
-          <ol className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+          <ol data-stagger-group className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
             {steps.map((s, i) => (
               <li key={s.title} className="earn-step">
                 <div className="flex items-center justify-between">
@@ -128,17 +128,17 @@ export default function AffiliatesPage() {
             ))}
           </ol>
           <Button asChild className="mt-10">
-            <a href={`${APP_URL}/affiliate/auth/signup`}>
-              Start earning <Arrow />
+            <a href={`${APP_URL}/affiliate/auth/signup`} target="_blank" rel="noopener">
+              Start earning <ArrowOut />
             </a>
           </Button>
         </section>
 
         <div id="hosts" className="scroll-mt-24">
-          <Affiliates onAffiliatesPage />
+          <Affiliates onAffiliatesPage eyebrow="For event hosts" />
         </div>
 
-        <section aria-labelledby="aff-faq-title" className="container-page section layout-aside">
+        <section aria-labelledby="aff-faq-title" data-stagger className="container-page section layout-aside">
           <div>
             <h2 id="aff-faq-title" className="type-title">
               Questions, answered

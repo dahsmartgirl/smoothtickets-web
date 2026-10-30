@@ -102,8 +102,6 @@
   --radius-md: 1rem; /* list items, small boxes */
   --radius-lg: 1.5rem; /* cards, event posters */
   --radius-xl: 2.25rem; /* big panels */
-  --radius-device: 2.875rem; /* phone bezel */
-  --radius-screen: 2.375rem; /* phone screen */
   --radius-bar: 1.75rem; /* the nav: a full pill when closed, rounded top corners when the menu opens */
   --radius-full: 9999px;
 
@@ -131,6 +129,7 @@
   --animate-progress: progress 4.5s linear forwards;
   --animate-sheen: sheen 4.5s ease-in-out infinite; /* a sweep every 4.5s: ~1.3s moving, then still */
   --animate-blink: blink 1s steps(1) infinite;
+  --animate-intro: intro 0.8s cubic-bezier(0.22, 1, 0.36, 1) backwards;
 
   @keyframes sheen {
     from {
@@ -139,6 +138,20 @@
     30%,
     to {
       transform: translateX(250%) skewX(-20deg);
+    }
+  }
+  /* First load: each piece rises a little and comes into focus. `backwards` fill only: once it ends, nothing
+     is left on the element, so it can't fight the element's own transform or filter. */
+  @keyframes intro {
+    from {
+      opacity: 0;
+      transform: translateY(16px);
+      filter: blur(6px);
+    }
+  }
+  @keyframes uncover {
+    from {
+      transform: translateY(-100%);
     }
   }
   @keyframes blink {
@@ -310,6 +323,10 @@ main[data-dark-top] {
   }
   &:hover svg {
     @apply translate-x-1;
+  }
+  /* ↗ (ArrowOut) nudges up and out instead */
+  &:hover svg.icon-out {
+    @apply translate-x-0.5 -translate-y-0.5;
   }
   /* No sheen on a button you can't press */
   &:disabled::after {
@@ -572,6 +589,45 @@ main[data-dark-top] {
   }
 
 
+  /* First-load entrance, on every page's opening section. `.intro`: its children come in one after another.
+     `--intro-from` on the parent offsets the count, to carry a stagger across sibling groups;
+     `.intro-item` + `--intro-i` places a lone element in the sequence. Pure CSS, so it runs on the server-
+     rendered HTML before hydration, with no flash. Reduced motion: switched off with every other animation. */
+  .intro > *,
+  .intro-item {
+    animation: var(--animate-intro);
+    animation-delay: calc((var(--intro-from, 0) + var(--intro-i, 0)) * 90ms + 80ms);
+  }
+  .intro > :nth-child(2) {
+    --intro-i: 1;
+  }
+  .intro > :nth-child(3) {
+    --intro-i: 2;
+  }
+  .intro > :nth-child(4) {
+    --intro-i: 3;
+  }
+  .intro > :nth-child(5) {
+    --intro-i: 4;
+  }
+  .intro > :nth-child(6) {
+    --intro-i: 5;
+  }
+
+  /* Scroll-in stagger (Stagger.tsx): children of a [data-stagger] section, or of its [data-stagger-group] child,
+     wait hidden and then come in one by one. Only hidden when scripting is on, so without JS nothing vanishes. */
+  @media (scripting: enabled) {
+    [data-stagger]:not([data-stagger-in]) > :not([data-stagger-group]),
+    [data-stagger]:not([data-stagger-in]) > [data-stagger-group] > * {
+      opacity: 0;
+    }
+  }
+  [data-stagger-in] > :not([data-stagger-group]),
+  [data-stagger-in] > [data-stagger-group] > * {
+    animation: var(--animate-intro);
+    animation-delay: calc(var(--stagger-i, 0) * 80ms);
+  }
+
   /* Horizontal snap row of cards */
   .rail {
     @apply no-scrollbar flex snap-x snap-mandatory scroll-px-4 gap-4 overflow-x-auto px-page pt-2 pb-8 outline-none focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-brand sm:scroll-px-6 sm:gap-5;
@@ -649,26 +705,14 @@ main[data-dark-top] {
 
   /* Phone frame around a real app screenshot */
   .device {
-    @apply rounded-device bg-night p-2.5 ring-1 ring-line-dark;
-  }
-  .device-screen {
-    @apply overflow-hidden rounded-screen bg-white;
-  }
-  .device-status {
-    @apply relative flex h-10 items-center justify-between px-7 text-small text-night;
-  }
-  .device-island {
-    @apply absolute top-2.5 left-1/2 h-6 w-24 -translate-x-1/2 rounded-full bg-night;
-  }
-  .device-shot {
     @apply relative;
-    aspect-ratio: 780 / 1407; /* the app screenshots */
-    & img {
-      @apply object-cover object-top;
-    }
+    aspect-ratio: 748 / 1511; /* the mockup PNGs, frame included */
   }
   .device-layer {
     @apply absolute inset-0;
+    & img {
+      @apply object-contain;
+    }
   }
 
   /* Discovery (DiscoveryBrowser.tsx): navy header with search and filter chips, then a grid of event cards */
@@ -955,11 +999,24 @@ main[data-dark-top] {
   }
 
   /* Affiliates */
+  /* Affiliates page hero, desktop only: a phone whose top lines up with the headline and whose bezel lines up
+     with the page's right edge, cut off by the hero's torn bottom edge. */
+  .aff-hero-shot {
+    @apply relative -mb-20 hidden lg:block lg:self-stretch;
+  }
+  .aff-hero-phone {
+    @apply absolute top-0 right-0 w-88 translate-x-[0.94%];
+  }
   .aff-card {
     @apply flex h-full flex-col overflow-hidden rounded-xl bg-glass-faint;
   }
+  /* The phone's bezel spans the card's text column exactly: the image box is widened by the side buttons
+     (0.94% of the mockup each side), which hang just past the text edges. Only the bottom is clipped. */
   .aff-shot {
-    @apply relative mx-6 mt-auto h-52 overflow-hidden rounded-t-lg bg-white ring-1 ring-line-dark sm:mx-7 sm:h-60;
+    @apply relative mx-6 mt-auto aspect-[16/15] overflow-x-visible overflow-y-clip sm:mx-7;
+    & > div {
+      @apply absolute inset-y-0 -left-[0.94%] -right-[0.94%];
+    }
     & img {
       @apply object-cover object-top;
     }
@@ -1012,26 +1069,52 @@ main[data-dark-top] {
 
   /* Everything above the final CTA: an opaque layer that slides up off the CTA as you scroll down. */
   .above-cta {
+    --tear: var(--color-white);
     @apply relative z-10 bg-white pb-20 sm:pb-28;
     /* The CTA's torn top edge hangs off this layer, so it is always visible at the seam while the layer
        slides off the CTA (the CTA itself is covered until then). */
     &::after {
       content: "";
-      @apply absolute inset-x-0 top-full h-[9px];
-      background: radial-gradient(circle 9px at 50% 0, var(--color-white) 97%, transparent) 0 0 / 24px 9px repeat-x;
+      @apply absolute inset-x-0 top-full h-[10px];
+      background: radial-gradient(circle 9px at 50% 0, var(--tear) 97%, transparent) 0 0 / 24px 10px repeat-x;
     }
+  }
+  /* UncoverSection's moving layer, natively: it starts one full height up and settles as the section enters.
+     The timeline tracks the section (which never moves), not the layer being shifted. */
+  @supports (animation-timeline: view()) {
+    .uncover {
+      view-timeline: --uncover block;
+    }
+    .uncover-layer {
+      animation: uncover linear both;
+      animation-timeline: --uncover;
+      animation-range: entry 0% entry 100%;
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .uncover-layer {
+        animation: none;
+      }
+    }
+  }
+  /* When the last section above the CTA is navy (pricing): no white gap, and the tear is navy too. */
+  .above-cta-night {
+    --tear: var(--color-night);
+    @apply pb-0 sm:pb-0;
   }
   /* Final CTA: a full-width brand-blue ticket band, torn top (hung from .above-cta) and bottom, with a QR stub.
      It looks pinned underneath .above-cta and is uncovered rather than scrolled in (UncoverSection). Not
-     position: sticky: iOS Safari would tint its bottom toolbar blue on every screen to match it. */
+     position: sticky: iOS Safari would tint its bottom toolbar blue on every screen to match it.
+     This is UncoverSection's moving layer, so the blue, the grain and the torn edge all move with the text. */
   .cta {
     @apply grain relative overflow-hidden bg-brand text-white;
-    /* Torn bottom edge: navy bites from the footer below */
-    &::before {
-      content: "";
-      @apply pointer-events-none absolute inset-x-0 bottom-0 h-[9px];
-      background: radial-gradient(circle 9px at 50% 100%, var(--color-night) 97%, transparent) 0 0 / 24px 9px repeat-x;
-    }
+  }
+  /* Torn bottom edge: navy bites from the footer below. On the section, not the moving layer: a layer at
+     fractional scroll offsets gets resampled, which blurred the bites. The tile is 1px taller than the
+     circle so its edge doesn't show as a hairline across the top of each bite. */
+  .cta-frame::after {
+    content: "";
+    @apply pointer-events-none absolute inset-x-0 bottom-0 z-10 h-[10px];
+    background: radial-gradient(circle 9px at 50% 100%, var(--color-night) 97%, transparent) 0 0 / 24px 10px repeat-x;
   }
   .cta-inner {
     @apply grid md:grid-cols-[1fr_auto];
@@ -1044,6 +1127,20 @@ main[data-dark-top] {
   }
   .cta-qr {
     @apply rounded-md bg-white p-3 text-night;
+  }
+
+  /* Privacy and Terms (LegalPage.tsx) */
+  .legal-toc {
+    @apply lg:sticky lg:top-28 lg:self-start;
+  }
+  .legal-toc-link {
+    @apply flex items-baseline gap-3 text-body text-muted transition-colors hover:text-fg;
+  }
+  .legal-body {
+    @apply max-w-copy;
+  }
+  .legal-section {
+    @apply scroll-mt-28 rule-top pt-8 not-first:mt-10;
   }
 
   /* Footer */

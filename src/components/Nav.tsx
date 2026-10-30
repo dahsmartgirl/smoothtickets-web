@@ -4,7 +4,7 @@ import { AnimatePresence, MotionConfig, motion } from "motion/react";
 import { useEffect, useRef, useState } from "react";
 import { APP_URL } from "@/lib/events";
 import { fade, menuItem, menuList, menuPanel, menuSpring } from "@/lib/motion";
-import { Arrow, Logo } from "./brand";
+import { Arrow, ArrowOut, Logo } from "./brand";
 import { Button } from "./ui/button";
 
 const links = [
@@ -105,12 +105,12 @@ export function Nav({ overHero = true }: { overHero?: boolean }) {
               ))}
             </ul>
             <div className="flex items-center gap-1">
-              <a href={`${APP_URL}/auth/login`} className={`nav-link hidden lg:flex ${tone}`}>
+              <a href={`${APP_URL}/auth/login`} target="_blank" rel="noopener" className={`nav-link hidden lg:flex ${tone}`}>
                 Log in
               </a>
               <Button asChild size="sm" className="hidden lg:inline-flex">
-                <a href={`${APP_URL}/auth/signup`}>
-                  Create Event <Arrow />
+                <a href={`${APP_URL}/auth/signup`} target="_blank" rel="noopener">
+                  Create Event <ArrowOut />
                 </a>
               </Button>
 
@@ -160,11 +160,11 @@ export function Nav({ overHero = true }: { overHero?: boolean }) {
                   </ul>
                   <motion.div className="menu-actions" variants={menuItem}>
                     <Button asChild variant="glass">
-                      <a href={`${APP_URL}/auth/login`}>Log in</a>
+                      <a href={`${APP_URL}/auth/login`} target="_blank" rel="noopener">Log in</a>
                     </Button>
                     <Button asChild>
-                      <a href={`${APP_URL}/auth/signup`}>
-                        Create Event <Arrow />
+                      <a href={`${APP_URL}/auth/signup`} target="_blank" rel="noopener">
+                        Create Event <ArrowOut />
                       </a>
                     </Button>
                   </motion.div>

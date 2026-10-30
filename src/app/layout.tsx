@@ -3,6 +3,7 @@ import { Unbounded } from "next/font/google";
 import localFont from "next/font/local";
 import { APP_URL } from "@/lib/events";
 import { pageMetadata } from "@/lib/seo";
+import { StaggerObserver } from "@/components/Stagger";
 import "./globals.css";
 
 // Official unhinted Inter, so it renders the same on every OS.
@@ -45,6 +46,7 @@ export default function RootLayout({
     >
       <body>
         {children}
+        <StaggerObserver />
       </body>
     </html>
   );

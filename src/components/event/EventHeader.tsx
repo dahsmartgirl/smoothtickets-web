@@ -22,7 +22,7 @@ export function EventHeader({ event, ended }: { event: EventDetail; ended: boole
           <Image src={event.image} alt="" fill sizes="100vw" priority />
         </div>
       )}
-      <div className="container-page event-head-inner">
+      <div className="container-page event-head-inner intro">
         <div className="event-poster-lg">
           {event.image ? (
             <Image src={event.image} alt={`Poster for ${event.name}`} fill sizes="(min-width: 1024px) 360px, 90vw" priority />

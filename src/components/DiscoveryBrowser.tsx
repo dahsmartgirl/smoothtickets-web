@@ -51,7 +51,7 @@ export function DiscoveryBrowser({ events, initial }: { events: EventSummary[]; 
   return (
     <MotionConfig reducedMotion="user">
       <section aria-labelledby="discover-title" className="page-head">
-        <div className="container-page">
+        <div className="container-page intro">
           <h1 id="discover-title" className="type-display">
             Find your next <span className="text-brand">experience.</span>
           </h1>

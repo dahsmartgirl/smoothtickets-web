@@ -17,7 +17,7 @@ export default function NotFound() {
   return (
     <>
       <Nav overHero={false} />
-      <main className="mx-auto max-w-copy px-page pt-40 pb-28 text-center sm:pt-48">
+      <main className="intro mx-auto max-w-copy px-page pt-40 pb-28 text-center sm:pt-48">
         <h1 className="type-display">
           This page <span className="text-brand">isn&apos;t here.</span>
         </h1>

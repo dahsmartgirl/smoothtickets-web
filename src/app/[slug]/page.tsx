@@ -105,7 +105,7 @@ export default async function EventPage({ params }: Props) {
       <Nav />
       <main data-dark-top className="overflow-x-clip">
         <EventHeader event={event} ended={ended} />
-        <div className="container-page event-body">
+        <div data-stagger className="container-page event-body">
           <TicketPanel
             event={{ id: event.id, slug: event.slug, name: event.name }}
             tiers={event.tiers}

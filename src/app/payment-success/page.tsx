@@ -25,7 +25,7 @@ export default function PaymentSuccessPage() {
       <Nav />
       <main data-dark-top className="overflow-x-clip">
         <section aria-labelledby="confirm-title" className="page-head text-center">
-          <div className="container-page">
+          <div className="container-page intro">
             <span className="confirm-check">
               <HugeiconsIcon icon={CheckmarkCircle02Icon} strokeWidth={2} aria-hidden />
             </span>
@@ -38,7 +38,7 @@ export default function PaymentSuccessPage() {
           </div>
         </section>
 
-        <section aria-labelledby="next-title" className="container-page section">
+        <section aria-labelledby="next-title" data-stagger className="container-page section">
           <div className="stub">
             <div className="stub-top">
               <h2 id="next-title" className="type-heading">

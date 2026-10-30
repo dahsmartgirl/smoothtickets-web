@@ -50,7 +50,7 @@ export default function ContactPage() {
       <Nav />
       <main data-dark-top className="overflow-x-clip">
         <section aria-labelledby="contact-title" className="page-head">
-          <div className="container-page">
+          <div className="container-page intro">
             <h1 id="contact-title" className="type-display">
               Talk to <span className="text-brand">a real person.</span>
             </h1>
@@ -61,7 +61,7 @@ export default function ContactPage() {
         </section>
 
         <section aria-label="Ways to reach us" className="container-page pt-12 sm:pt-16">
-          <ul className="grid gap-5 md:grid-cols-2">
+          <ul data-stagger className="grid gap-5 md:grid-cols-2">
             {channels.map((c) => (
               <li key={c.title} className="contact-card">
                 <span className="contact-icon">
@@ -79,11 +79,11 @@ export default function ContactPage() {
           </ul>
         </section>
 
-        <section aria-labelledby="shortcuts-title" className="container-page section">
+        <section aria-labelledby="shortcuts-title" data-stagger className="container-page section">
           <h2 id="shortcuts-title" className="type-title">
             Might be quicker
           </h2>
-          <ul className="mt-8 grid gap-5 md:grid-cols-3">
+          <ul data-stagger-group className="mt-8 grid gap-5 md:grid-cols-3">
             {shortcuts.map((s) => (
               <li key={s.q} className="card">
                 <h3 className="type-subheading">{s.q}</h3>

@@ -1,53 +1,69 @@
 import { ArrowUpRight01Icon, Linkedin01Icon, NewTwitterIcon } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
 import { APP_URL } from "@/lib/events";
-import { Arrow, Logo, QrCode } from "./brand";
+import { ArrowOut, Logo, QrCode } from "./brand";
 import { Confetti } from "./Confetti";
 import { UncoverSection } from "./Uncover";
 import { Button } from "./ui/button";
 
 /**
- * Full-width ticket band. It looks pinned under the page (UncoverSection), so the FAQ slides up off it
- * as you scroll down, and back over it as you scroll up.
+ * Full-width ticket band. It looks pinned under the page (UncoverSection), so the content above slides up
+ * off it as you scroll down, and back over it as you scroll up. Wrap everything above it in `.above-cta`.
+ * The homepage copy is the default; other pages pass their own.
  */
-export function FinalCta() {
+export function FinalCta({
+  title = (
+    <>
+      Your next event
+      <br />
+      starts with <span className="text-night">Smooth.</span>
+    </>
+  ),
+  body = "Everything you need to get started is right here.",
+  actions = (
+    <Button asChild variant="night">
+      <a href={`${APP_URL}/auth/signup`} target="_blank" rel="noopener">
+        Create an Event <ArrowOut />
+      </a>
+    </Button>
+  ),
+}: {
+  title?: React.ReactNode;
+  body?: React.ReactNode;
+  actions?: React.ReactNode;
+}) {
   return (
-    <UncoverSection aria-labelledby="cta-title" className="cta" contentClassName="container-page cta-inner">
-      <div className="cta-body">
-        <h2 id="cta-title" className="type-display">
-          Your next event
-          <br />
-          starts with <span className="text-night">Smooth.</span>
-        </h2>
-        <p className="mt-5 max-w-narrow text-lead text-on-dark-muted">Everything you need to get started is right here.</p>
-        <div className="mt-10 flex flex-wrap gap-3">
-          <Button asChild variant="night">
-            <a href={`${APP_URL}/auth/signup`}>
-              Create an Event <Arrow />
-            </a>
-          </Button>
+    <UncoverSection aria-labelledby="cta-title" className="cta-frame" contentClassName="cta">
+      <div className="container-page cta-inner">
+        <div className="cta-body">
+          <h2 id="cta-title" className="type-display">
+            {title}
+          </h2>
+          <p className="mt-5 max-w-narrow text-lead text-on-dark-muted">{body}</p>
+          <div className="mt-10 flex flex-wrap gap-3">{actions}</div>
         </div>
-      </div>
-      {/* stub */}
-      <div className="cta-stub">
-        <div className="perf-y absolute top-0 bottom-0 left-0 text-on-dark-faint" />
-        <div className="cta-qr">
-          <QrCode seed="your-event" className="size-32" />
+        {/* stub */}
+        <div className="cta-stub">
+          <div className="perf-y absolute top-0 bottom-0 left-0 text-on-dark-faint" />
+          <div className="cta-qr">
+            <QrCode seed="your-event" className="size-32" />
+          </div>
+          <p className="type-caption text-on-dark-muted">No. 000001</p>
         </div>
-        <p className="type-caption text-on-dark-muted">No. 000001</p>
       </div>
     </UncoverSection>
   );
 }
 
-type FooterLink = { label: string; href: string; external?: boolean };
+/** `external`: another site, new tab. `out`: sign-up in the app, new tab with ↗ like the buttons. */
+type FooterLink = { label: string; href: string; external?: boolean; out?: boolean };
 
 const columns: { title: string; links: FooterLink[] }[] = [
   {
     title: "Product",
     links: [
       { label: "Discover Events", href: "/discovery" },
-      { label: "Create an Event", href: `${APP_URL}/auth/signup` },
+      { label: "Create an Event", href: `${APP_URL}/auth/signup`, out: true },
       { label: "Pricing", href: "/pricing" },
     ],
   },
@@ -55,7 +71,7 @@ const columns: { title: string; links: FooterLink[] }[] = [
     title: "Affiliates",
     links: [
       { label: "Smooth Affiliates", href: "/affiliates" },
-      { label: "Become an affiliate", href: `${APP_URL}/affiliate/auth/signup` },
+      { label: "Become an affiliate", href: `${APP_URL}/affiliate/auth/signup`, out: true },
       { label: "Affiliate login", href: `${APP_URL}/affiliate/auth/login` },
     ],
   },
@@ -69,8 +85,8 @@ const columns: { title: string; links: FooterLink[] }[] = [
   {
     title: "Legal",
     links: [
-      { label: "Privacy", href: "https://www.smoothballot.com/privacy" },
-      { label: "Terms", href: "https://www.smoothballot.com/terms" },
+      { label: "Privacy", href: "/privacy" },
+      { label: "Terms", href: "/terms" },
     ],
   },
 ];
@@ -85,8 +101,8 @@ export function Footer({ torn = true }: { torn?: boolean }) {
   return (
     <footer className={`footer ${torn ? "torn-top" : ""}`}>
       <Confetti />
-      <div className="container-page footer-content">
-        <div className="layout-aside">
+      <div data-stagger className="container-page footer-content">
+        <div data-stagger-group className="layout-aside">
           <div className="max-w-narrow">
             <Logo onDark />
             <p className="mt-5 text-body text-on-dark-muted">
@@ -95,7 +111,7 @@ export function Footer({ torn = true }: { torn?: boolean }) {
             <ul className="mt-6 flex gap-2">
               {socials.map((s) => (
                 <li key={s.href}>
-                  <a href={s.href} aria-label={s.label} rel="noopener" className="social">
+                  <a href={s.href} aria-label={s.label} target="_blank" rel="noopener noreferrer" className="social">
                     <HugeiconsIcon icon={s.icon} strokeWidth={1.8} aria-hidden />
                   </a>
                 </li>
@@ -110,9 +126,14 @@ export function Footer({ torn = true }: { torn?: boolean }) {
                 <ul className="mt-4 space-y-3 text-body">
                   {col.links.map((l) => (
                     <li key={l.label}>
-                      <a href={l.href} className="footer-link" {...(l.external && { rel: "noopener" })}>
+                      <a
+                        href={l.href}
+                        className="footer-link"
+                        {...(l.external && { target: "_blank", rel: "noopener noreferrer" })}
+                        {...(l.href.startsWith(APP_URL) && { target: "_blank", rel: "noopener" })}
+                      >
                         {l.label}
-                        {l.external && <HugeiconsIcon icon={ArrowUpRight01Icon} strokeWidth={2} aria-hidden />}
+                        {(l.external || l.out) && <HugeiconsIcon icon={ArrowUpRight01Icon} strokeWidth={2} aria-hidden />}
                       </a>
                     </li>
                   ))}
@@ -143,3 +164,4 @@ export function Footer({ torn = true }: { torn?: boolean }) {
     </footer>
   );
 }
+
