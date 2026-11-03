@@ -35,7 +35,7 @@ const steps = [
   { icon: Tag01Icon, title: "You set the price", body: "Regular, VIP, group tickets, tables or free. Free tickets carry no fee." },
   { icon: Invoice01Icon, title: "The fee has its own line", body: "A 5% service fee, shown next to every ticket on the event page." },
   { icon: ViewIcon, title: "Buyers see the total first", body: "The full amount is on screen before they pay." },
-  { icon: Wallet01Icon, title: "You get paid automatically", body: "Your money arrives almost instantly." },
+  { icon: Wallet01Icon, title: "You get paid automatically", body: "Ticket sales are grouped and paid to your bank account automatically, usually within a few hours." },
 ];
 
 const included = [
@@ -43,7 +43,7 @@ const included = [
   { icon: DiscountTag01Icon, title: "Discount codes", body: "Run coupons on the ticket types you choose." },
   { icon: UserGroupIcon, title: "Affiliates", body: "Let promoters sell your tickets for a commission you set." },
   { icon: ChartLineData01Icon, title: "Sales and attendees", body: "Track ticket sales, revenue and who's coming in your dashboard." },
-  { icon: Wallet01Icon, title: "Automatic payouts", body: "Your money reaches you almost instantly. Track revenue and payouts in one place." },
+  { icon: Wallet01Icon, title: "Automatic payouts", body: "Sales are batched and paid out automatically, usually within a few hours. Track revenue and payouts in one place." },
   { icon: QrCodeIcon, title: "QR check-in", body: "Scan every ticket at the door on event day." },
 ];
 

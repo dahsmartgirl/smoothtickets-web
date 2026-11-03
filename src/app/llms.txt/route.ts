@@ -24,7 +24,7 @@ const faq: [string, string][] = [
   ],
   [
     "How do organisers get paid?",
-    "Payouts are automatic: money from ticket sales is paid to the organiser's bank account almost instantly. Payments are processed by Paystack.",
+    "Payouts are automatic. Ticket sales are grouped into batches and paid to the organiser's bank account, usually within a few hours. Payments are processed by Paystack.",
   ],
   [
     "How does check-in work?",
@@ -40,7 +40,7 @@ const faq: [string, string][] = [
   ],
   [
     "How much do affiliates earn?",
-    "The organiser sets the commission for each ticket type, so it differs from event to event. Affiliate commission is paid out automatically.",
+    "The organiser sets the commission for each ticket type, so it differs from event to event. Affiliate commission is paid out automatically in batches, usually within a few hours.",
   ],
   [
     "How are affiliate sales tracked?",
@@ -77,7 +77,7 @@ export async function GET() {
     "- The only charge is a 5% service fee on each paid ticket, added on top of the ticket price and shown on its own line on the event page. Example from a live event page: a ₦3,000 ticket shows a ₦150 service fee, so the buyer pays ₦3,150.",
     "- Buyers see the full total, fee included, before they pay.",
     "- Free tickets carry no service fee.",
-    "- Payouts to organisers and affiliates are automatic, and the money arrives almost instantly.",
+    "- Payouts to organisers and affiliates are automatic: sales are batched and usually arrive within a few hours.",
     "",
     "## Questions and answers",
     "",

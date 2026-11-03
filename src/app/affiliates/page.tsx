@@ -37,7 +37,7 @@ const heroScreen = {
   alt: "Affiliate Discover Events screen listing events open to affiliates",
 };
 
-// Answers stick to what the product shows today. Payout timing is not stated until ops confirms it.
+// Answers stick to what the product shows today. Payouts are batched, usually within a few hours (team, 2026-11-03).
 const answers: AccordionEntry[] = [
   {
     question: "What is Smooth Affiliates?",
@@ -66,7 +66,8 @@ const answers: AccordionEntry[] = [
   },
   {
     question: "How are earnings paid out?",
-    answer: "Smooth Tickets handles affiliate payouts automatically. Add your bank account in your affiliate dashboard to get paid.",
+    answer:
+      "Smooth Tickets pays affiliate commission automatically. Earnings are grouped and paid to your bank account, usually within a few hours. Add your bank account in your affiliate dashboard to get paid.",
   },
 ];
 
