@@ -1,8 +1,7 @@
 import type { Metadata } from "next";
 import { Unbounded } from "next/font/google";
 import localFont from "next/font/local";
-import { APP_URL } from "@/lib/events";
-import { pageMetadata, siteJsonLd } from "@/lib/seo";
+import { SERVED_URL, pageMetadata, siteJsonLd } from "@/lib/seo";
 import { StaggerObserver } from "@/components/Stagger";
 import "./globals.css";
 
@@ -27,7 +26,8 @@ const description =
   "Create events, sell tickets online, manage attendees, track revenue, and grow ticket sales with affiliates on Smooth Tickets.";
 
 export const metadata: Metadata = {
-  metadataBase: new URL(APP_URL),
+  // Resolves the preview image URLs; canonicals are absolute on APP_URL (lib/seo.ts).
+  metadataBase: new URL(SERVED_URL),
   ...pageMetadata({ title, description, path: "/" }),
   title: { default: title, template: "%s | Smooth Tickets" },
   applicationName: "Smooth Tickets",

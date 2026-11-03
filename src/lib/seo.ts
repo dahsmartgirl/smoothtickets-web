@@ -2,6 +2,15 @@ import type { Metadata } from "next";
 import { CONTACT_EMAIL } from "@/lib/contact";
 import { APP_URL } from "@/lib/events";
 
+/**
+ * Where this deployment is actually served, for links that must load from it: the social preview images
+ * (metadataBase in the root layout). Vercel sets VERCEL_PROJECT_PRODUCTION_URL to the project's production
+ * domain: the vercel.app address until tickets.smooth.africa is connected, then that, with no change here.
+ * Canonical and og:url stay on APP_URL (absolute below), so search engines only ever see the real domain.
+ */
+export const SERVED_URL = process.env.VERCEL_PROJECT_PRODUCTION_URL
+  ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`
+  : APP_URL;
 
 /**
  * Title, description, canonical, Open Graph and Twitter for one page, kept in agreement.
@@ -14,14 +23,14 @@ export function pageMetadata({ title, description, path }: { title: string; desc
   return {
     title,
     description,
-    alternates: { canonical: path },
+    alternates: { canonical: path === "/" ? APP_URL : `${APP_URL}${path}` },
     openGraph: {
       type: "website",
       siteName: "Smooth Tickets",
       locale: "en_NG",
       title: social,
       description,
-      url: path,
+      url: path === "/" ? APP_URL : `${APP_URL}${path}`,
     },
     twitter: { card: "summary_large_image", title: social, description },
   };

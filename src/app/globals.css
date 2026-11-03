@@ -1264,8 +1264,9 @@ main[data-dark-top] {
   .legal-body {
     @apply max-w-copy;
   }
+  /* A dotted rule between sections, none above the first */
   .legal-section {
-    @apply scroll-mt-28 rule-top pt-8 not-first:mt-10;
+    @apply scroll-mt-28 not-first:mt-10 not-first:rule-top not-first:pt-8;
   }
   /* Clause number in a hanging column, so the text lines up down the page. */
   .legal-clause {

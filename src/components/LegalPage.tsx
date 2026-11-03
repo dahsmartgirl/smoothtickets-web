@@ -11,7 +11,7 @@ export type LegalSection = { id: string; title: string; body: string[] };
 
 /** `**bold**` → <strong>. The only markup the legal copy uses. */
 function Rich({ text }: { text: string }) {
-  return text.split(/\*\*(.+?)\*\*/).map((part, i) => (i % 2 ? <strong key={i} className="font-bold text-fg">{part}</strong> : part));
+  return text.split(/\*\*(.+?)\*\*/).map((part, i) => (i % 2 ? <strong key={i} className="font-bold">{part}</strong> : part));
 }
 
 /** Groups each clause with the "- " sub-items that follow it. */

@@ -38,8 +38,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   return {
     title,
     description,
-    alternates: { canonical: `/${event.slug}` },
-    openGraph: { type: "website", siteName: "Smooth Tickets", locale: "en_NG", title: event.name, description, url: `/${event.slug}`, images },
+    alternates: { canonical: `${APP_URL}/${event.slug}` },
+    openGraph: { type: "website", siteName: "Smooth Tickets", locale: "en_NG", title: event.name, description, url: `${APP_URL}/${event.slug}`, images },
     twitter: { card: "summary_large_image", title: event.name, description, images },
   };
 }
