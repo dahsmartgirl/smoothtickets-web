@@ -7,14 +7,16 @@ import { Nav } from "@/components/Nav";
 import { Arrow } from "@/components/brand";
 import { Button } from "@/components/ui/button";
 import { CONTACT_EMAIL, WHATSAPP_URL } from "@/lib/contact";
-import { pageMetadata } from "@/lib/seo";
+import { APP_URL } from "@/lib/events";
+import { ORG_ID, pageMetadata } from "@/lib/seo";
 
 // Older iOS Safari tints its status bar from this; the page opens on a navy header.
 export const viewport: Viewport = { themeColor: "#050b1f" };
 
 export const metadata: Metadata = pageMetadata({
-  title: "Contact us",
-  description: "Talk to the Smooth Tickets team on WhatsApp or by email about your event, tickets, payouts or affiliates.",
+  title: "Contact Us: WhatsApp and Email Support",
+  description:
+    "Talk to a real person at Smooth Tickets on WhatsApp or by email. Get help with your tickets, hosting an event, payouts or promoting events as an affiliate.",
   path: "/contact",
 });
 
@@ -44,15 +46,25 @@ const shortcuts = [
   { q: "Want to promote events?", a: "Share event links and earn commission on every ticket you sell.", link: { label: "Smooth Affiliates", href: "/affiliates" } },
 ];
 
+// The contact page, pointing at the site-wide Organization (its email and WhatsApp line live there).
+const contactPage = {
+  "@context": "https://schema.org",
+  "@type": "ContactPage",
+  name: "Contact Smooth Tickets",
+  url: `${APP_URL}/contact`,
+  about: { "@id": ORG_ID },
+};
+
 export default function ContactPage() {
   return (
     <>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(contactPage) }} />
       <Nav />
       <main data-dark-top className="overflow-x-clip">
         <section aria-labelledby="contact-title" className="page-head">
           <div className="container-page intro">
             <h1 id="contact-title" className="type-display">
-              Talk to <span className="text-brand">a real person.</span>
+              Talk to a real person.
             </h1>
             <p className="mt-5 max-w-copy text-lead text-on-dark-muted">
               Questions about your event, your tickets or getting paid? Reach the Smooth team on WhatsApp or by email.

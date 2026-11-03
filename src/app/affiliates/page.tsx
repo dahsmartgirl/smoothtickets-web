@@ -76,10 +76,10 @@ export default function AffiliatesPage() {
       <Nav />
       <main data-dark-top className="overflow-x-clip">
         <section aria-labelledby="affiliates-page-title" className="page-head">
-          <div className="container-page grid gap-14 lg:grid-cols-[1.1fr_1fr] lg:items-start">
+          <div className="container-page grid gap-14 lg:grid-cols-[1fr_22rem] lg:items-start">
             <div className="intro">
               <h1 id="affiliates-page-title" className="type-display">
-                Share events. <span className="text-brand">Earn on every ticket.</span>
+                Share events. Earn on every ticket.
               </h1>
               <p className="mt-5 max-w-copy text-lead text-on-dark-muted">{description}</p>
               <div className="mt-9 flex flex-wrap gap-3">

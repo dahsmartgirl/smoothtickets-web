@@ -1,8 +1,9 @@
 import { ArrowUpRight01Icon, Linkedin01Icon, NewTwitterIcon } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
 import { APP_URL } from "@/lib/events";
-import { ArrowOut, Logo, QrCode } from "./brand";
+import { ArrowOut, Logo } from "./brand";
 import { Confetti } from "./Confetti";
+import { ScanTicket } from "./ScanTicket";
 import { UncoverSection } from "./Uncover";
 import { Button } from "./ui/button";
 
@@ -16,7 +17,7 @@ export function FinalCta({
     <>
       Your next event
       <br />
-      starts with <span className="text-night">Smooth.</span>
+      starts with Smooth.
     </>
   ),
   body = "Everything you need to get started is right here.",
@@ -45,10 +46,7 @@ export function FinalCta({
         {/* stub */}
         <div className="cta-stub">
           <div className="perf-y absolute top-0 bottom-0 left-0 text-on-dark-faint" />
-          <div className="cta-qr">
-            <QrCode seed="your-event" className="size-32" />
-          </div>
-          <p className="type-caption text-on-dark-muted">No. 000001</p>
+          <ScanTicket />
         </div>
       </div>
     </UncoverSection>
@@ -119,7 +117,8 @@ export function Footer({ torn = true }: { torn?: boolean }) {
             </ul>
           </div>
 
-          <nav aria-label="Footer" className="grid grid-cols-2 gap-10 sm:grid-cols-4">
+          {/* From sm up each column is as wide as its longest link (links never wrap), spread across the row. */}
+          <nav aria-label="Footer" className="grid grid-cols-2 gap-x-6 gap-y-10 sm:flex sm:justify-between sm:gap-10">
             {columns.map((col) => (
               <div key={col.title}>
                 <p className="type-overline text-on-dark-faint">{col.title}</p>

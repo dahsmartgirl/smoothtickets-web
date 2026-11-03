@@ -2,13 +2,14 @@ import type { Metadata } from "next";
 import { Unbounded } from "next/font/google";
 import localFont from "next/font/local";
 import { APP_URL } from "@/lib/events";
-import { pageMetadata } from "@/lib/seo";
+import { pageMetadata, siteJsonLd } from "@/lib/seo";
 import { StaggerObserver } from "@/components/Stagger";
 import "./globals.css";
 
-// Official unhinted Inter, so it renders the same on every OS.
+// Official unhinted Inter, so it renders the same on every OS. Subset to Latin, punctuation, currency (₦)
+// and arrows, with every weight and OpenType feature kept: 344 KB down to 118 KB, on every page.
 const inter = localFont({
-  src: "./fonts/InterVariable.woff2",
+  src: "./fonts/InterVariable-latin.woff2",
   variable: "--font-inter",
   weight: "100 900",
   display: "swap",
@@ -17,7 +18,7 @@ const inter = localFont({
 const unbounded = Unbounded({
   variable: "--font-unbounded",
   subsets: ["latin"],
-  weight: ["500", "700", "800", "900"],
+  weight: ["700", "900"], // font-bold and font-black, the only two the site uses
 });
 
 
@@ -41,10 +42,11 @@ export default function RootLayout({
   return (
     // Font variables go on <html>: Tailwind resolves --font-sans at the root, so on <body> Inter never applied.
     <html
-      lang="en"
+      lang="en-NG"
       className={`${inter.variable} ${unbounded.variable}`}
     >
       <body>
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(siteJsonLd) }} />
         {children}
         <StaggerObserver />
       </body>

@@ -7,7 +7,7 @@ import { TypeWords } from "./TypeWords";
 import { Button } from "@/components/ui/button";
 
 /** "Make it ___": the hero types through these. The first is what loads and what screen readers hear. */
-const HAPPEN = ["happen.", "smooth.", "pop.", "lit.", "sell out."];
+const HAPPEN = ["happen.", "smooth.", "pop.", "lit.", "count."];
 
 export function Hero() {
   return (

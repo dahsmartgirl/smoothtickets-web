@@ -72,9 +72,7 @@ export function Affiliates({ onAffiliatesPage = false, eyebrow = "Smooth Affilia
                 </div>
                 {/* Real screen rising from the card's bottom edge. */}
                 <div className="aff-shot">
-                  <div>
-                    <Image src={p.src} alt={p.alt} fill sizes="(min-width: 768px) 340px, 90vw" />
-                  </div>
+                  <Image src={p.src} alt={p.alt} width={748} height={1511} sizes="(min-width: 768px) 340px, 90vw" />
                 </div>
               </div>
             </li>

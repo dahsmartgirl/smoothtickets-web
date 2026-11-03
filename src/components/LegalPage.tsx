@@ -3,12 +3,30 @@ import { Footer } from "./FinalCta";
 import { Nav } from "./Nav";
 import { CONTACT_EMAIL } from "@/lib/contact";
 
+/**
+ * `body`: one string per numbered clause (1.1, 1.2 …). A string starting with "- " is a sub-item of the clause
+ * before it, shown indented and unnumbered; write its own "(a)" label. `**text**` is bold.
+ */
 export type LegalSection = { id: string; title: string; body: string[] };
 
+/** `**bold**` → <strong>. The only markup the legal copy uses. */
+function Rich({ text }: { text: string }) {
+  return text.split(/\*\*(.+?)\*\*/).map((part, i) => (i % 2 ? <strong key={i} className="font-bold text-fg">{part}</strong> : part));
+}
+
+/** Groups each clause with the "- " sub-items that follow it. */
+function clauses(body: string[]) {
+  const out: { text: string; items: string[] }[] = [];
+  for (const line of body) {
+    if (line.startsWith("- ") && out.length) out[out.length - 1].items.push(line.slice(2));
+    else out.push({ text: line, items: [] });
+  }
+  return out;
+}
+
 /**
- * Privacy and Terms share this layout: navy header, a contents list (sticky beside the text on desktop),
- * then numbered sections. The copy in app/privacy and app/terms is placeholder text in [brackets],
- * to be replaced with the final policies from the team.
+ * Privacy and Terms share this layout: navy header, a contents list (desktop only, sticky beside the text),
+ * then numbered sections of numbered clauses. The copy lives in app/privacy and app/terms.
  */
 export function LegalPage({ title, intro, updated, sections }: { title: string; intro: string; updated: string; sections: LegalSection[] }) {
   return (
@@ -46,10 +64,26 @@ export function LegalPage({ title, intro, updated, sections }: { title: string; 
                 <h2 id={`${s.id}-title`} className="type-heading">
                   <span className="type-number text-brand">{String(i + 1).padStart(2, "0")}</span> {s.title}
                 </h2>
-                {s.body.map((p) => (
-                  <p key={p} className="mt-3 text-lead text-muted">
-                    {p}
-                  </p>
+                {clauses(s.body).map((c, j) => (
+                  <div key={c.text} className="legal-clause">
+                    <span className="legal-clause-no">
+                      {i + 1}.{j + 1}
+                    </span>
+                    <div>
+                      <p>
+                        <Rich text={c.text} />
+                      </p>
+                      {c.items.length > 0 && (
+                        <ul className="legal-items">
+                          {c.items.map((item) => (
+                            <li key={item}>
+                              <Rich text={item} />
+                            </li>
+                          ))}
+                        </ul>
+                      )}
+                    </div>
+                  </div>
                 ))}
               </section>
             ))}

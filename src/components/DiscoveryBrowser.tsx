@@ -53,7 +53,7 @@ export function DiscoveryBrowser({ events, initial }: { events: EventSummary[]; 
       <section aria-labelledby="discover-title" className="page-head">
         <div className="container-page intro">
           <h1 id="discover-title" className="type-display">
-            Find your next <span className="text-brand">experience.</span>
+            Find your next experience.
           </h1>
           <p className="mt-5 max-w-copy text-lead text-on-dark-muted">
             Parties, concerts, raves and meetups across Nigeria. Discover events worth showing up for.
@@ -92,14 +92,18 @@ export function DiscoveryBrowser({ events, initial }: { events: EventSummary[]; 
         </div>
       </section>
 
-      <section aria-label="Events" className="container-page pt-6 pb-24 sm:pt-10">
+      <section aria-labelledby="events-list-title" className="container-page pt-6 pb-24 sm:pt-10">
+        {/* Keeps the outline in order (h1, then h2, then each card's h3) for screen readers and search engines. */}
+        <h2 id="events-list-title" className="sr-only">
+          Upcoming events
+        </h2>
 
         {shown.length ? (
           <motion.ul layout className="event-grid">
             <AnimatePresence mode="popLayout" initial={false}>
-              {shown.map((e) => (
+              {shown.map((e, i) => (
                 <motion.li key={e.slug} layout variants={cardSwap} initial="out" animate="in" exit="out">
-                  <EventCard event={e} className="event-card-grid" />
+                  <EventCard event={e} className="event-card-grid" priority={i < 3} />
                 </motion.li>
               ))}
             </AnimatePresence>

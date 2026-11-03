@@ -2,6 +2,7 @@ import { ArrowRight02Icon, ArrowUpRight01Icon } from "@hugeicons/core-free-icons
 import { HugeiconsIcon } from "@hugeicons/react";
 import Image from "next/image";
 import Link from "next/link";
+import { encode } from "uqr";
 
 export function Logo({ onDark = false }: { onDark?: boolean }) {
   return (
@@ -13,37 +14,17 @@ export function Logo({ onDark = false }: { onDark?: boolean }) {
   );
 }
 
-/** Deterministic, decorative QR-style grid. Not scannable. */
-export function QrCode({ seed = "smooth", size = 21, className = "" }: { seed?: string; size?: number; className?: string }) {
-  let h = 2166136261;
-  for (const c of seed) h = Math.imul(h ^ c.charCodeAt(0), 16777619);
-  const rand = () => {
-    h ^= h << 13;
-    h ^= h >>> 17;
-    h ^= h << 5;
-    return ((h >>> 0) % 1000) / 1000;
-  };
-  const inFinder = (x: number, y: number) =>
-    (x < 8 && y < 8) || (x >= size - 8 && y < 8) || (x < 8 && y >= size - 8);
-  const cells: [number, number][] = [];
-  for (let y = 0; y < size; y++)
-    for (let x = 0; x < size; x++) if (!inFinder(x, y) && rand() > 0.52) cells.push([x, y]);
-  const finders = [
-    [0, 0],
-    [size - 7, 0],
-    [0, size - 7],
-  ];
+/**
+ * A real, scannable QR code for `value`, drawn in the same crisp squares as the old decorative one.
+ * Low error correction keeps it to as few modules as possible, so it stays close to that look.
+ */
+export function QrCode({ value, className = "" }: { value: string; className?: string }) {
+  const { size, data } = encode(value, { ecc: "L", border: 0 });
+  let d = "";
+  data.forEach((row, y) => row.forEach((on, x) => on && (d += `M${x} ${y}h1v1h-1z`)));
   return (
     <svg viewBox={`0 0 ${size} ${size}`} className={className} shapeRendering="crispEdges" aria-hidden>
-      {cells.map(([x, y]) => (
-        <rect key={`${x}-${y}`} x={x} y={y} width={1} height={1} fill="currentColor" />
-      ))}
-      {finders.map(([x, y]) => (
-        <g key={`${x}-${y}`} fill="currentColor">
-          <path d={`M${x} ${y}h7v7h-7z M${x + 1} ${y + 1}v5h5v-5z`} fillRule="evenodd" />
-          <rect x={x + 2} y={y + 2} width={3} height={3} />
-        </g>
-      ))}
+      <path d={d} fill="currentColor" />
     </svg>
   );
 }

@@ -27,6 +27,7 @@
   --color-sticker-lime: #c8f53c;
   --color-sticker-pink: #ff5fa2;
   --color-sticker-sky: #5aa9ff;
+  --color-gold: #ffd257; /* the golden ticket (/golden) */
   --color-danger: #c4152f; /* form errors */
   --color-danger-soft: #fdecef;
 
@@ -547,7 +548,7 @@ main[data-dark-top] {
   }
   /* The background loop (HeroVideo.tsx) is already framed, so it centers; it fades in over the photo once playing. */
   .hero-video {
-    @apply opacity-0 transition-opacity duration-1000 data-playing:opacity-100;
+    @apply opacity-0 transition-opacity duration-1000 data-playing:opacity-100 motion-reduce:hidden;
     object-position: 50% 50%;
     @variant lg {
       object-position: 50% 50%;
@@ -752,27 +753,47 @@ main[data-dark-top] {
       @apply bg-white text-fg ring-white hover:bg-white hover:text-fg;
     }
   }
-  /* Ticket stub card, notched where the perforation runs (pricing example, payment confirmation) */
+  /* Ticket stub card, notched where the perforation runs (pricing hero, payment confirmation). The two
+     halves carry the paper and are masked, so the notches are real holes and work on any background.
+     The perforation overlaps the seam without taking up height. */
   .stub {
-    @apply relative mx-auto w-full max-w-narrow overflow-hidden rounded-xl bg-paper;
+    @apply relative mx-auto flex w-full max-w-narrow flex-col overflow-hidden rounded-xl;
+    & > * {
+      @apply bg-paper;
+    }
   }
   .stub-top {
     @apply relative px-7 pt-7 pb-6 sm:px-9 sm:pt-9;
-    /* The two half-circle bites at the perforation */
-    &::before,
-    &::after {
-      content: "";
-      @apply absolute -bottom-3 size-6 rounded-full bg-white;
-    }
-    &::before {
-      @apply -left-3;
-    }
-    &::after {
-      @apply -right-3;
-    }
   }
-  .stub .perf-x {
-    @apply mx-6;
+  .stub-top,
+  .stub > .perf-x + * {
+    mask:
+      var(--bite-l) left / 50.5% 100% no-repeat,
+      var(--bite-r) right / 50.5% 100% no-repeat;
+  }
+  .stub-top {
+    --bite-l: radial-gradient(circle 12px at 0 100%, #0000 11.5px, #000 12px);
+    --bite-r: radial-gradient(circle 12px at 100% 100%, #0000 11.5px, #000 12px);
+  }
+  .stub > .perf-x + * {
+    --bite-l: radial-gradient(circle 12px at 0 0, #0000 11.5px, #000 12px);
+    --bite-r: radial-gradient(circle 12px at 100% 0, #0000 11.5px, #000 12px);
+  }
+  .stub > .perf-x {
+    @apply relative z-10 mx-6 -my-px bg-transparent;
+  }
+  /* The golden ticket (/golden): same stub, in gold */
+  .stub-gold {
+    @apply text-night;
+    & > * {
+      @apply bg-gold;
+    }
+    & > .perf-x {
+      @apply bg-transparent text-night/30;
+    }
+    & .rule-top {
+      --rule-color: rgb(5 11 31 / 0.3);
+    }
   }
   .stub-lines {
     @apply space-y-3 px-7 pt-6 pb-7 text-lead tabular-nums sm:px-9 sm:pb-9;
@@ -782,6 +803,36 @@ main[data-dark-top] {
   }
 
   /* Affiliates page: the affiliate's four steps */
+  /* Scroll-filled timeline (ScrollTimeline.tsx): a faint track from the first dot to the last, a blue fill
+     scaled from the top as you scroll, and steps that light up as the fill reaches them. */
+  .timeline {
+    @apply relative;
+  }
+  /* Dot column: 2.5rem on phones, 3rem from sm. The track runs down the middle of it. */
+  .timeline-track {
+    @apply absolute left-5 w-0.5 -translate-x-1/2 overflow-hidden rounded-full bg-mist sm:left-6;
+  }
+  .timeline-fill {
+    @apply block size-full origin-top bg-brand;
+  }
+  .timeline-step {
+    @apply relative grid grid-cols-[2.5rem_1fr] gap-4 pb-12 last:pb-0 sm:grid-cols-[3rem_1fr] sm:gap-6 sm:pb-16;
+    & > div {
+      @apply min-w-0 pt-1.5 opacity-40 transition-opacity duration-500 sm:pt-2;
+    }
+    &[data-on] > div {
+      @apply opacity-100;
+    }
+  }
+  .timeline-dot {
+    @apply relative z-10 grid size-10 place-items-center rounded-full bg-mist text-muted transition-[background-color,color,scale] duration-500 sm:size-12;
+    & svg {
+      @apply size-4.5 sm:size-5;
+    }
+  }
+  .timeline-step[data-on] .timeline-dot {
+    @apply scale-110 bg-brand text-white;
+  }
   .earn-step {
     @apply rounded-xl bg-paper p-6 sm:p-7;
   }
@@ -1010,15 +1061,19 @@ main[data-dark-top] {
   .aff-card {
     @apply flex h-full flex-col overflow-hidden rounded-xl bg-glass-faint;
   }
-  /* The phone's bezel spans the card's text column exactly: the image box is widened by the side buttons
-     (0.94% of the mockup each side), which hang just past the text edges. Only the bottom is clipped. */
+  /* The phone's bezel spans the card's text column exactly: the image is widened by the side buttons
+     (0.94% of the mockup each side), which hang just past the text edges. The card's overflow-hidden cuts
+     off the bottom. Built from plain parts on purpose: iPhone browsers (all WebKit) drew the phone at its
+     file size when this was a `fill` image in an aspect-ratio box inside the flex column. Now the 16:15
+     window comes from a padded spacer, and the image has an explicit width and its natural height. */
   .aff-shot {
-    @apply relative mx-6 mt-auto aspect-[16/15] overflow-x-visible overflow-y-clip sm:mx-7;
-    & > div {
-      @apply absolute inset-y-0 -left-[0.94%] -right-[0.94%];
+    @apply relative mx-6 mt-auto shrink-0 sm:mx-7;
+    &::before {
+      content: "";
+      @apply block pt-[93.75%];
     }
     & img {
-      @apply object-cover object-top;
+      @apply absolute top-0 -left-[0.94%] h-auto w-[101.88%] max-w-none;
     }
     &::after {
       content: "";
@@ -1051,13 +1106,10 @@ main[data-dark-top] {
   }
   /* Just the icon: a plus that turns a quarter-and-a-half into an X when open, and back */
   .accordion-icon {
-    @apply grid size-5 shrink-0 place-items-center text-fg transition-colors;
+    @apply grid size-5 shrink-0 place-items-center text-fg;
     & svg {
       @apply size-4;
     }
-  }
-  .accordion-trigger:hover .accordion-icon {
-    @apply text-brand;
   }
   /* Height, the plus-to-X turn and the text fade are animated by Motion (lib/motion.ts: accordion*). */
   .accordion-content {
@@ -1129,9 +1181,82 @@ main[data-dark-top] {
     @apply rounded-md bg-white p-3 text-night;
   }
 
+  /* Easter egg on the stub's QR (ScanTicket.tsx). Idle: a faint glint sweeps it every few seconds, the nudge.
+     Tapped: the line scans down and back, then a sticker-style stamp slams on. */
+  .scan {
+    @apply relative block cursor-pointer rounded-md outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-4 focus-visible:ring-offset-brand;
+    &[data-state="used"] {
+      animation: scan-shake 0.4s ease-in-out;
+    }
+  }
+  .scan-line {
+    @apply pointer-events-none absolute inset-x-2 top-2 h-0.5 rounded-full bg-brand opacity-0;
+    animation: scan-glint 6s ease-in-out 2s infinite;
+  }
+  .scan[data-state="scanning"] .scan-line {
+    animation: scan-sweep 0.45s ease-in-out 2 alternate;
+  }
+  .scan[data-state="admitted"] .scan-line,
+  .scan[data-state="used"] .scan-line {
+    animation: none;
+  }
+  .scan-stamp {
+    @apply pointer-events-none absolute top-1/2 left-1/2 rounded-md border-2 border-night bg-sticker-lime px-2.5 py-1 font-display text-small font-black whitespace-nowrap text-night uppercase;
+    translate: -50% -50%;
+    rotate: -8deg;
+    animation: scan-stamp 0.35s cubic-bezier(0.2, 1.4, 0.4, 1) both;
+  }
+  .scan[data-state="used"] .scan-stamp {
+    @apply bg-sticker-amber;
+  }
+  .scan-hint {
+    @apply -mt-2 type-overline text-on-dark-faint;
+  }
+  @keyframes scan-glint {
+    0%,
+    80% {
+      top: 0.5rem;
+      opacity: 0;
+    }
+    84%,
+    96% {
+      opacity: 0.8;
+    }
+    100% {
+      top: calc(100% - 0.5rem);
+      opacity: 0;
+    }
+  }
+  @keyframes scan-sweep {
+    from {
+      top: 0.5rem;
+      opacity: 1;
+    }
+    to {
+      top: calc(100% - 0.5rem);
+      opacity: 1;
+    }
+  }
+  @keyframes scan-stamp {
+    from {
+      opacity: 0;
+      scale: 1.8;
+    }
+  }
+  @keyframes scan-shake {
+    25%,
+    75% {
+      transform: translateX(-4px);
+    }
+    50% {
+      transform: translateX(4px);
+    }
+  }
+
   /* Privacy and Terms (LegalPage.tsx) */
+  /* Desktop only: on phones it's a long list to scroll past before the text starts. */
   .legal-toc {
-    @apply lg:sticky lg:top-28 lg:self-start;
+    @apply hidden lg:sticky lg:top-28 lg:block lg:self-start;
   }
   .legal-toc-link {
     @apply flex items-baseline gap-3 text-body text-muted transition-colors hover:text-fg;
@@ -1142,6 +1267,16 @@ main[data-dark-top] {
   .legal-section {
     @apply scroll-mt-28 rule-top pt-8 not-first:mt-10;
   }
+  /* Clause number in a hanging column, so the text lines up down the page. */
+  .legal-clause {
+    @apply mt-4 grid grid-cols-[2.5rem_1fr] text-lead text-muted;
+  }
+  .legal-clause-no {
+    @apply tabular-nums text-brand-faint;
+  }
+  .legal-items {
+    @apply mt-2 space-y-2;
+  }
 
   /* Footer */
   .footer {
@@ -1151,7 +1286,7 @@ main[data-dark-top] {
     @apply relative z-10;
   }
   .footer-link {
-    @apply inline-flex items-center gap-1 text-on-dark-muted transition-colors hover:text-white;
+    @apply inline-flex items-center gap-1 whitespace-nowrap text-on-dark-muted transition-colors hover:text-white;
     & svg {
       @apply size-3.5;
     }

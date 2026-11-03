@@ -12,6 +12,8 @@ export const viewport: Viewport = { themeColor: "#050b1f" };
 
 export const metadata: Metadata = {
   title: "Ticket confirmed",
+  description: "Your Smooth Tickets order is confirmed. Your tickets and QR codes are on their way to your email.",
+  alternates: { canonical: null },
   robots: { index: false, follow: false },
 };
 
@@ -30,7 +32,7 @@ export default function PaymentSuccessPage() {
               <HugeiconsIcon icon={CheckmarkCircle02Icon} strokeWidth={2} aria-hidden />
             </span>
             <h1 id="confirm-title" className="mt-7 type-display">
-              You&apos;re <span className="text-brand">in.</span>
+              You&apos;re in.
             </h1>
             <p className="mx-auto mt-5 max-w-copy text-lead text-on-dark-muted">
               Your tickets are confirmed. We&apos;ve sent them to your email, each with its own QR code.

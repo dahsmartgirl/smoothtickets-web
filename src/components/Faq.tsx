@@ -27,7 +27,7 @@ const faqs: [string, React.ReactNode][] = [
   ],
   [
     "What does it cost?",
-    "Buyers see the ticket price and the service fee as separate lines on the event page, so they know the full amount before they pay.",
+    "You set your ticket prices, and Smooth Tickets adds a 5% service fee to each paid ticket. Buyers see the ticket price and the fee as separate lines on the event page, so they know the full amount before they pay. Free tickets carry no fee.",
   ],
   [
     "How does check-in work?",

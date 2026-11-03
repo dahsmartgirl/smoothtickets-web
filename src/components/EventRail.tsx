@@ -9,7 +9,8 @@ import { Rail } from "./Rail";
 import { TicketOutline } from "./TicketOutline";
 import { Reveal } from "./Reveal";
 
-export function EventCard({ event, className = "" }: { event: EventSummary; className?: string }) {
+/** `priority`: load the poster straight away, for cards in the first screenful (it is the page's largest image). */
+export function EventCard({ event, className = "", priority = false }: { event: EventSummary; className?: string; priority?: boolean }) {
   const d = formatEventDate(event.startDate);
   return (
     <a href={event.href} className={`event-card ${className}`}>
@@ -20,6 +21,7 @@ export function EventCard({ event, className = "" }: { event: EventSummary; clas
             alt={`Poster for ${event.name}`}
             fill
             sizes="(min-width: 640px) 300px, 78vw"
+            priority={priority}
           />
         )}
         <div className={`sticker ${stickerTone(event.slug)}`}>
